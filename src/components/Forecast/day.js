@@ -7,7 +7,10 @@ const Day = ({ day, description, temperature }) => (
   <Col>
     <h4>{day}</h4>
     <p>{description}</p>
-    <p>{temperature}</p>
+    <p>
+      {temperature}
+      °
+    </p>
   </Col>
 
 );

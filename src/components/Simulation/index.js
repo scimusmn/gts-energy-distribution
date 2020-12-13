@@ -36,7 +36,7 @@ class Simulation extends Component {
     setInterval(() => {
       console.log('randomize');
       this.setState({
-        forecast: DataManager.getRandomForecast(5),
+        forecast: DataManager.getRandomForecast(3),
         messageCenter: DataManager.getRandomMessageCenter(),
         production: Math.random(),
         demand: Math.random(),
@@ -92,6 +92,7 @@ class Simulation extends Component {
         <Forecast days={forecast} />
         <br />
         <hr />
+        <br />
         <div className="message-center">
           <h3>Message Center</h3>
           <h4>
@@ -99,11 +100,14 @@ class Simulation extends Component {
           </h4>
           <p>{messageCenter.body}</p>
           <h4>
-            <Moment date={time} format="hh:mm:ss" />
+            Time:
+            {' '}
+            <Moment date={time} format="hh:mm" />
           </h4>
         </div>
         <br />
         <hr />
+        <br />
         <div className="power-levels">
           <PowerMeter title="Production" color="green" level={production} />
           <PowerMeter title="Demand" color="orange" level={demand} />
