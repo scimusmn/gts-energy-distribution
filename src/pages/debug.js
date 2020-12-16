@@ -27,7 +27,7 @@ class DebugPage extends Component {
     this.logArray = [];
 
     this.SERIAL_COMMANDS = {
-      Global: ['{arduino-ready:1}', '{get-all-states:1}'],
+      Global: ['{wake-arduino:1}', '{get-all-states:1}'],
       Coal: ['{coal-1-light:off}', '{coal-1-light:warming}', '{coal-1-light:on}'],
       Gas: ['{gas-1-light-bar:0}', '{gas-1-light-bar:33}', '{gas-1-light-bar:66}', '{gas-1-light-bar:100}'],
       Hydro: ['{hydro-1-light-bar:0}', '{hydro-1-light-bar:33}', '{hydro-1-light-bar:66}', '{hydro-1-light-bar:100}'],
