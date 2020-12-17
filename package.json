@@ -61,6 +61,8 @@
     "lint": "npm-run-all lint:*",
     "lint:code": "node_modules/.bin/eslint .",
     "lint:style": "node_modules/.bin/stylelint \"**/*.*css\"",
+    "pull:message-center": "node scripts/download-gsheet-data.js 1Y42QN829PiwqykXBLTp6dHWXUUEg0_RBhQlBMnohxzg src/data/message-center",
+    "pull:environmental-data": "node scripts/download-gsheet-data.js 1IBMHo_5yNtzjHZd4rKbTNS3E2PBGgrfB4QoLosXFe0M src/data/environmental-data",
     "serve": "gatsby serve --port 3000"
   }
 }
