@@ -14,7 +14,13 @@ const Forecast = ({ days }) => (
     </Row>
     <Row>
       {days.map((day) => (
-        <Day key={NewKey()} {...day} />
+        <Day
+          key={NewKey()}
+          day={day.Day}
+          description={day.Condition}
+          icon={day.Condition.toLowerCase()}
+          temperature={day.Temperature}
+        />
       ))}
     </Row>
   </Container>

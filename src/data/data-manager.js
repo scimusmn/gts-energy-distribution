@@ -1,55 +1,40 @@
-import { FishArray, FishMany } from '../utils';
+import {
+  FishArray, FishObject, CollateByProperty,
+} from '../utils';
 
-const FORECASTS = [
-  {
-    day: 'Monday', description: 'Windy', temperature: '72', icon: 'cloudy',
-  },
-  {
-    day: 'Tuesday', description: 'Rough', temperature: '66', icon: 'cloudy',
-  },
-  {
-    day: 'Wednesday', description: 'Hold on!', temperature: '55', icon: 'chanceflurries',
-  },
-  {
-    day: 'Thursday', description: 'Gassy', temperature: '60', icon: 'clear',
-  },
-  {
-    day: 'Friday', description: 'Sweet', temperature: '84', icon: 'partlycloudy',
-  },
-  {
-    day: 'Saturday', description: ' ', temperature: '97', icon: 'flurries',
-  },
-  {
-    day: 'Dingday', description: 'Decent', temperature: '46', icon: 'clear',
-  },
-  {
-    day: 'Trunday', description: 'Whoah!', temperature: '24', icon: 'rain',
-  },
-];
+import EnvironmentalJSON from './environmental-data.json';
+import MessageCenterJSON from './message-center.json';
 
-const MESSAGE_CENTER_MESSAGES = [
-  {
-    mood: 'angry', trigger: 'blackout', body: 'Hey, you are screwing up!',
-  },
-  {
-    mood: 'happy', trigger: 'random', body: 'You are doing great.',
-  },
-  {
-    mood: 'angry', trigger: 'blackout', body: 'What the heck is going on over there?! FIX IT.',
-  },
-  {
-    mood: 'happy', trigger: 'success', body: 'Wow, you are swell. Everyone has power. Thanks.',
-  },
-];
+// We organize forecasts into 3-Day "sets" using the "Set" field.
+const FORECASTS = CollateByProperty(EnvironmentalJSON, 'Set');
 
+// Clean up superflous rows by 'Set' (e.g. spacer rows)
+delete FORECASTS[''];
 
-const getRandomForecast = (numDays) => FishMany(FORECASTS, numDays);
+// We can use this JSON array as-is
+const MESSAGE_CENTER_MESSAGES = MessageCenterJSON;
+
+let currentSessionForecast;
+
+const selectNewForecast = () => {
+  currentSessionForecast = FishObject(FORECASTS);
+  return currentSessionForecast;
+};
+
+const getRandomForecast = () => FishObject(FORECASTS);
 
 const getRandomMessageCenter = () => FishArray(MESSAGE_CENTER_MESSAGES);
 
+const getDemand = (hourIndex) => parseFloat(currentSessionForecast[hourIndex].Demand);
+
+const getTime = (hourIndex) => currentSessionForecast[hourIndex].Time;
+
 const DataManager = {
+  selectNewForecast,
   getRandomForecast,
   getRandomMessageCenter,
+  getDemand,
+  getTime,
 };
 
 export default DataManager;

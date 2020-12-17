@@ -20,8 +20,24 @@ export const FishMany = (array, num) => {
   return items;
 };
 
+// Return random key/value from Object
+export const FishObject = (obj) => {
+  const keys = Object.keys(obj);
+  const rKey = keys[Math.floor(keys.length * Math.random())];
+  return obj[rKey];
+};
+
+// Sort a larger array of objects into multiple
+// smaller arrays by a matching property
+export const CollateByProperty = (array, property) => array.reduce((acc, cur) => {
+  acc[cur[property]] = [...acc[cur[property]] || [], cur];
+  return acc;
+}, {});
+
 export default {
   NewKey,
   FishArray,
   FishMany,
+  FishObject,
+  CollateByProperty,
 };

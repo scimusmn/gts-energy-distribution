@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import withSerialCommunication from '../../Arduino/arduino-base/ReactSerial/SerialHOC';
 import DataManager from '../../data/data-manager';
+import Settings from '../../data/settings';
 import Forecast from '../Forecast';
 import PowerMeter from '../PowerMeter';
 
@@ -17,12 +18,14 @@ class Simulation extends Component {
       production: 0,
       demand: 0,
       time: 0,
+      hourIndex: 0,
+      efficiencyScore: 0,
     };
 
     this.onData = this.onData.bind(this);
     this.outputSerial = this.outputSerial.bind(this);
-    // this.getRandomForecast = this.getRandomForecast.bind(this);
-    // this.getRandomMessageCenter = this.getRandomMessageCenter.bind(this);
+
+    this.hourlyInterval = {};
   }
 
   componentDidMount() {
@@ -31,18 +34,7 @@ class Simulation extends Component {
 
     console.log('Simulation mounted');
 
-    // Temp - uncomment to provide
-    // random state updates on an interval
-    setInterval(() => {
-      console.log('randomize');
-      this.setState({
-        forecast: DataManager.getRandomForecast(3),
-        messageCenter: DataManager.getRandomMessageCenter(),
-        production: Math.random(),
-        demand: Math.random(),
-        time: new Date().getTime(),
-      });
-    }, 5000);
+    this.startSimulation();
   }
 
   onData(data) {
@@ -68,6 +60,42 @@ class Simulation extends Component {
       const { sendData } = this.props;
       sendData(response);
     }
+  }
+
+  startSimulation() {
+    const dayInterval = Settings.SESSION_DURATION / Settings.DAYS_PER_SESSION;
+    const hourInterval = Math.ceil(dayInterval / Settings.DAYS_PER_SESSION);
+    console.log('starting session with hourInterval', hourInterval);
+
+    // Select forecast data for this session
+    DataManager.selectNewForecast();
+
+    this.hourlyInterval = setInterval(() => {
+      const { hourIndex, demand } = this.state;
+      console.log('hour passed->', hourIndex, demand);
+
+      if (hourIndex > 36) {
+        this.endSimulation();
+      } else {
+        this.setState({
+          forecast: DataManager.getForecast(hourIndex),
+          messageCenter: DataManager.getRandomMessageCenter(),
+          production: Math.round(Math.random() * 100),
+          demand: DataManager.getDemand(hourIndex),
+          time: DataManager.getTime(hourIndex),
+          hourIndex: hourIndex + 1,
+        });
+      }
+    }, hourInterval);
+  }
+
+  endSimulation() {
+    // TODO: cancel hour update interval
+    console.log('endSimulation');
+    const { efficiencyScore } = this.state;
+    console.log('efficiency score', efficiencyScore);
+
+    clearInterval(this.hourlyInterval);
   }
 
   outputSerial(msg) {
@@ -96,6 +124,8 @@ class Simulation extends Component {
             Time:
             {' '}
             <Moment date={time} format="hh:mm" />
+            <br />
+            {time}
           </h4>
         </div>
         <div className="power-levels window">
