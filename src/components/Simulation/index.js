@@ -84,16 +84,9 @@ class Simulation extends Component {
       time, forecast, messageCenter, production, demand,
     } = this.state;
     return (
-      <div>
-        <h1>
-          Simulation session
-        </h1>
-        <hr />
+      <div className="simulation">
         <Forecast days={forecast} />
-        <br />
-        <hr />
-        <br />
-        <div className="message-center">
+        <div className="message-center window">
           <h3>Message Center</h3>
           <h4>
             {messageCenter.mood === 'angry' ? <span role="img" aria-label="angry">😠</span> : <span role="img" aria-label="happy">😍</span>}
@@ -105,12 +98,9 @@ class Simulation extends Component {
             <Moment date={time} format="hh:mm" />
           </h4>
         </div>
-        <br />
-        <hr />
-        <br />
-        <div className="power-levels">
-          <PowerMeter title="Production" color="green" level={production} />
-          <PowerMeter title="Demand" color="orange" level={demand} />
+        <div className="power-levels window">
+          <PowerMeter label="Production" color="green" level={production} />
+          <PowerMeter label="Demand" color="orange" level={demand} />
         </div>
       </div>
     );

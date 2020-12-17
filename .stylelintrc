@@ -1,7 +1,8 @@
 {
   "extends": "stylelint-config-standard",
   "ignoreFiles": [
-    "public/*.*css"
+    "public/*.*css",
+    "src/styles/wu/*.*css"
   ],
   "plugins": [
     "stylelint-order"

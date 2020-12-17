@@ -12,7 +12,7 @@ const PowerMeter = ({ label, color, level }) => (
     </Row>
     <Row>
       <Col>
-        <h3 style={{ backgroundColor: color, color: 'purple' }}>{level}</h3>
+        <h3 style={{ backgroundColor: color, color: 'purple' }}>{level.toFixed(2)}</h3>
       </Col>
     </Row>
   </Container>

@@ -2,28 +2,28 @@ import { FishArray, FishMany } from '../utils';
 
 const FORECASTS = [
   {
-    day: 'Monday', description: 'Windy', temperature: '72',
+    day: 'Monday', description: 'Windy', temperature: '72', icon: 'cloudy',
   },
   {
-    day: 'Tuesday', description: 'Rough', temperature: '66',
+    day: 'Tuesday', description: 'Rough', temperature: '66', icon: 'cloudy',
   },
   {
-    day: 'Wednesday', description: 'Hold on!', temperature: '55',
+    day: 'Wednesday', description: 'Hold on!', temperature: '55', icon: 'chanceflurries',
   },
   {
-    day: 'Thursday', description: 'Gassy', temperature: '60',
+    day: 'Thursday', description: 'Gassy', temperature: '60', icon: 'clear',
   },
   {
-    day: 'Friday', description: 'Sweet', temperature: '84',
+    day: 'Friday', description: 'Sweet', temperature: '84', icon: 'partlycloudy',
   },
   {
-    day: 'Saturday', description: ' ', temperature: '97',
+    day: 'Saturday', description: ' ', temperature: '97', icon: 'flurries',
   },
   {
-    day: 'Dingday', description: 'Decent', temperature: '46',
+    day: 'Dingday', description: 'Decent', temperature: '46', icon: 'clear',
   },
   {
-    day: 'Trunday', description: 'Whoah!', temperature: '24',
+    day: 'Trunday', description: 'Whoah!', temperature: '24', icon: 'rain',
   },
 ];
 

@@ -5,6 +5,7 @@ import React from 'react';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@styles/base.scss';
+import '@styles/wu/wu-icons-style.min.css';
 
 export const wrapRootElement = ({ element }) => <>{element}</>;
 
