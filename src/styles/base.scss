@@ -50,4 +50,12 @@ body {
   left: 65%;
   top: 5%;
   width: 20%;
+
+  // .meter-container {
+  // }
+}
+
+// Animation helpers
+.tween-height {
+  transition: height 0.3s ease;
 }

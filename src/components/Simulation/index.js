@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
+import { Container, Row } from 'reactstrap';
 import withSerialCommunication from '../../Arduino/arduino-base/ReactSerial/SerialHOC';
 import DataManager from '../../data/data-manager';
 import Settings from '../../data/settings';
@@ -128,10 +129,12 @@ class Simulation extends Component {
             {time}
           </h4>
         </div>
-        <div className="power-levels window">
-          <PowerMeter label="Production" color="green" level={production} />
-          <PowerMeter label="Demand" color="orange" level={demand} />
-        </div>
+        <Container className="power-levels window">
+          <Row>
+            <PowerMeter label="Production" color="green" level={production} barHeight={450} />
+            <PowerMeter label="Demand" color="orange" level={demand} barHeight={450} />
+          </Row>
+        </Container>
       </div>
     );
   }

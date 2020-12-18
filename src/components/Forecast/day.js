@@ -1,3 +1,4 @@
+/* eslint no-console: 0 */
 import React from 'react';
 import { Col } from 'reactstrap';
 import PropTypes from 'prop-types';

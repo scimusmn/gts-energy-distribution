@@ -1,33 +1,36 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import { Container, Row, Col } from 'reactstrap';
+import { Col } from 'reactstrap';
 import PropTypes from 'prop-types';
 
-const PowerMeter = ({ label, color, level }) => (
-  <Container>
-    <Row>
-      <Col>
-        <h3>{label}</h3>
-      </Col>
-    </Row>
-    <Row>
-      <Col>
-        <h3 style={{ backgroundColor: color, color: 'purple', width: `${level}px` }}>{level}</h3>
-      </Col>
-    </Row>
-  </Container>
+const PowerMeter = ({
+  label, color, level, barheight,
+}) => (
+  <>
+    <Col>
+      <h3>{label}</h3>
+      <div className="meter-container">
+        <h3>{level}</h3>
+        <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.1)', border: '1px solid gray', height: `${barheight}px` }}>
+          <div className="tween-height" style={{ backgroundColor: color, height: `${Math.round((level / 100) * barheight)}px` }} />
+        </div>
+      </div>
+    </Col>
+  </>
 );
 
 PowerMeter.defaultProps = {
   label: 'Power',
   color: 'gray',
-  level: 0,
+  level: 0.0,
+  barheight: 500,
 };
 
 PowerMeter.propTypes = {
   label: PropTypes.string,
   color: PropTypes.string,
   level: PropTypes.number,
+  barheight: PropTypes.number,
 };
 
 export default PowerMeter;
