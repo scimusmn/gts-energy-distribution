@@ -70,6 +70,8 @@ class Simulation extends Component {
     // Select forecast data for this session
     DataManager.selectNewForecast();
 
+    this.setState({ forecast: DataManager.getForecastSummary() });
+
     this.hourlyInterval = setInterval(() => {
       const { hourIndex, demand } = this.state;
       console.log('hour passed->', hourIndex, demand);
@@ -78,7 +80,6 @@ class Simulation extends Component {
         this.endSimulation();
       } else {
         this.setState({
-          forecast: DataManager.getForecast(hourIndex),
           messageCenter: DataManager.getRandomMessageCenter(),
           production: Math.round(Math.random() * 100),
           demand: DataManager.getDemand(hourIndex),
@@ -90,7 +91,6 @@ class Simulation extends Component {
   }
 
   endSimulation() {
-    // TODO: cancel hour update interval
     console.log('endSimulation');
     const { efficiencyScore } = this.state;
     console.log('efficiency score', efficiencyScore);
@@ -117,9 +117,9 @@ class Simulation extends Component {
         <div className="message-center window">
           <h3>Message Center</h3>
           <h4>
-            {messageCenter.mood === 'angry' ? <span role="img" aria-label="angry">😠</span> : <span role="img" aria-label="happy">😍</span>}
+            {messageCenter.Mood === 'angry' ? <span role="img" aria-label="angry">😠</span> : <span role="img" aria-label="happy">😍</span>}
           </h4>
-          <p>{messageCenter.body}</p>
+          <p>{messageCenter.Body}</p>
           <h4>
             Time:
             {' '}

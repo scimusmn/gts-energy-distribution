@@ -13,7 +13,9 @@ body {
 }
 
 .simulation {
-  background-image: url("https://images.unsplash.com/photo-1542272201-b1ca555f8505?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxleHBsb3JlLWZlZWR8OHx8fGVufDB8fHw%3D&w=1000&q=80");
+  background-image: url("https://images.unsplash.com/photo-1499346030926-9a72daac6c63?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHw%3D&w=1000&q=80");
+  height: 1080px;
+  width: 1920px;
 }
 
 .window {
@@ -31,7 +33,7 @@ body {
   width: 50%;
 
   .day {
-    border: 1px solid #fff;
+    // border: 1px solid #fff;
     border-radius: 7px;
     padding: 15px;
   }

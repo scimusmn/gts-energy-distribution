@@ -18,7 +18,7 @@ const Forecast = ({ days }) => (
           key={NewKey()}
           day={day.Day}
           description={day.Condition}
-          icon={day.Condition.toLowerCase()}
+          icon={day.Condition}
           temperature={day.Temperature}
         />
       ))}

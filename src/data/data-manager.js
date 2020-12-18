@@ -21,6 +21,17 @@ const selectNewForecast = () => {
   return currentSessionForecast;
 };
 
+// Use Noon slide to summarize day
+const getForecastSummary = () => {
+  const summaryDays = [];
+  for (let i = 0; i < currentSessionForecast.length; i += 1) {
+    if (currentSessionForecast[i].Time === '1:00 PM') {
+      summaryDays.push(currentSessionForecast[i]);
+    }
+  }
+  return summaryDays;
+};
+
 const getRandomForecast = () => FishObject(FORECASTS);
 
 const getRandomMessageCenter = () => FishArray(MESSAGE_CENTER_MESSAGES);
@@ -31,6 +42,7 @@ const getTime = (hourIndex) => currentSessionForecast[hourIndex].Time;
 
 const DataManager = {
   selectNewForecast,
+  getForecastSummary,
   getRandomForecast,
   getRandomMessageCenter,
   getDemand,

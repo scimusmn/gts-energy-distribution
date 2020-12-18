@@ -8,12 +8,12 @@ const Day = ({
 
   <Col className="day">
     <h4>{day}</h4>
-    <p>{description}</p>
     <h2>
       {temperature}
       °
     </h2>
-    <i className={`wu wu-black wu-128 wu-${icon}`} />
+    <p>{description}</p>
+    <i className={`wu wu-black wu-128 wu-${Day.lookupIcon(icon)}`} />
   </Col>
 
 );
@@ -28,6 +28,24 @@ Day.propTypes = {
   description: PropTypes.string,
   icon: PropTypes.string,
   temperature: PropTypes.string.isRequired,
+};
+
+Day.lookupIcon = (condition) => {
+  switch (condition) {
+    case 'Fair':
+      return 'clear';
+    case 'Partly Cloudy':
+      return 'partlycloudy';
+    case 'Mostly Cloudy':
+      return 'mostlycloudy';
+    case 'Cloudy':
+      return 'cloudy';
+    case 'Light Snow':
+      return 'chancesnow';
+    default:
+      console.warn('Condition unrecognized:', condition);
+      return 'clear';
+  }
 };
 
 export default Day;
