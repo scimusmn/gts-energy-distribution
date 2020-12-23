@@ -14,7 +14,7 @@ class Source
 {
   // user-accessible "public" interface
 public:
-  Source(SerialController *, char[7], int); //neopixel, first pixel
+  Source(SerialController *, char[7], int);
   void sendIfNew();
   int prevPercent;
 
