@@ -22,7 +22,7 @@ class ChartJSChart extends React.Component {
 			this.props.onRef(this.chart);
 
 		function generateData() {
-			var unit = 'second';
+			var unit = 'millisecond';
 
 			function unitLessThanDay() {
 				return unit === 'second' || unit === 'minute' || unit === 'hour';
@@ -60,7 +60,7 @@ class ChartJSChart extends React.Component {
 			var now = moment();
 			var data = [];
 			var lessThanDay = unitLessThanDay();
-			for (; data.length < 600 && date.isBefore(now); date = date.clone().add(1, unit).startOf(unit)) {
+			for (; data.length < 199 && date.isBefore(now); date = date.clone().add(1, unit).startOf(unit)) {
 				if (outsideMarketHours(date)) {
 					if (!lessThanDay || !beforeNineThirty(date)) {
 						date = date.clone().add(date.isoWeekday() >= 5 ? 8 - date.isoWeekday() : 1, 'day');
@@ -79,9 +79,12 @@ class ChartJSChart extends React.Component {
 			data: {
 				datasets: [{
 					label: 'Arduino Input Value',
-					data: generateData(),
+					data: [],
 					type: 'line',
 					pointRadius: 0,
+					borderColor: "red",
+					pointBackgroundColor: "#113ae7",
+   					pointBorderColor: "#11bae7",
 					fill: false,
 					lineTension: 0,
 					borderWidth: 2
@@ -89,8 +92,18 @@ class ChartJSChart extends React.Component {
 			},
 			options: {
 				animation: {
-					duration: 0
+					duration: 0 // general animation time
 				},
+				hover: {
+					animationDuration: 0 // duration of animations when hovering an item
+				},
+				elements: {
+					line: {
+						tension: 0 // disables bezier curves
+					}
+				},
+				// showLines: false, // disable for all datasets
+				responsiveAnimationDuration: 0, // animation duration after a resize
 				scales: {
 					xAxes: [{
 						type: 'time',
@@ -104,35 +117,35 @@ class ChartJSChart extends React.Component {
 							source: 'data',
 							autoSkip: true,
 							autoSkipPadding: 75,
-							maxRotation: 0,
+							// maxRotation: 0,
 							sampleSize: 100
 						},
-						afterBuildTicks: function(scale, ticks) {
-							var majorUnit = scale._majorUnit;
-							var firstTick = ticks[0];
-							var i, ilen, val, tick, currMajor, lastMajor;
+						// afterBuildTicks: function(scale, ticks) {
+						// 	var majorUnit = scale._majorUnit;
+						// 	var firstTick = ticks[0];
+						// 	var i, ilen, val, tick, currMajor, lastMajor;
 
-							val = moment(ticks[0].value);
-							if ((majorUnit === 'minute' && val.second() === 0)
-									|| (majorUnit === 'hour' && val.minute() === 0)
-									|| (majorUnit === 'day' && val.hour() === 9)
-									|| (majorUnit === 'month' && val.date() <= 3 && val.isoWeekday() === 1)
-									|| (majorUnit === 'year' && val.month() === 0)) {
-								firstTick.major = true;
-							} else {
-								firstTick.major = false;
-							}
-							lastMajor = val.get(majorUnit);
+						// 	val = moment(ticks[0].value);
+						// 	if ((majorUnit === 'minute' && val.second() === 0)
+						// 			|| (majorUnit === 'hour' && val.minute() === 0)
+						// 			|| (majorUnit === 'day' && val.hour() === 9)
+						// 			|| (majorUnit === 'month' && val.date() <= 3 && val.isoWeekday() === 1)
+						// 			|| (majorUnit === 'year' && val.month() === 0)) {
+						// 		firstTick.major = true;
+						// 	} else {
+						// 		firstTick.major = false;
+						// 	}
+						// 	lastMajor = val.get(majorUnit);
 
-							for (i = 1, ilen = ticks.length; i < ilen; i++) {
-								tick = ticks[i];
-								val = moment(tick.value);
-								currMajor = val.get(majorUnit);
-								tick.major = currMajor !== lastMajor;
-								lastMajor = currMajor;
-							}
-							return ticks;
-						}
+						// 	for (i = 1, ilen = ticks.length; i < ilen; i++) {
+						// 		tick = ticks[i];
+						// 		val = moment(tick.value);
+						// 		currMajor = val.get(majorUnit);
+						// 		tick.major = currMajor !== lastMajor;
+						// 		lastMajor = currMajor;
+						// 	}
+						// 	return ticks;
+						// }
 					}],
 					yAxes: [{
 						gridLines: {
@@ -141,7 +154,12 @@ class ChartJSChart extends React.Component {
 						scaleLabel: {
 							display: true,
 							labelString: 'Closing price ($)'
-						}
+						},
+						ticks: {
+							beginAtZero: true,
+							max : 100,
+							min : 0,
+					   }
 					}]
 				},
 				tooltips: {
@@ -163,19 +181,30 @@ class ChartJSChart extends React.Component {
 
 		this.chart = new Chart(ctx, chartConfig);
 
-		this.chart.render();
+		// this.chart.render();
 		
 		if(this.props.onRef)
 			this.props.onRef(this.chart);
+
+		// setInterval(() => {
+		// 	    this.chart.data.datasets.forEach((dataset) => {
+		// 		    console.log('--> charting');
+		// 		    console.log(dataset.data);
+		// 		    dataset.data[15].y = (Math.random() * 100);
+		// 		});
+
+		//   this.chart.update('none');
+		// }, 1111);
 	}	
     shouldComponentUpdate(nextProps, nextState){
 		//Check if Chart-options has changed and determine if component has to be updated
-        return !(nextProps.options === this.options);
+		return false;
+        // return !(nextProps.options === this.options);
     }
 	componentDidUpdate() {
 		//Update Chart Options & Render
-		this.chart.options = this.props.options;
-		this.chart.render();
+		// this.chart.options = this.props.options;
+		// this.chart.render();
 	}
 	componentWillUnmount() {
 		//Destroy chart and remove reference

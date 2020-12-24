@@ -63,7 +63,7 @@ class CanvasJS extends Component {
   updateChartArduinoStyle() {
     console.log('updateChartArduinoStyle', lastArduinoValue);
 
-      if (dataPoints1.length > 333) dataPoints1.shift();
+      if (dataPoints1.length > 1000) dataPoints1.shift();
 
     xValue += 1;
     dataPoints1.push({
@@ -162,15 +162,6 @@ class CanvasJS extends Component {
           onRef={(ref) => this.chart = ref}
         />
         {/* You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods */}
-        <div style={{ maxWidth: `960px`, margin: `1.45rem` }}>
-          <h1>WeatherDataJSON</h1>
-          <ul>
-            {WeatherDataJSON.map((row, index) => {
-              console.log(row);
-              return <li key={`content_item_${index}`}>{row.Day + ' | ' + row.Time + ' | ' +  row["Wind Speed"]+ ' | ' + row["Precip."]+ ' | ' +  row.Condition}</li>
-            })}
-          </ul>
-        </div>
       </div>
     );
   }
