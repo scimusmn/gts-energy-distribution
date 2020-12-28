@@ -10,11 +10,11 @@ class LightBar
 
 public:
     LightBar(Adafruit_NeoPixel *, int, char[20], int, int, int);
-    void check(char *, char *);
+    bool check(char *, char *);
 
 private:
     void updateLightBar(int, int); // first pixel, percent 0 - 100
-    Adafruit_NeoPixel *pixels;
+    Adafruit_NeoPixel *pixelsRef;
     int firstPixel;
     char *triggerMsg;
     int red;

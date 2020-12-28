@@ -68,21 +68,21 @@ LightBar solar_3_lightBar(&pixels, 46, "solar-3-light-bar", 0, 20, 0);
 LightBar gas_1_lightBar(&pixels, 54, "gas-1-light-bar", 0, 20, 0);
 LightBar gas_2_lightBar(&pixels, 62, "gas-2-light-bar", 0, 20, 0);
 LightBar hydro_1_lightBar(&pixels, 70, "hydro-1-light-bar", 0, 20, 0);
-LightBar hydro_2_lightBar(&pixels, 78, "hydro-2-light-bar", 0, 20, 0);
+LightBar hydro_2_lightBar(&pixels, 80, "hydro-2-light-bar", 0, 20, 0);
 // In addition to adding a lightBar object, you must add check() to onParse()
 
-const int lightBarCount = 10;
+const int lightBarCount = 1;
 LightBar lightBars[lightBarCount] = {
-    wind_1_lightBar,
-    wind_2_lightBar,
-    wind_3_lightBar,
-    solar_1_lightBar,
-    solar_2_lightBar,
-    solar_3_lightBar,
-    gas_1_lightBar,
-    gas_2_lightBar,
-    hydro_1_lightBar,
-    hydro_2_lightBar};
+    // wind_1_lightBar,
+    // wind_2_lightBar,
+    // wind_3_lightBar,
+    // solar_1_lightBar,
+    // solar_2_lightBar,
+    // solar_3_lightBar,
+    // gas_1_lightBar,
+    // gas_2_lightBar,
+    // hydro_1_lightBar,
+    wind_1_lightBar};
 
 Button startButton;
 Source hydro1(&serialController, "hydro-1-lever", hydro_1_input_pin);
@@ -224,7 +224,14 @@ void onParse(char *message, char *value)
     // then apply value when matched
     for (int i = 0; i < lightBarCount; i++)
     {
-        lightBars[i].check(message, value);
+        bool result = lightBars[i].check(message, value);
+        Serial.print("light bar check: ");
+        Serial.println(message);
+        if (result == true)
+        {
+            Serial.println("match: ");
+            Serial.println(message);
+        }
     }
 
     if (strcmp(message, "start-button-light") == 0)
@@ -275,6 +282,4 @@ void lightPixel(int pixel_index, char *status)
         pixels.setPixelColor(pixel_index, pixels.Color(0, 0, 0));
 
     pixels.show();
-
-    //TODO
 }
