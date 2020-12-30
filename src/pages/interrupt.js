@@ -2,6 +2,9 @@
 /* eslint react/prop-types: 0 */
 
 import React, { Component } from 'react';
+import {
+  Button,
+} from 'reactstrap';
 import withSerialCommunication from '../Arduino/arduino-base/ReactSerial/SerialHOC';
 
 class DebugPage extends Component {
@@ -9,6 +12,7 @@ class DebugPage extends Component {
     super(props);
 
     this.onData = this.onData.bind(this);
+    this.sendClick = this.sendClick.bind(this);
 
     this.myRef = React.createRef();
 
@@ -69,6 +73,12 @@ class DebugPage extends Component {
     }
   }
 
+  sendClick(msg) {
+    console.log('sendClick:', msg);
+    const { sendData } = this.props;
+    sendData(msg);
+  }
+
   render() {
     const { ipcAvailable } = this.props;
     return (
@@ -76,6 +86,15 @@ class DebugPage extends Component {
         <h1>
           Interrupt Test Page
         </h1>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Button
+            color="primary"
+            onClick={() => this.sendClick('{wake-arduino:1}')}
+          >
+            wake-arduino
+          </Button>
+        </div>
+        <br />
         <p>
           Send any hydro-X-lever message, and application
           {' '}
