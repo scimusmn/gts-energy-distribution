@@ -183,19 +183,35 @@ void onParse(char *message, char *value)
 
     else if (strcmp(message, "solar-1-light-bar") == 0)
     {
-        lightBarGraph(80, atoi(value)); // value of first pixel to be lit.
+        lightBarGraph(8, atoi(value)); // value of first pixel to be lit.
     }
     else if (strcmp(message, "solar-2-light-bar") == 0)
     {
-        lightBarGraph(20, atoi(value)); // value of first pixel to be lit.
+        lightBarGraph(16, atoi(value)); // value of first pixel to be lit.
     }
     else if (strcmp(message, "wind-1-light-bar") == 0)
     {
-        lightBarGraph(40, atoi(value)); // value of first pixel to be lit.
+        lightBarGraph(24, atoi(value)); // value of first pixel to be lit.
     }
     else if (strcmp(message, "wind-2-light-bar") == 0)
     {
-        lightBarGraph(60, atoi(value)); // value of first pixel to be lit.
+        lightBarGraph(32, atoi(value)); // value of first pixel to be lit.
+    }
+    else if (strcmp(message, "gas-1-light-bar") == 0)
+    {
+        lightBarGraph(40, atoi(value)); // value of first pixel to be lit.
+    }
+    else if (strcmp(message, "gas-2-light-bar") == 0)
+    {
+        lightBarGraph(48, atoi(value)); // value of first pixel to be lit.
+    }
+    else if (strcmp(message, "hydro-1-light-bar") == 0)
+    {
+        lightBarGraph(56, atoi(value)); // value of first pixel to be lit.
+    }
+    else if (strcmp(message, "hydro-2-light-bar") == 0)
+    {
+        lightBarGraph(64, atoi(value)); // value of first pixel to be lit.
     }
     else if (strcmp(message, "coal-1-light") == 0) //TODO
     {
@@ -226,7 +242,7 @@ void onParse(char *message, char *value)
     else
     {
         // helpfully alert us if we've sent something wrong :)
-        serialController.sendMessage("unknown-command", "1");
+        serialController.sendMessage(message, "X");
     }
 }
 
