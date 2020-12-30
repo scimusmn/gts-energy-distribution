@@ -1,9 +1,10 @@
 /* eslint no-console: 0 */
 /* eslint react/prop-types: 0 */
+/* eslint no-return-assign: 0 */
 
 import React, { Component } from 'react';
 import {
-  Button,
+  InputGroup, InputGroupAddon, Button, Input,
 } from 'reactstrap';
 import withSerialCommunication from '../Arduino/arduino-base/ReactSerial/SerialHOC';
 
@@ -11,28 +12,42 @@ class DebugPage extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      minDelay: 250.0,
+    };
+
     this.onData = this.onData.bind(this);
     this.sendClick = this.sendClick.bind(this);
+    this.setMinimumDelay = this.setMinimumDelay.bind(this);
+    this.shiftOutNextMessage = this.shiftOutNextMessage.bind(this);
+    this.queueOutgoingMessage = this.queueOutgoingMessage.bind(this);
 
     this.myRef = React.createRef();
 
     this.logLimit = 25;
     this.logArray = [];
+
+    this.outgoingQueue = [];
+
+    this.outMsgTimer = {};
   }
 
   componentDidMount() {
     const { setOnDataCallback } = this.props;
+    const { minDelay } = this.state;
     setOnDataCallback(this.onData);
 
     setInterval(() => {
       this.myRef.current.innerHTML = this.logArray;
     }, 150);
+
+    this.setMinimumDelay(minDelay);
   }
 
   onData(data) {
     // console.log('onData:', data);
 
-    const { sendData } = this.props;
+    // const { sendData } = this.props;
 
     this.logArray.push(`<br><span style="color:#CD5C5C;">IN &nbsp;&nbsp;→ &nbsp;</span> ${JSON.stringify(data)}`);
 
@@ -40,7 +55,6 @@ class DebugPage extends Component {
       console.log('shifting', this.logArray.length);
       this.logArray.shift();
     }
-
 
     // For testing purposes, all incoming
     // `hydro-X-lever` msgs are immediately
@@ -63,14 +77,19 @@ class DebugPage extends Component {
         const lbMsg = allLightBarMsgs[i];
         const response = `{${lbMsg}:${responseVal}}`;
 
-        sendData(response);
-
-        this.logArray.push(`<br><span style="color:Navy;">OUT ←&nbsp;</span> ${response}`);
-        if (this.logArray.length > this.logLimit) {
-          this.logArray.shift();
-        }
+        this.queueOutgoingMessage(response);
+        // sendData(response);
       }
     }
+  }
+
+  setMinimumDelay(val) {
+    console.log('setMinimumDelay:', val);
+    this.setState({ minDelay: parseFloat(val) });
+
+    this.outMsgTimer = setInterval(() => {
+      this.shiftOutNextMessage();
+    }, parseFloat(val));
   }
 
   sendClick(msg) {
@@ -79,8 +98,27 @@ class DebugPage extends Component {
     sendData(msg);
   }
 
+  shiftOutNextMessage() {
+    console.log('shiftOutNextMessage:', this.outgoingQueue.length);
+
+    if (this.outgoingQueue.length > 0) {
+      const firstMsg = this.outgoingQueue.shift();
+      const { sendData } = this.props;
+
+      this.logArray.push(`<br><span style="color:Navy;">OUT ←&nbsp;</span> ${firstMsg}`);
+
+      sendData(firstMsg);
+    }
+  }
+
+  queueOutgoingMessage(msg) {
+    console.log('queueOutgoingMessage:', this.outgoingQueue.length);
+    this.outgoingQueue.push(msg);
+  }
+
   render() {
     const { ipcAvailable } = this.props;
+    const { minDelay } = this.state;
     return (
       <div style={{ padding: '3%', backgroundColor: '#FFA07A' }}>
         <h1>
@@ -105,6 +143,28 @@ class DebugPage extends Component {
           light bar messages.
         </p>
         <hr />
+        <br />
+        <div>
+          <h5>
+            Minimum delay between outgoing messages (in milliseconds) - Current:
+            {minDelay}
+          </h5>
+          <br />
+          <InputGroup>
+            <InputGroupAddon addonType="prepend">
+              <Button
+                color="primary"
+                onClick={() => this.setMinimumDelay(this.sendTextInput.value)}
+              >
+                Set:
+              </Button>
+              <Input
+                innerRef={(input) => (this.sendTextInput = input)}
+                placeholder="250"
+              />
+            </InputGroupAddon>
+          </InputGroup>
+        </div>
         <br />
         <h4>
           Log
