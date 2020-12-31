@@ -9,6 +9,7 @@ import DataManager from '../../data/data-manager';
 import Settings from '../../data/settings';
 import Forecast from '../Forecast';
 import PowerMeter from '../PowerMeter';
+import EnergyChart from '../EnergyChart';
 
 class Simulation extends Component {
   constructor(props) {
@@ -21,6 +22,7 @@ class Simulation extends Component {
       time: 0,
       hourIndex: 0,
       efficiencyScore: 0,
+      chartData: {},
     };
 
     this.onData = this.onData.bind(this);
@@ -110,7 +112,7 @@ class Simulation extends Component {
 
   render() {
     const {
-      time, forecast, messageCenter, production, demand,
+      time, forecast, messageCenter, production, demand, chartData,
     } = this.state;
     return (
       <div className="simulation">
@@ -135,6 +137,10 @@ class Simulation extends Component {
             <PowerMeter label="Demand" color="orange" level={demand} barHeight={450} />
           </Row>
         </Container>
+        <div className="energy-chart window">
+          <h3>Energy Chart</h3>
+          <EnergyChart data={chartData} />
+        </div>
       </div>
     );
   }

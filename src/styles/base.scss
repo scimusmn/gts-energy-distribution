@@ -41,7 +41,13 @@ body {
 
 .message-center {
   left: 5%;
-  top: 50%;
+  top: 41%;
+  width: 50%;
+}
+
+.energy-chart {
+  left: 5%;
+  top: 63%;
   width: 50%;
 }
 
@@ -50,9 +56,6 @@ body {
   left: 65%;
   top: 5%;
   width: 20%;
-
-  // .meter-container {
-  // }
 }
 
 // Animation helpers

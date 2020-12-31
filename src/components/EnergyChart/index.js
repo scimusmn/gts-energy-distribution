@@ -1,7 +1,7 @@
 /* eslint no-console: 0 */
-import React, { Component, Fragment } from 'react';
-// import propTypes from 'prop-types';
-import ChartComponent from 'react-chartjs-2';
+import React, { Component } from 'react';
+import propTypes from 'prop-types';
+import { Line } from 'react-chartjs-2';
 
 class EnergyChart extends Component {
   constructor(props) {
@@ -13,12 +13,14 @@ class EnergyChart extends Component {
 
     this.chartReference = {};
 
-    this.resetGraph = this.resetGraph.bind(this);
-
     this.latestData = {};
   }
 
   componentDidMount() {
+    // Temp
+    const { data } = this.props;
+    console.log('componentDidMount', data);
+
     // setInterval(() => {
     //   const { graphing } = this.state;
 
@@ -117,62 +119,94 @@ class EnergyChart extends Component {
     return chartOptions;
   }
 
-  resetGraph() {
-    this.chartReference.chartInstance.config.data.datasets[0].data = [];
-    this.chartReference.chartInstance.update();
-  }
-
   render() {
-    const {
-      backgroundColor, borderColor, type, graphing,
-    } = this.state;
+    // const {
+    //   backgroundColor, borderColor, type, graphing,
+    // } = this.state;
 
-    const graphClass = (graphing) ? 'chart-wrapper' : 'chart-wrapper d-none';
-    const graphData = {
-      datasets: [{
-        backgroundColor,
-        borderColor,
-        borderWidth: 1,
-        fill: false,
-        lineTension: 0,
-        pointRadius: 0,
-      }],
+
+    const data = {
+      labels: ['1', '2', '3', '4', '5', '6'],
+      datasets: [
+        {
+          label: 'shoulders',
+          data: [1, 5, 3, 5, 2, 5],
+          fill: true,
+          backgroundColor: 'yellow',
+          yAxisID: 'production',
+        },
+        {
+          label: 'feet',
+          data: [3, 4, 5, 6, 7, 8],
+          fill: true,
+          backgroundColor: 'purple',
+          yAxisID: 'production',
+        },
+        {
+          label: 'hands',
+          data: [1, 1, 5, 1, 5, 7],
+          fill: true,
+          backgroundColor: 'red',
+          yAxisID: 'production',
+        },
+        {
+          label: 'Demand',
+          data: [0, 7, 15, 22, 13, 1],
+          fill: false,
+          backgroundColor: 'rgba(0,0,0,0.7)',
+          borderColor: 'rgba(0,0,0,0.7)',
+          borderDash: [10, 5],
+
+        },
+      ],
+    };
+
+    const yAxisMin = 0;
+    const yAxisMax = 25;
+
+    const options = {
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: true,
+              min: yAxisMin,
+              max: yAxisMax,
+            },
+            stacked: false,
+          },
+          {
+            id: 'production',
+            stacked: true,
+            display: false,
+            ticks: {
+              min: yAxisMin,
+              max: yAxisMax,
+            },
+          },
+        ],
+      },
+      elements: {
+        point: {
+          radius: 0,
+        },
+      },
     };
 
     return (
-      <>
-        <div className={graphClass}>
-          <ChartComponent
-            data={graphData}
-            options={this.getChartOptions()}
-            ref={(reference) => { this.chartReference = reference; }}
-            type={type}
-          />
-        </div>
-      </>
+      <div className="energy-chart">
+        <Line data={data} options={options} />
+      </div>
     );
   }
 }
 
-// EnergyChart.propTypes = {
-//   backgroundColor: propTypes.string,
-//   borderColor: propTypes.string,
-//   gridColor: propTypes.string,
-//   message: propTypes.string.isRequired,
-//   setOnDataCallback: propTypes.func.isRequired,
-//   graphing: propTypes.bool.isRequired,
-//   type: propTypes.string,
-//   yMax: propTypes.number,
-//   yMin: propTypes.number,
-// };
+EnergyChart.defaultProps = {
+  data: {},
+};
 
-// EnergyChart.defaultProps = {
-//   backgroundColor: 'rgb(255, 99, 132)',
-//   borderColor: 'rgb(255, 99, 132)',
-//   gridColor: 'rgb(0, 0, 0)',
-//   type: 'bar',
-//   yMax: 1,
-//   yMin: 0,
-// };
+EnergyChart.propTypes = {
+  data: propTypes.instanceOf(Object),
+};
 
 export default EnergyChart;
