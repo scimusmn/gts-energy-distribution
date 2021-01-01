@@ -11,147 +11,111 @@ class EnergyChart extends Component {
 
     };
 
-    this.chartReference = {};
+    this.chartRef = React.createRef();
 
     this.latestData = {};
   }
 
   componentDidMount() {
     // Temp
-    const { data } = this.props;
-    console.log('componentDidMount', data);
+    // const { chartData } = this.props;
+    // console.log('componentDidMount', chartData);
 
-    // setInterval(() => {
-    //   const { graphing } = this.state;
+    // TODO: Replace this interval with a requestAnimationFrame hook.
+    setInterval(() => {
+      // this.chartRef.current.chartInstance.config.data.datasets[0] = chartData;
+      const { chartData } = this.props;
+      const { datasets } = this.chartRef.current.chartInstance.config.data;
+      datasets[0].data = chartData.coal;
+      datasets[1].data = chartData.gas;
+      datasets[2].data = chartData.hydro;
+      datasets[3].data = chartData.solar;
+      datasets[4].data = chartData.wind;
 
-    //   if (graphing) {
-    //     this.chartReference.chartInstance.config.data.datasets[0].data.push(this.latestData);
-
-    //     this.chartReference.chartInstance.update({
-    //       preservation: true,
-    //     });
-    //   }
-    // }, 20);
+      this.chartRef.current.chartInstance.update({
+        preservation: true,
+      });
+    }, 30);
   }
 
-  shouldComponentUpdate() {
-    // return true;
-  }
-
-  onSerialData(data) {
-    const { message, graphing } = this.state;
-
-    if (graphing) {
-      if (this.chartReference.chartInstance.config.options.plugins.streaming.pause) {
-        this.resetGraph();
-      }
-
-      this.chartReference.chartInstance.config.options.plugins.streaming.pause = false;
-    }
-
-    if (data.message === 'time-up') {
-      this.chartReference.chartInstance.config.options.plugins.streaming.pause = true;
-      // this.setState({ graphing: false });
-    }
-
-    if (data.message === message
-      && !this.chartReference.chartInstance.config.options.plugins.streaming.pause) {
-      this.latestData = {
-        x: Date.now(),
-        y: data.value * 10,
-      };
-    }
-  }
-
-  getChartOptions() {
-    const { gridColor, yMax, yMin } = this.state;
-    const chartOptions = {
-      animation: {
-        duration: 0,
-      },
-      hover: {
-        animationDuration: 0,
-      },
-      legend: {
-        display: false,
-      },
-      maintainAspectRatio: false,
-      responsiveAnimationDuration: 0,
-      plugins: {
-        streaming: {
-          delay: 0,
-          duration: 5000,
-          frameRate: 20,
-          pause: false,
-          refresh: 100,
-          ttl: 5000,
-        },
-      },
-      scales: {
-        xAxes: [
-          {
-            gridLines: {
-              color: gridColor,
-            },
-            ticks: {
-              display: false,
-            },
-            type: 'realtime',
-          },
-        ],
-        yAxes: [
-          {
-            gridLines: {
-              color: gridColor,
-            },
-            ticks: {
-              display: false,
-              max: yMax,
-              min: yMin,
-              stepSize: 200,
-            },
-          },
-        ],
-      },
-      spanGaps: true,
-    };
-
-    return chartOptions;
-  }
+  // shouldComponentUpdate() {
+  //   return false;
+  // }
 
   render() {
-    // const {
-    //   backgroundColor, borderColor, type, graphing,
-    // } = this.state;
+    console.log('rendering chart');
+    const { chartData } = this.props;
+    const { demand } = chartData;
 
+    const labels = [];
+    const demandData = [];
+
+    let highestDemand = 0;
+
+    if (demand) {
+      for (let i = 0; i < demand.length; i += 1) {
+        const demandVal = demand[i];
+        demandData.push(demandVal);
+        labels.push(`h${i}`);
+        if (demandVal > highestDemand) highestDemand = demandVal;
+      }
+    }
+
+    const yAxisMin = 0;
+    const yAxisMax = parseFloat(highestDemand) + 10;
+
+    const coalData = [1, 5, 3, 5, 2, 5];
+    const gasData = [1, 5, 3, 5, 2, 5];
+    const hydroData = [1, 2, 3, 4, 5, 6];
+    const solarData = [1, 3, 5, 7, 5, 1];
+    const windData = [1, 3, 5, 7, 5, 1];
 
     const data = {
-      labels: ['1', '2', '3', '4', '5', '6'],
+      labels,
       datasets: [
         {
-          label: 'shoulders',
-          data: [1, 5, 3, 5, 2, 5],
+          label: 'Coal',
+          data: coalData,
           fill: true,
           backgroundColor: 'yellow',
+          borderColor: 'yellow',
           yAxisID: 'production',
         },
         {
-          label: 'feet',
-          data: [3, 4, 5, 6, 7, 8],
+          label: 'Gas',
+          data: gasData,
+          fill: true,
+          backgroundColor: 'orange',
+          borderColor: 'orange',
+          yAxisID: 'production',
+        },
+        {
+          label: 'Hydro',
+          data: hydroData,
+          fill: true,
+          backgroundColor: 'teal',
+          borderColor: 'teal',
+          yAxisID: 'production',
+        },
+        {
+          label: 'Solar',
+          data: solarData,
           fill: true,
           backgroundColor: 'purple',
+          borderColor: 'purple',
           yAxisID: 'production',
         },
         {
-          label: 'hands',
-          data: [1, 1, 5, 1, 5, 7],
+          label: 'Wind',
+          data: windData,
           fill: true,
           backgroundColor: 'red',
+          borderColor: 'red',
           yAxisID: 'production',
         },
         {
           label: 'Demand',
-          data: [0, 7, 15, 22, 13, 1],
+          data: demandData,
           fill: false,
           backgroundColor: 'rgba(0,0,0,0.7)',
           borderColor: 'rgba(0,0,0,0.7)',
@@ -161,10 +125,16 @@ class EnergyChart extends Component {
       ],
     };
 
-    const yAxisMin = 0;
-    const yAxisMax = 25;
-
     const options = {
+      animation: {
+        duration: 0,
+      },
+      maintainAspectRatio: true,
+      elements: {
+        point: {
+          radius: 0,
+        },
+      },
       scales: {
         yAxes: [
           {
@@ -186,27 +156,27 @@ class EnergyChart extends Component {
           },
         ],
       },
-      elements: {
-        point: {
-          radius: 0,
-        },
-      },
     };
+
 
     return (
       <div className="energy-chart">
-        <Line data={data} options={options} />
+        <Line
+          ref={this.chartRef}
+          data={data}
+          options={options}
+        />
       </div>
     );
   }
 }
 
 EnergyChart.defaultProps = {
-  data: {},
+  chartData: {},
 };
 
 EnergyChart.propTypes = {
-  data: propTypes.instanceOf(Object),
+  chartData: propTypes.instanceOf(Object),
 };
 
 export default EnergyChart;

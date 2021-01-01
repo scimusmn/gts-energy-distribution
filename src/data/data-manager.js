@@ -40,6 +40,8 @@ const getDemand = (hourIndex) => parseFloat(currentSessionForecast[hourIndex].De
 
 const getTime = (hourIndex) => currentSessionForecast[hourIndex].Time;
 
+const getCurrentForecastField = (field) => currentSessionForecast.map((a) => a[field]);
+
 const DataManager = {
   selectNewForecast,
   getForecastSummary,
@@ -47,6 +49,7 @@ const DataManager = {
   getRandomMessageCenter,
   getDemand,
   getTime,
+  getCurrentForecastField,
 };
 
 export default DataManager;
