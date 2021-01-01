@@ -26,7 +26,7 @@ class Simulation extends Component {
 
     this.onData = this.onData.bind(this);
     this.outputSerial = this.outputSerial.bind(this);
-    this.calculateCurrentProduction = this.calculateCurrentProduction.bind(this);
+    this.calculateProductionSnapshot = this.calculateProductionSnapshot.bind(this);
     this.calculateEfficiencyScore = this.calculateEfficiencyScore.bind(this);
 
     this.liveData = {};
@@ -62,20 +62,25 @@ class Simulation extends Component {
     }
   }
 
-  calculateCurrentProduction() {
+  calculateProductionSnapshot() {
     const snapshot = {};
 
     // TODO: Here is where we will calculate values
     // based on which jacks are plugged in, and the
     // current state in relation to environmental 'potential'
     // production.solar = this.liveData['solar-1-jack'] * currentSolarPotential;
-    console.log('calculateCurrentProduction | ', this.liveData);
+    console.log('calculateProductionSnapshot | ', this.liveData);
 
-    snapshot.coal = Math.round(Math.random() * 2 + 5);
-    snapshot.gas = Math.round(Math.random() * 2 + 9);
-    snapshot.hydro = Math.round(Math.random() * 2 + 5);
-    snapshot.solar = Math.round(Math.random() * 15 + 5);
-    snapshot.wind = Math.round(Math.random() * 2 + 5);
+    // Temp (for sim mode)
+    const { hourIndex } = this.state;
+    const currentDemand = DataManager.getDemand(hourIndex);
+    const simProdBaseLevel = currentDemand / 5;
+
+    snapshot.coal = Math.round(simProdBaseLevel + Math.random() * 8 - 4);
+    snapshot.gas = Math.round(simProdBaseLevel + Math.random() * 8 - 4);
+    snapshot.hydro = Math.round(simProdBaseLevel + Math.random() * 8 - 4);
+    snapshot.solar = Math.round(simProdBaseLevel + Math.random() * 8 - 4);
+    snapshot.wind = Math.round(simProdBaseLevel + Math.random() * 8 - 4);
 
     // Sum all production values
     let total = 0;
@@ -112,8 +117,11 @@ class Simulation extends Component {
     this.reset();
 
     const dayInterval = Settings.SESSION_DURATION / Settings.DAYS_PER_SESSION;
-    const hourInterval = Math.ceil(dayInterval / Settings.DAYS_PER_SESSION);
+    console.log('dayInterval', dayInterval);
+    const hourInterval = Math.ceil(dayInterval / 24);
+    console.log('hourInterval', hourInterval);
     const totalHoursInSession = 24 * Settings.DAYS_PER_SESSION;
+    console.log('totalHoursInSession', totalHoursInSession);
     console.log('starting session with hourInterval', hourInterval);
 
     // Select forecast data for this session
@@ -130,20 +138,20 @@ class Simulation extends Component {
       if (hourIndex >= totalHoursInSession) {
         this.endSimulation();
       } else {
-        const currentProduction = this.calculateCurrentProduction();
+        const productionSnapshot = this.calculateProductionSnapshot();
 
         // Add live production snapshot to production history
-        Object.entries(currentProduction).forEach((entry) => {
+        Object.entries(productionSnapshot).forEach((entry) => {
           const [key, value] = entry;
           this.energyData[key].push(value);
         });
 
         const currentDemand = DataManager.getDemand(hourIndex);
-        const score = this.calculateEfficiencyScore(currentProduction.production, currentDemand);
+        const score = this.calculateEfficiencyScore(productionSnapshot.production, currentDemand);
         console.log('efficiency score: ', score);
 
         this.setState({
-          production: currentProduction.production,
+          production: productionSnapshot.production,
           demand: currentDemand,
           messageCenter: DataManager.getRandomMessageCenter(),
           time: DataManager.getTime(hourIndex),
