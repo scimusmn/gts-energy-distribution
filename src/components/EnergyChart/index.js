@@ -22,20 +22,20 @@ class EnergyChart extends Component {
     // console.log('componentDidMount', chartData);
 
     // TODO: Replace this interval with a requestAnimationFrame hook.
-    setInterval(() => {
-      // this.chartRef.current.chartInstance.config.data.datasets[0] = chartData;
-      const { chartData } = this.props;
-      const { datasets } = this.chartRef.current.chartInstance.config.data;
-      datasets[0].data = chartData.coal;
-      datasets[1].data = chartData.gas;
-      datasets[2].data = chartData.hydro;
-      datasets[3].data = chartData.solar;
-      datasets[4].data = chartData.wind;
+    // setInterval(() => {
+    //   // this.chartRef.current.chartInstance.config.data.datasets[0] = chartData;
+    //   const { chartData } = this.props;
+    //   const { datasets } = this.chartRef.current.chartInstance.config.data;
+    //   datasets[0].data = chartData.coal;
+    //   datasets[1].data = chartData.gas;
+    //   datasets[2].data = chartData.hydro;
+    //   datasets[3].data = chartData.solar;
+    //   datasets[4].data = chartData.wind;
 
-      this.chartRef.current.chartInstance.update({
-        preservation: true,
-      });
-    }, 30);
+    //   this.chartRef.current.chartInstance.update({
+    //     preservation: true,
+    //   });
+    // }, 30);
   }
 
   // shouldComponentUpdate() {
@@ -64,60 +64,60 @@ class EnergyChart extends Component {
     const yAxisMin = 0;
     const yAxisMax = parseFloat(highestDemand) + 10;
 
-    const coalData = [1, 5, 3, 5, 2, 5];
-    const gasData = [1, 5, 3, 5, 2, 5];
-    const hydroData = [1, 2, 3, 4, 5, 6];
-    const solarData = [1, 3, 5, 7, 5, 1];
-    const windData = [1, 3, 5, 7, 5, 1];
+    // const coalData = [1, 5, 3, 5, 2, 5];
+    // const gasData = [1, 5, 3, 5, 2, 5];
+    // const hydroData = [1, 2, 3, 4, 5, 6];
+    // const solarData = [1, 3, 5, 7, 5, 1];
+    // const windData = [1, 3, 5, 7, 5, 1];
 
     const data = {
       labels,
       datasets: [
-        {
-          label: 'Coal',
-          data: coalData,
-          fill: true,
-          borderWidth: 0,
-          backgroundColor: 'yellow',
-          borderColor: 'rgba(0,0,0,0)',
-          yAxisID: 'production',
-        },
-        {
-          label: 'Gas',
-          data: gasData,
-          fill: true,
-          borderWidth: 0,
-          backgroundColor: 'orange',
-          borderColor: 'rgba(0,0,0,0)',
-          yAxisID: 'production',
-        },
-        {
-          label: 'Hydro',
-          data: hydroData,
-          fill: true,
-          borderWidth: 0,
-          backgroundColor: 'teal',
-          borderColor: 'rgba(0,0,0,0)',
-          yAxisID: 'production',
-        },
-        {
-          label: 'Solar',
-          data: solarData,
-          fill: true,
-          borderWidth: 0,
-          backgroundColor: 'purple',
-          borderColor: 'rgba(0,0,0,0)',
-          yAxisID: 'production',
-        },
-        {
-          label: 'Wind',
-          data: windData,
-          fill: true,
-          borderWidth: 0,
-          backgroundColor: 'red',
-          borderColor: 'rgba(0,0,0,0)',
-          yAxisID: 'production',
-        },
+        // {
+        //   label: 'Coal',
+        //   data: coalData,
+        //   fill: true,
+        //   borderWidth: 0,
+        //   backgroundColor: 'yellow',
+        //   borderColor: 'rgba(0,0,0,0)',
+        //   yAxisID: 'production',
+        // },
+        // {
+        //   label: 'Gas',
+        //   data: gasData,
+        //   fill: true,
+        //   borderWidth: 0,
+        //   backgroundColor: 'orange',
+        //   borderColor: 'rgba(0,0,0,0)',
+        //   yAxisID: 'production',
+        // },
+        // {
+        //   label: 'Hydro',
+        //   data: hydroData,
+        //   fill: true,
+        //   borderWidth: 0,
+        //   backgroundColor: 'teal',
+        //   borderColor: 'rgba(0,0,0,0)',
+        //   yAxisID: 'production',
+        // },
+        // {
+        //   label: 'Solar',
+        //   data: solarData,
+        //   fill: true,
+        //   borderWidth: 0,
+        //   backgroundColor: 'purple',
+        //   borderColor: 'rgba(0,0,0,0)',
+        //   yAxisID: 'production',
+        // },
+        // {
+        //   label: 'Wind',
+        //   data: windData,
+        //   fill: true,
+        //   borderWidth: 0,
+        //   backgroundColor: 'red',
+        //   borderColor: 'rgba(0,0,0,0)',
+        //   yAxisID: 'production',
+        // },
         {
           label: 'Demand',
           data: demandData,
