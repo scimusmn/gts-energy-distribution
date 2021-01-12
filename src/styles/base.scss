@@ -50,9 +50,37 @@ body {
   left: 65%;
   top: 5%;
   width: 20%;
+}
 
-  // .meter-container {
-  // }
+.emulator {
+  bottom: 0%;
+  height: 300px;
+  left: 0%;
+  padding: 18px;
+  position: absolute;
+  width: 100%;
+  z-index: 99;
+
+  .panel {
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    -webkit-box-shadow: 0 10px 13px -7px #000, 5px 5px 15px 5px rgba(0, 0, 0, 0);
+    box-shadow: 0 10px 13px -7px #000, 5px 5px 15px 5px rgba(0, 0, 0, 0);
+    margin: 5px;
+    text-align: center;
+
+    .col {
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 1px solid #ccc;
+      border-radius: 7px;
+      margin: 2px;
+    }
+
+    .vertical {
+      transform: rotate(-90deg);
+    }
+  }
 }
 
 // Animation helpers
