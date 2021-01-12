@@ -177,44 +177,46 @@ byte shiftIn(int myDataPin, int myClockPin)
 void onParse(char *message, char *value)
 {
     if (strcmp(message, "start-button-light") == 0)
-    {
         digitalWrite(start_btn_LED_pin, atoi(value));
-    }
+
+    else if (strcmp(message, "coal-1-light") == 0)
+        lightPixel(0, value);
+    else if (strcmp(message, "coal-2-light") == 0)
+        lightPixel(1, value);
+    else if (strcmp(message, "coal-3-light") == 0)
+        lightPixel(2, value);
+    else if (strcmp(message, "coal-4-light") == 0)
+        lightPixel(3, value);
+    else if (strcmp(message, "coal-5-light") == 0)
+        lightPixel(4, value);
+    else if (strcmp(message, "coal-6-light") == 0)
+        lightPixel(5, value);
+
+    else if (strcmp(message, "gas-1-light-bar") == 0)
+        lightBarGraph(6, atoi(value)); // value of first pixel to be lit.
+    else if (strcmp(message, "gas-2-light-bar") == 0)
+        lightBarGraph(14, atoi(value)); // value of first pixel to be lit.
+    else if (strcmp(message, "gas-3-light-bar") == 0)
+        lightBarGraph(22, atoi(value)); // value of first pixel to be lit.
 
     else if (strcmp(message, "solar-1-light-bar") == 0)
-    {
-        lightBarGraph(80, atoi(value)); // value of first pixel to be lit.
-    }
+        lightBarGraph(30, atoi(value)); // value of first pixel to be lit.
     else if (strcmp(message, "solar-2-light-bar") == 0)
-    {
-        lightBarGraph(20, atoi(value)); // value of first pixel to be lit.
-    }
-    else if (strcmp(message, "wind-1-light-bar") == 0)
-    {
-        lightBarGraph(40, atoi(value)); // value of first pixel to be lit.
-    }
-    else if (strcmp(message, "wind-2-light-bar") == 0)
-    {
-        lightBarGraph(60, atoi(value)); // value of first pixel to be lit.
-    }
-    else if (strcmp(message, "coal-1-light") == 0) //TODO
-    {
-        lightPixel(0, value);
-    }
+        lightBarGraph(38, atoi(value)); // value of first pixel to be lit.
+    else if (strcmp(message, "solar-3-light-bar") == 0)
+        lightBarGraph(46, atoi(value)); // value of first pixel to be lit.
 
-    else if (strcmp(message, "coal-2-light") == 0) //TODO
-    {
-        lightPixel(1, value);
-    }
-    else if (strcmp(message, "coal-3-light") == 0) //TODO
-    {
-        lightPixel(2, value);
-    }
+    else if (strcmp(message, "wind-1-light-bar") == 0)
+        lightBarGraph(54, atoi(value)); // value of first pixel to be lit.
+    else if (strcmp(message, "wind-2-light-bar") == 0)
+        lightBarGraph(62, atoi(value)); // value of first pixel to be lit.
+    else if (strcmp(message, "wind-3-light-bar") == 0)
+        lightBarGraph(70, atoi(value)); // value of first pixel to be lit.
 
     else if (strcmp(message, "get-all-states") == 0) //TODO
     {
         prevCableStates = ~prevCableStates;
-        hydro1.prevPercent = 101;
+        hydro1.prevPercent = 101; // TODO, make less of a hack. This make sure value is different and send again.
     }
 
     else if (strcmp(message, "wake-arduino") == 0 && strcmp(value, "1") == 0)
