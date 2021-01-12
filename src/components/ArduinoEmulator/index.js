@@ -126,6 +126,27 @@ const ArduinoEmulator = ({ onChange }) => {
           </Row>
         </Col>
       </Row>
+      <Row>
+        <Col className="panel">
+          <Row>
+            <Col>
+              <h1>Control Board Emulator</h1>
+            </Col>
+            <Col>
+              <EventButton msg="start-button" label="Start" onChange={onChange} />
+            </Col>
+            <Col>
+              <h4>
+                Press
+                {' '}
+                <strong>&apos;e&apos;</strong>
+                {' '}
+                to close
+              </h4>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
     </div>
   );
 };

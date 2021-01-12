@@ -53,16 +53,16 @@ body {
 }
 
 .emulator {
-  bottom: 0%;
-  height: 300px;
+  background-color: salmon;
   left: 0%;
   padding: 18px;
   position: absolute;
+  top: 100%;
   width: 100%;
   z-index: 99;
 
   .panel {
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 1);
     border: 1px solid #ccc;
     border-radius: 15px;
     -webkit-box-shadow: 0 10px 13px -7px #000, 5px 5px 15px 5px rgba(0, 0, 0, 0);
@@ -71,8 +71,8 @@ body {
     text-align: center;
 
     .col {
-      background-color: rgba(255, 255, 255, 0.1);
-      border: 1px solid #ccc;
+      background-color: rgba(255, 255, 255, 0.4);
+      border: 1px solid #ddd;
       border-radius: 7px;
       margin: 2px;
     }

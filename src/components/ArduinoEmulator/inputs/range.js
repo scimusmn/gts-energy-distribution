@@ -16,8 +16,6 @@ class Range extends Component {
     this.setState({ sliderValue: value.y });
     const { msg, onChange } = this.props;
     const dataObj = { [msg]: value.y };
-    console.log('xxxxx range handleChange xxxxx');
-    console.log(onChange);
     onChange(dataObj);
   }
 
@@ -40,6 +38,8 @@ class Range extends Component {
             thumb: {
               width: 85,
               height: 33,
+              borderRadius: '5%',
+              boxShadow: '0 2px 2px rgba(0,0,0,0.3)',
             },
           }}
         />
