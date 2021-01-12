@@ -179,6 +179,9 @@ void onParse(char *message, char *value)
     if (strcmp(message, "start-button-light") == 0)
         digitalWrite(start_btn_LED_pin, atoi(value));
 
+    if (strcmp(message, "update-neopixels") == 0)
+        pixels.show();
+
     else if (strcmp(message, "coal-1-light") == 0)
         lightPixel(0, value);
     else if (strcmp(message, "coal-2-light") == 0)
@@ -240,10 +243,6 @@ void lightPixel(int pixel_index, char *status)
         pixels.setPixelColor(pixel_index, pixels.Color(40, 10, 0));
     else if (strcmp(status, "off") == 0)
         pixels.setPixelColor(pixel_index, pixels.Color(0, 0, 0));
-
-    pixels.show();
-
-    //TODO
 }
 
 void lightBarGraph(int first_pixel, int percent) // displays an int, 0-100 on 8 neopixels given a starting pixel.
@@ -263,5 +262,4 @@ void lightBarGraph(int first_pixel, int percent) // displays an int, 0-100 on 8 
             bar = 0;
         }
     }
-    pixels.show();
 }
