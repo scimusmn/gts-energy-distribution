@@ -153,7 +153,7 @@ class ChartJSChart extends React.Component {
 						},
 						scaleLabel: {
 							display: true,
-							labelString: 'Closing price ($)'
+							labelString: 'Arduino analog input'
 						},
 						ticks: {
 							beginAtZero: true,

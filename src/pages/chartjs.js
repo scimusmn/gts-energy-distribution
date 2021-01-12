@@ -76,9 +76,9 @@ class ChartJS extends Component {
   }
 
   updateChartArduinoStyle() {
-    console.log('updateChartArduinoStyle', lastArduinoValue);
+    // console.log('updateChartArduinoStyle', lastArduinoValue);
 
-      if (dataPoints1.length > this.maxDataPoints) dataPoints1.shift();
+    if (dataPoints1.length > this.maxDataPoints) dataPoints1.shift();
 
     xValue += 1;
     // dataPoints1.push({

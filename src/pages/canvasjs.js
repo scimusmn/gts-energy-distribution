@@ -107,7 +107,7 @@ class CanvasJS extends Component {
       zoomEnabled: true,
       theme: 'light2',
       title: {
-        text: 'CanvasJS - Real-time Arduino Per Test',
+        text: 'Real-time Arduino Charting Test',
       },
       axisX: {
         title: 'Chart updates every '+updateInterval+' milliseconds',
