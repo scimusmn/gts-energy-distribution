@@ -87,6 +87,8 @@ class DebugPage extends Component {
     console.log('setMinimumDelay:', val);
     this.setState({ minDelay: parseFloat(val) });
 
+    clearInterval(this.outMsgTimer);
+
     this.outMsgTimer = setInterval(() => {
       this.shiftOutNextMessage();
     }, parseFloat(val));
@@ -102,18 +104,22 @@ class DebugPage extends Component {
     console.log('shiftOutNextMessage:', this.outgoingQueue.length);
 
     if (this.outgoingQueue.length > 0) {
-      const firstMsg = this.outgoingQueue.shift();
       const { sendData } = this.props;
-
-      this.logArray.push(`<br><span style="color:Navy;">OUT ←&nbsp;</span> ${firstMsg}`);
-
-      sendData(firstMsg);
+      const npShowMsg = '{neopixels-show:1}';
+      this.logArray.push(`<br><span style="color:Navy;">OUT ←&nbsp;</span> ${npShowMsg}`);
+      sendData(npShowMsg);
     }
   }
 
   queueOutgoingMessage(msg) {
-    console.log('queueOutgoingMessage:', this.outgoingQueue.length);
-    this.outgoingQueue.push(msg);
+    // console.log('queueOutgoingMessage:', this.outgoingQueue.length);
+    // this.outgoingQueue.push(msg);
+
+    // Instead of queuing, I am pushing out immediately, and using
+    // queue timing to send "Show" command.
+    const { sendData } = this.props;
+    this.logArray.push(`<br><span style="color:Navy;">OUT ←&nbsp;</span> ${msg}`);
+    sendData(msg);
   }
 
   render() {
@@ -146,7 +152,11 @@ class DebugPage extends Component {
         <br />
         <div>
           <h5>
-            Minimum delay between outgoing messages (in milliseconds) - Current:
+            Minimum delay between
+            {' '}
+            <strong>neopixels-show</strong>
+            :
+            {' '}
             {minDelay}
           </h5>
           <br />
