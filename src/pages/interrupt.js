@@ -113,6 +113,8 @@ class DebugPage extends Component {
         }
       }
 
+      this.outgoingQueue = [];
+
       const npShowMsg = '{neopixels-show:1}';
       this.logArray.push(`<br><span style="color:Blue;">OUT ←< &nbsp;</span> ${npShowMsg}`);
       sendData(npShowMsg);
