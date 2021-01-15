@@ -47,8 +47,6 @@ class DebugPage extends Component {
   onData(data) {
     // console.log('onData:', data);
 
-    // const { sendData } = this.props;
-
     this.logArray.push(`<br><span style="color:#CD5C5C;">IN &nbsp;&nbsp;→ &nbsp;</span> ${JSON.stringify(data)}`);
 
     if (this.logArray.length > this.logLimit) {
@@ -76,9 +74,7 @@ class DebugPage extends Component {
       for (let i = 0; i < allLightBarMsgs.length; i += 1) {
         const lbMsg = allLightBarMsgs[i];
         const response = `{${lbMsg}:${responseVal}}`;
-
         this.queueOutgoingMessage(response);
-        // sendData(response);
       }
     }
   }
@@ -102,31 +98,43 @@ class DebugPage extends Component {
 
   shiftOutNextMessage() {
     console.log('shiftOutNextMessage:', this.outgoingQueue.length);
-
-    // if (this.outgoingQueue.length > 0) {
     const { sendData } = this.props;
-    const npShowMsg = '{neopixels-show:1}';
-    this.logArray.push(`<br><span style="color:Blue;">OUT ←<< &nbsp;</span> ${npShowMsg}`);
-    sendData(npShowMsg);
 
-    if (this.logArray.length > this.logLimit) {
-      this.logArray.shift();
+    if (this.outgoingQueue.length > 0) {
+      for (let i = 0; i < this.outgoingQueue.length; i += 1) {
+        const outgoingMsg = this.outgoingQueue[i];
+
+        this.logArray.push(`<br><span style="color:Navy;">OUT ←&nbsp;</span> ${outgoingMsg}`);
+
+        sendData(outgoingMsg);
+
+        if (this.logArray.length > this.logLimit) {
+          this.logArray.shift();
+        }
+      }
+
+      const npShowMsg = '{neopixels-show:1}';
+      this.logArray.push(`<br><span style="color:Blue;">OUT ←< &nbsp;</span> ${npShowMsg}`);
+      sendData(npShowMsg);
+
+      if (this.logArray.length > this.logLimit) {
+        this.logArray.shift();
+      }
     }
-    // }
   }
 
   queueOutgoingMessage(msg) {
     // console.log('queueOutgoingMessage:', this.outgoingQueue.length);
-    // this.outgoingQueue.push(msg);
+    this.outgoingQueue.push(msg);
 
     // Instead of queuing, I am pushing out immediately, and using
     // queue timing to send "Show" command.
-    const { sendData } = this.props;
-    this.logArray.push(`<br><span style="color:Navy;">OUT ←&nbsp;</span> ${msg}`);
-    if (this.logArray.length > this.logLimit) {
-      this.logArray.shift();
-    }
-    sendData(msg);
+    // const { sendData } = this.props;
+    // this.logArray.push(`<br><span style="color:Navy;">OUT ←&nbsp;</span> ${msg}`);
+    // if (this.logArray.length > this.logLimit) {
+    //   this.logArray.shift();
+    // }
+    // sendData(msg);
   }
 
   render() {
