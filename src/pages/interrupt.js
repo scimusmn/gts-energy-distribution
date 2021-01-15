@@ -154,6 +154,12 @@ class DebugPage extends Component {
           >
             wake-arduino
           </Button>
+          <Button
+            color="primary"
+            onClick={() => this.sendClick('{neopixels-show:1}')}
+          >
+            neopixels-show
+          </Button>
         </div>
         <br />
         <p>
