@@ -216,6 +216,11 @@ void onParse(char *message, char *value)
     else if (strcmp(message, "wind-3-light-bar") == 0)
         lightBarGraph(70, atoi(value)); // value of first pixel to be lit.
 
+    else if (strcmp(message, "hydro-1-light-bar") == 0)
+        lightBarGraph(78, atoi(value)); // value of first pixel to be lit.
+    else if (strcmp(message, "hydro-2-light-bar") == 0)
+        lightBarGraph(86, atoi(value)); // value of first pixel to be lit.
+
     else if (strcmp(message, "get-all-states") == 0) //TODO
     {
         prevCableStates = ~prevCableStates;
