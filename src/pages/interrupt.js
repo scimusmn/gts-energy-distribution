@@ -24,7 +24,7 @@ class DebugPage extends Component {
 
     this.myRef = React.createRef();
 
-    this.logLimit = 25;
+    this.logLimit = 40;
     this.logArray = [];
 
     this.outgoingQueue = [];
@@ -103,12 +103,16 @@ class DebugPage extends Component {
   shiftOutNextMessage() {
     console.log('shiftOutNextMessage:', this.outgoingQueue.length);
 
-    if (this.outgoingQueue.length > 0) {
-      const { sendData } = this.props;
-      const npShowMsg = '{neopixels-show:1}';
-      this.logArray.push(`<br><span style="color:Navy;">OUT ←&nbsp;</span> ${npShowMsg}`);
-      sendData(npShowMsg);
+    // if (this.outgoingQueue.length > 0) {
+    const { sendData } = this.props;
+    const npShowMsg = '{neopixels-show:1}';
+    this.logArray.push(`<br><span style="color:Blue;">OUT ←<< &nbsp;</span> ${npShowMsg}`);
+    sendData(npShowMsg);
+
+    if (this.logArray.length > this.logLimit) {
+      this.logArray.shift();
     }
+    // }
   }
 
   queueOutgoingMessage(msg) {
@@ -119,6 +123,9 @@ class DebugPage extends Component {
     // queue timing to send "Show" command.
     const { sendData } = this.props;
     this.logArray.push(`<br><span style="color:Navy;">OUT ←&nbsp;</span> ${msg}`);
+    if (this.logArray.length > this.logLimit) {
+      this.logArray.shift();
+    }
     sendData(msg);
   }
 
