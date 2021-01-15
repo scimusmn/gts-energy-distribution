@@ -179,7 +179,7 @@ void onParse(char *message, char *value)
     if (strcmp(message, "start-button-light") == 0)
         digitalWrite(start_btn_LED_pin, atoi(value));
 
-    if (strcmp(message, "update-neopixels") == 0)
+    if (strcmp(message, "neopixels-show") == 0)
         pixels.show();
 
     else if (strcmp(message, "coal-1-light") == 0)
