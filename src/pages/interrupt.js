@@ -13,22 +13,20 @@ class DebugPage extends Component {
     super(props);
 
     this.state = {
-      minDelay: 250.0,
+      minDelay: 50.0,
     };
 
     this.onData = this.onData.bind(this);
     this.sendClick = this.sendClick.bind(this);
     this.setMinimumDelay = this.setMinimumDelay.bind(this);
-    this.shiftOutNextMessage = this.shiftOutNextMessage.bind(this);
-    this.queueOutgoingMessage = this.queueOutgoingMessage.bind(this);
+    this.shiftOutUpdates = this.shiftOutUpdates.bind(this);
 
     this.myRef = React.createRef();
 
-    this.logLimit = 40;
+    this.logLimit = 30;
     this.logArray = [];
 
-    this.outgoingQueue = [];
-
+    this.latestData = {};
     this.outMsgTimer = {};
   }
 
@@ -45,36 +43,44 @@ class DebugPage extends Component {
   }
 
   onData(data) {
-    // console.log('onData:', data);
+    const inMsg = Object.keys(data)[0];
+
+    console.log('onData:', inMsg);
 
     this.logArray.push(`<br><span style="color:#CD5C5C;">IN &nbsp;&nbsp;→ &nbsp;</span> ${JSON.stringify(data)}`);
 
     if (this.logArray.length > this.logLimit) {
-      console.log('shifting', this.logArray.length);
+      // console.log('shifting', this.logArray.length);
       this.logArray.shift();
     }
 
     // For testing purposes, all incoming
     // `hydro-X-lever` msgs are immediately
     // responded to with an outgoing `hydro-X-light-bar` msg.
-    const inMsg = Object.keys(data)[0];
     if (inMsg.startsWith('hydro-') && inMsg.endsWith('-lever')) {
       const responseVal = Object.values(data)[0];
 
       const allLightBarMsgs = [
-        'wind-1-light-bar',
-        'solar-1-light-bar',
-        'hydro-1-light-bar',
         'gas-1-light-bar',
-        'wind-2-light-bar',
+        'gas-2-light-bar',
+        'gas-3-light-bar',
+        'solar-1-light-bar',
         'solar-2-light-bar',
+        'solar-3-light-bar',
+        'wind-1-light-bar',
+        'wind-2-light-bar',
+        'wind-3-light-bar',
+        'hydro-1-light-bar',
         'hydro-2-light-bar',
-        'gas-2-light-bar'];
+      ];
 
       for (let i = 0; i < allLightBarMsgs.length; i += 1) {
-        const lbMsg = allLightBarMsgs[i];
-        const response = `{${lbMsg}:${responseVal}}`;
-        this.queueOutgoingMessage(response);
+        const lightBarMessage = allLightBarMsgs[i];
+
+        // Set latest data using message as key
+        // This will intentionally overwrite any data
+        // that has not already been output with same key
+        this.latestData[lightBarMessage] = responseVal;
       }
     }
   }
@@ -86,7 +92,7 @@ class DebugPage extends Component {
     clearInterval(this.outMsgTimer);
 
     this.outMsgTimer = setInterval(() => {
-      this.shiftOutNextMessage();
+      this.shiftOutUpdates();
     }, parseFloat(val));
   }
 
@@ -96,47 +102,39 @@ class DebugPage extends Component {
     sendData(msg);
   }
 
-  shiftOutNextMessage() {
-    console.log('shiftOutNextMessage:', this.outgoingQueue.length);
+  shiftOutUpdates() {
     const { sendData } = this.props;
 
-    if (this.outgoingQueue.length > 0) {
-      for (let i = 0; i < this.outgoingQueue.length; i += 1) {
-        const outgoingMsg = this.outgoingQueue[i];
+    const entries = Object.entries(this.latestData);
 
-        this.logArray.push(`<br><span style="color:Navy;">OUT ←&nbsp;</span> ${outgoingMsg}`);
+    if (entries.length > 0) {
+      for (let i = 0; i < entries.length; i += 1) {
+        const [key, value] = entries[i];
+        const outgoingMessage = `{${key}:${value}}`;
 
-        sendData(outgoingMsg);
+        this.logArray.push(`<br><span style="color:Navy;">OUT ←&nbsp;</span> ${outgoingMessage}`);
 
-        if (this.logArray.length > this.logLimit) {
-          this.logArray.shift();
-        }
+        console.log('sendData:', outgoingMessage);
+        sendData(outgoingMessage);
       }
 
-      this.outgoingQueue = [];
+      // Clear latest data so we don't
+      // make uneccessary updates.
+      this.latestData = {};
 
+      // After sending all pixel updates,
+      // 'publish' them by following a the show command
       const npShowMsg = '{neopixels-show:1}';
-      this.logArray.push(`<br><span style="color:Blue;">OUT ←< &nbsp;</span> ${npShowMsg}`);
+      this.logArray.push(`<br><strong><span style="color:Navy;">OUT ← &nbsp;</span></strong> ${npShowMsg}`);
+      console.log('! sendData:', npShowMsg);
       sendData(npShowMsg);
 
-      if (this.logArray.length > this.logLimit) {
-        this.logArray.shift();
-      }
+      // Keep log trimmed
+      const numToRemove = Math.max(0, (this.logArray.length - this.logLimit));
+      this.logArray.splice(0, numToRemove);
+    } else {
+      console.log('No new data to output');
     }
-  }
-
-  queueOutgoingMessage(msg) {
-    // console.log('queueOutgoingMessage:', this.outgoingQueue.length);
-    this.outgoingQueue.push(msg);
-
-    // Instead of queuing, I am pushing out immediately, and using
-    // queue timing to send "Show" command.
-    // const { sendData } = this.props;
-    // this.logArray.push(`<br><span style="color:Navy;">OUT ←&nbsp;</span> ${msg}`);
-    // if (this.logArray.length > this.logLimit) {
-    //   this.logArray.shift();
-    // }
-    // sendData(msg);
   }
 
   render() {
@@ -193,7 +191,7 @@ class DebugPage extends Component {
               </Button>
               <Input
                 innerRef={(input) => (this.sendTextInput = input)}
-                placeholder="250"
+                placeholder={minDelay}
               />
             </InputGroupAddon>
           </InputGroup>
