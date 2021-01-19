@@ -20,6 +20,11 @@ const int shift_in_data_pin = 3;
 const int shift_in_clock_pin = 2;
 const int hydro_1_input_pin = A1;
 
+const int gas1_btn_up_pin = 9;
+const int gas1_btn_down_pin = 10;
+const int gas2_btn_up_pin = 11;
+const int gas2_btn_down_pin = 12;
+
 SerialController serialController;
 const long baudrate = 115200;
 
