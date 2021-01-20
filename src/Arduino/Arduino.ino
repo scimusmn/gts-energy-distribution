@@ -61,13 +61,14 @@ unsigned long currentMillis, prevSendMillis = 0;
 // Declare NeoPixel strip object for bar graphs:
 Adafruit_NeoPixel pixels(95, neopixel_pin, NEO_GRB + NEO_KHZ800);
 
+//Array of buttons
+int NUMBER_OF_BUTTONS = 5;
 SerialButton buttons[] = {
     SerialButton(&serialController, "start-button", start_btn_pin),
     SerialButton(&serialController, "gas1-button-down", gas1_btn_down_pin),
     SerialButton(&serialController, "gas1-button-up", gas1_btn_up_pin),
     SerialButton(&serialController, "gas2-button-down", gas2_btn_down_pin),
     SerialButton(&serialController, "gas2-button-up", gas2_btn_up_pin)};
-int NUM_buttons = 5;
 
 Source hydro1(&serialController, "hydro-1-lever", hydro_1_input_pin);
 
@@ -97,7 +98,7 @@ void loop()
         hydro1.sendIfNew();
         // lightBarGraph(10, hydro1.prevPercent);
     }
-    for (int i = 0; i < NUM_buttons; i++)
+    for (int i = 0; i < NUMBER_OF_BUTTONS; i++)
     {
         buttons[i].listener();
     }
