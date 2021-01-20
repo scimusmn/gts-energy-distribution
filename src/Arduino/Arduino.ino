@@ -7,9 +7,9 @@
 //  Description : Control Panel sends events to React           //
 //****************************************************************
 #include <Adafruit_NeoPixel.h>
-#include "source.h"
+#include "SerialButton.h"
+#include "SerialAnalog.h"
 #include "arduino-base/Libraries/SerialController.hpp"
-#include "arduino-base/Libraries/Button.h"
 
 //Pin assignments
 const int neopixel_pin = 6;
@@ -18,8 +18,9 @@ const int start_btn_LED_pin = 7;
 const int shift_in_latch_pin = 4;
 const int shift_in_data_pin = 3;
 const int shift_in_clock_pin = 2;
-const int hydro_1_input_pin = A1;
-
+const int hydro_1_input_pin = A0;
+const int hydro_2_input_pin = A1;
+const int hydro_3_input_pin = A2;
 const int gas1_btn_up_pin = 9;
 const int gas1_btn_down_pin = 10;
 const int gas2_btn_up_pin = 11;
@@ -57,12 +58,25 @@ char *shiftInStrings[] = {
 };
 
 long cableStates, prevCableStates;
-unsigned long currentMillis, prevSendMillis = 0;
 
 // Declare NeoPixel strip object for bar graphs:
 Adafruit_NeoPixel pixels(95, neopixel_pin, NEO_GRB + NEO_KHZ800);
-Button startButton;
-Source hydro1(&serialController, "hydro-1-lever", hydro_1_input_pin);
+
+//Array of buttons
+int NUMBER_OF_BUTTONS = 5;
+SerialButton buttons[] = {
+    SerialButton(&serialController, "start-button", start_btn_pin),
+    SerialButton(&serialController, "gas-1-button-down", gas1_btn_down_pin),
+    SerialButton(&serialController, "gas-1-button-up", gas1_btn_up_pin),
+    SerialButton(&serialController, "gas-2-button-down", gas2_btn_down_pin),
+    SerialButton(&serialController, "gas-2-button-up", gas2_btn_up_pin)};
+
+//Array of levers
+int NUMBER_OF_LEVERS = 3;
+SerialAnalog levers[] = {
+    SerialAnalog(&serialController, "hydro-1-lever", hydro_1_input_pin, 50),
+    SerialAnalog(&serialController, "hydro-2-lever", hydro_2_input_pin, 50),
+    SerialAnalog(&serialController, "hydro-3-lever", hydro_3_input_pin, 50)};
 
 void setup()
 {
@@ -75,13 +89,6 @@ void setup()
     pinMode(shift_in_clock_pin, OUTPUT);
     pinMode(shift_in_data_pin, INPUT);
 
-    startButton.setup(start_btn_pin, [](int state) {
-        if (state == 1)
-        {
-            serialController.sendMessage("start-button", "1");
-        }
-    });
-
     pixels.begin();
     pixels.clear();
     pixels.show();
@@ -89,15 +96,16 @@ void setup()
 
 void loop()
 {
-    currentMillis = millis();
 
-    if ((currentMillis - prevSendMillis) > 200)
+    for (int i = 0; i < NUMBER_OF_LEVERS; i++)
     {
-        updateJacksSwitches();
-        hydro1.sendIfNew();
-        // lightBarGraph(10, hydro1.prevPercent);
+        levers[i].listener();
     }
-    startButton.update();
+    updateJacksSwitches();
+    for (int i = 0; i < NUMBER_OF_BUTTONS; i++)
+    {
+        buttons[i].listener();
+    }
     serialController.update();
 }
 
@@ -221,7 +229,10 @@ void onParse(char *message, char *value)
     else if (strcmp(message, "get-all-states") == 0) //TODO
     {
         prevCableStates = ~prevCableStates;
-        hydro1.prevPercent = 101; // TODO, make less of a hack. This make sure value is different and send again.
+        for (int i = 0; i < NUMBER_OF_LEVERS; i++)
+        {
+            levers[i].sendPercent();
+        }
     }
 
     else if (strcmp(message, "wake-arduino") == 0 && strcmp(value, "1") == 0)
