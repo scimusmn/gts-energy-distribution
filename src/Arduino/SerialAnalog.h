@@ -15,10 +15,13 @@ private:
     char *message;
     int percentLastSent;
     int percent;
+    int samplingInterval; // milliseconds between readings.
+    unsigned long lastSampleMillis;
 
 public:
-    SerialAnalog(SerialController *_serialC, char _message[30], int _p)
+    SerialAnalog(SerialController *_serialC, char _message[30], int _p, int _samplingInterval = 1)
     {
+        samplingInterval = _samplingInterval;
         pin = _p;
         message = _message;
         serialController = _serialC;
@@ -27,13 +30,18 @@ public:
 
     void SerialAnalog::listener()
     {
-        percent = analogRead(pin);
-        percent = map(percent, 100, 920, 0, 100);
-        percent = constrain(percent, 0, 100);
-        if (percent != percentLastSent)
+        unsigned long currentMillis = millis();
+        if ((currentMillis - lastSampleMillis) > samplingInterval)
         {
-            percentLastSent = percent;
-            serialController->sendMessage(message, percent);
+            percent = analogRead(pin);
+            percent = map(percent, 100, 920, 0, 100);
+            percent = constrain(percent, 0, 100);
+            if (percent != percentLastSent)
+            {
+                percentLastSent = percent;
+                serialController->sendMessage(message, percent);
+            }
+            lastSampleMillis = currentMillis;
         }
     }
 

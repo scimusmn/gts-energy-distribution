@@ -58,7 +58,6 @@ char *shiftInStrings[] = {
 };
 
 long cableStates, prevCableStates;
-unsigned long currentMillis, prevSendMillis = 0;
 
 // Declare NeoPixel strip object for bar graphs:
 Adafruit_NeoPixel pixels(95, neopixel_pin, NEO_GRB + NEO_KHZ800);
@@ -75,9 +74,9 @@ SerialButton buttons[] = {
 //Array of levers
 int NUMBER_OF_LEVERS = 3;
 SerialAnalog levers[] = {
-    SerialAnalog(&serialController, "hydro-1-lever", hydro_1_input_pin),
-    SerialAnalog(&serialController, "hydro-2-lever", hydro_2_input_pin),
-    SerialAnalog(&serialController, "hydro-3-lever", hydro_3_input_pin)};
+    SerialAnalog(&serialController, "hydro-1-lever", hydro_1_input_pin, 50),
+    SerialAnalog(&serialController, "hydro-2-lever", hydro_2_input_pin, 50),
+    SerialAnalog(&serialController, "hydro-3-lever", hydro_3_input_pin, 50)};
 
 void setup()
 {
@@ -97,17 +96,12 @@ void setup()
 
 void loop()
 {
-    currentMillis = millis();
 
-    if ((currentMillis - prevSendMillis) > 200)
+    for (int i = 0; i < NUMBER_OF_LEVERS; i++)
     {
-        updateJacksSwitches();
-        for (int i = 0; i < NUMBER_OF_LEVERS; i++)
-        {
-            levers[i].listener();
-        }
+        levers[i].listener();
     }
-
+    updateJacksSwitches();
     for (int i = 0; i < NUMBER_OF_BUTTONS; i++)
     {
         buttons[i].listener();
