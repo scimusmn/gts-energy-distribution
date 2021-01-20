@@ -8,8 +8,8 @@
 //****************************************************************
 #include <Adafruit_NeoPixel.h>
 #include "source.h"
+#include "SerialButton.h"
 #include "arduino-base/Libraries/SerialController.hpp"
-#include "arduino-base/Libraries/Button.h"
 
 //Pin assignments
 const int neopixel_pin = 6;
@@ -19,7 +19,6 @@ const int shift_in_latch_pin = 4;
 const int shift_in_data_pin = 3;
 const int shift_in_clock_pin = 2;
 const int hydro_1_input_pin = A1;
-
 const int gas1_btn_up_pin = 9;
 const int gas1_btn_down_pin = 10;
 const int gas2_btn_up_pin = 11;
@@ -61,7 +60,15 @@ unsigned long currentMillis, prevSendMillis = 0;
 
 // Declare NeoPixel strip object for bar graphs:
 Adafruit_NeoPixel pixels(95, neopixel_pin, NEO_GRB + NEO_KHZ800);
-Button startButton;
+
+SerialButton buttons[] = {
+    SerialButton(&serialController, "start-button", start_btn_pin),
+    SerialButton(&serialController, "gas1-button-down", gas1_btn_down_pin),
+    SerialButton(&serialController, "gas1-button-up", gas1_btn_up_pin),
+    SerialButton(&serialController, "gas2-button-down", gas2_btn_down_pin),
+    SerialButton(&serialController, "gas2-button-up", gas2_btn_up_pin)};
+int NUM_buttons = 5;
+
 Source hydro1(&serialController, "hydro-1-lever", hydro_1_input_pin);
 
 void setup()
@@ -74,13 +81,6 @@ void setup()
     pinMode(shift_in_latch_pin, OUTPUT);
     pinMode(shift_in_clock_pin, OUTPUT);
     pinMode(shift_in_data_pin, INPUT);
-
-    startButton.setup(start_btn_pin, [](int state) {
-        if (state == 1)
-        {
-            serialController.sendMessage("start-button", "1");
-        }
-    });
 
     pixels.begin();
     pixels.clear();
@@ -97,7 +97,10 @@ void loop()
         hydro1.sendIfNew();
         // lightBarGraph(10, hydro1.prevPercent);
     }
-    startButton.update();
+    for (int i = 0; i < NUM_buttons; i++)
+    {
+        buttons[i].listener();
+    }
     serialController.update();
 }
 
