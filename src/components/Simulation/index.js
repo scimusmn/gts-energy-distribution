@@ -20,6 +20,7 @@ class Simulation extends Component {
       messageCenter: {},
       production: 0,
       demand: 0,
+      efficiency: 0,
       time: 0,
       hourIndex: 0,
       chartData: {},
@@ -27,8 +28,7 @@ class Simulation extends Component {
 
     this.onData = this.onData.bind(this);
     this.outputSerial = this.outputSerial.bind(this);
-    this.calculateProductionSnapshot = this.calculateProductionSnapshot.bind(this);
-    this.calculateEfficiencyScore = this.calculateEfficiencyScore.bind(this);
+    this.getCurrentProduction = this.getCurrentProduction.bind(this);
 
     this.liveData = {};
     this.energyData = {};
@@ -54,50 +54,155 @@ class Simulation extends Component {
 
     this.liveData[message] = value;
 
-    // Immediately echo back light bar messages
-    if (message.startsWith('hydro-') && message.endsWith('-lever')) {
-      const panelId = message.substring(6, 7);
-      const responseMsg = `{hydro-${panelId}-light-bar:${value}}`;
-      const { sendData } = this.props;
-      sendData(responseMsg);
+    // Catch gas arrow buttons exceptions. These messages
+    // don't provide the current value, but are used to adjust the
+    // current value, which we add to the liveData object.
+    if (message.startsWith('gas-') && message.includes('-button-')) {
+      const panelId = message.substring(4, 5);
+      const levelKey = `gas-${panelId}-level`;
+      let currentLevel = this.liveData[levelKey];
+      if (!currentLevel) currentLevel = 0.0;
+
+      // How much effect each button press
+      // has on the control board level
+      let adjustment = 1.0;
+      // Increment if up arrow was pressed,
+      // decrement if down arrow was pressed
+      if (message.endsWith('-down')) adjustment *= -1;
+      let newVal = currentLevel + adjustment;
+      // Clamp to 0–100;
+      newVal = Math.min(Math.max(newVal, 0), 100);
+      this.liveData[levelKey] = newVal;
+      console.log('arrow btn pressed', panelId, newVal);
     }
+
+    // Immediately echo back light bar messages
+    // if (message.startsWith('hydro-') && message.endsWith('-lever')) {
+    //   const panelId = message.substring(6, 7);
+    //   const responseMsg = `{hydro-${panelId}-light-bar:${value}}`;
+    //   const { sendData } = this.props;
+    //   sendData(responseMsg);
+    // }
   }
 
-  calculateProductionSnapshot() {
-    const snapshot = {};
+  getCurrentProduction() {
+    // Calculate current production levels
+    console.log('getCurrentProduction - ', this.liveData);
 
-    // TODO: Here is where we will calculate values
-    // based on which jacks are plugged in, and the
-    // current state in relation to environmental 'potential'
-    // production.solar = this.liveData['solar-1-jack'] * currentSolarPotential;
-    console.log('calculateProductionSnapshot | ', this.liveData);
+    // Get ACTIVE panels (by checking jack state)
+    const entries = Object.entries(this.liveData);
+    const activePanels = {
+      coal: [], gas: [], hydro: [], solar: [], wind: [],
+    };
+    for (let i = 0; i < entries.length; i += 1) {
+      const [key, value] = entries[i];
+      if (key.endsWith('-jack') && value === 1) {
+        const split = key.split('-');
+        const panelType = split[0];
+        const panelId = `${split[0]}-${split[1]}`;
+        if (!activePanels[panelType]) {
+          console.log(`Warning - Unexpected panelType found: ${panelType}`);
+          activePanels[panelType] = [];
+        }
+        activePanels[panelType].push(panelId);
+      }
+    }
 
-    // Temp (for sim mode)
+    // Gather environmental variables that affect
+    // production/energy availability
     const { hourIndex } = this.state;
-    const currentDemand = DataManager.getDemand(hourIndex);
-    const simProdBaseLevel = currentDemand / 5;
+    const condition = DataManager.getFieldAtHour(hourIndex, 'Condition');
+    const solarAvail = DataManager.getSolarAvailability(hourIndex);
+    console.log('condition', condition);
+    console.log('solarAvail', solarAvail);
 
-    snapshot.coal = Math.round(simProdBaseLevel + Math.random() * 8 - 4);
-    snapshot.gas = Math.round(simProdBaseLevel + Math.random() * 8 - 4);
-    snapshot.hydro = Math.round(simProdBaseLevel + Math.random() * 8 - 4);
-    snapshot.solar = Math.round(simProdBaseLevel + Math.random() * 8 - 4);
-    snapshot.wind = Math.round(simProdBaseLevel + Math.random() * 8 - 4);
+    // COAL production
+    const coalAvailability = 1.0; // (0–1) How much coal power is available?
+    let coalProduction = 0.0;
+    for (let i = 0; i < activePanels.coal.length; i += 1) {
+      const panelId = activePanels.coal[i];
 
-    // Sum all production values
+      // Coal input level based on switch
+      let controlLevel = this.liveData[`${panelId}-switch`];
+      if (!controlLevel || controlLevel !== 1) controlLevel = 0.0;
+
+      // TODO: We currently are using the current switch value (1/0),
+      // but we'll need to eventually swap for the decoupled "state"
+      // of each panel. ('off', 'warming', 'on')
+
+      // TODO: Should gas availability act as a multiplier or a cap?
+      const panelProduction = controlLevel * coalAvailability;
+      coalProduction += panelProduction;
+    }
+
+    // GAS production
+    const gasAvailability = 1.0; // (0–1) How much gas power is available?
+    let gasProduction = 0.0;
+    for (let i = 0; i < activePanels.gas.length; i += 1) {
+      const panelId = activePanels.gas[i];
+
+      // Gas input level (created from button presses)
+      const controlLevel = this.liveData[`${panelId}-level`];
+
+      // TODO: Should gas availability act as a multiplier or a cap?
+      const panelProduction = controlLevel * gasAvailability;
+      gasProduction += panelProduction;
+    }
+
+    // HYDRO production
+    const hydroAvailability = 1.0; // (0–1) How much hydro power is available?
+    let hydroProduction = 0.0;
+    for (let i = 0; i < activePanels.hydro.length; i += 1) {
+      const panelId = activePanels.hydro[i];
+
+      // Hydro panel lever input
+      const controlLevel = this.liveData[`${panelId}-lever`];
+
+      // TODO: Should hydro availability act as a multiplier or a cap?
+      const panelProduction = controlLevel * hydroAvailability;
+      hydroProduction += panelProduction;
+    }
+    console.log('hydroProduction-->', hydroProduction);
+
+    // SOLAR production
+    // TODO: Different "Condition" strings will be tied
+    // to specific solar potential values. E.g. "Partly Cloudy" = 55
+
+    const solarAvailability = 1.0; // (0–1) How much solar power is available?
+    // Note: Solar has no control inputs,
+    // so all active panels can be treated the same
+    const numSolarPanels = activePanels.solar.length;
+    const solarProduction = numSolarPanels * solarAvailability;
+
+    // WIND production
+    // TODO: Use "Wind Speed" field - with a floor/ceiling cap on MPH.
+    // E.g. over 20mph they govern the speed. Under 10mph and the turbines don't even turn.
+    const windAvailability = 1.0; // (0–1) How much wind power is available?
+    // Note: Wind has no control inputs.
+    // so all active panels can be treated the same
+    const numWindPanels = activePanels.wind.length;
+    const windProduction = numWindPanels * windAvailability;
+
+    // Production snapshot object
+    const production = {
+      coal: coalProduction,
+      gas: gasProduction,
+      hydro: hydroProduction,
+      solar: solarProduction,
+      wind: windProduction,
+    };
+
+    // Sum all production values for ez total
     let total = 0;
-    Object.values(snapshot).forEach((value) => {
+    Object.values(production).forEach((value) => {
       total += value;
     });
-    snapshot.production = total;
+    production.production = total;
 
-    return snapshot;
-  }
+    console.log('Production snapshot:');
+    console.log(production);
 
-  calculateEfficiencyScore(production, demand) {
-    console.log('calculateEfficiencyScore', this.energyData.production);
-    const difference = (demand - production);
-    const score = difference * Settings.EFFICIENCY_SCORE_MULTIPLIER;
-    return score;
+    return production;
   }
 
   reset() {
@@ -117,6 +222,11 @@ class Simulation extends Component {
   startSimulation() {
     this.reset();
 
+    // Get all starting states from Arduino
+    const { sendData } = this.props;
+    const getFullStateMsg = '{get-all-states:1}';
+    sendData(getFullStateMsg);
+
     const dayInterval = Settings.SESSION_DURATION / Settings.DAYS_PER_SESSION;
     console.log('dayInterval', dayInterval);
     const hourInterval = Math.ceil(dayInterval / 24);
@@ -134,14 +244,14 @@ class Simulation extends Component {
     this.setState({ forecast: DataManager.getForecastSummary(), chartData: this.energyData });
 
     this.hourlyInterval = setInterval(() => {
-
-      const { hourIndex, demand } = this.state;
-      console.log('hour passed ->', hourIndex, demand);
+      const { hourIndex } = this.state;
+      console.log('Hour passed ->', hourIndex);
 
       if (hourIndex >= totalHoursInSession) {
         this.endSimulation();
       } else {
-        const productionSnapshot = this.calculateProductionSnapshot();
+        const productionSnapshot = this.getCurrentProduction();
+        const production = productionSnapshot.total;
 
         // Add live production snapshot to production history
         Object.entries(productionSnapshot).forEach((entry) => {
@@ -149,13 +259,16 @@ class Simulation extends Component {
           this.energyData[key].push(value);
         });
 
-        const currentDemand = DataManager.getDemand(hourIndex);
-        const score = this.calculateEfficiencyScore(productionSnapshot.production, currentDemand);
-        console.log('efficiency score: ', score);
+        const demand = DataManager.getDemand(hourIndex);
+
+        // Calculate efficiency score
+        const difference = (demand - production);
+        const efficiency = difference * Settings.EFFICIENCY_SCORE_MULTIPLIER;
 
         this.setState({
-          production: productionSnapshot.production,
-          demand: currentDemand,
+          production,
+          demand,
+          efficiency,
           messageCenter: DataManager.getRandomMessageCenter(),
           time: DataManager.getTime(hourIndex),
           hourIndex: hourIndex + 1,
@@ -163,14 +276,6 @@ class Simulation extends Component {
         });
       }
     }, hourInterval);
-  }
-
-  nextHour() {
-    console.log('endSimulation');
-    const { efficiencyScore } = this.state;
-    console.log('efficiency score', efficiencyScore);
-
-    clearInterval(this.hourlyInterval);
   }
 
   endSimulation() {
@@ -192,7 +297,7 @@ class Simulation extends Component {
 
   render() {
     const {
-      time, forecast, messageCenter, production, demand, chartData,
+      time, forecast, messageCenter, production, demand, efficiency, chartData,
     } = this.state;
     return (
       <div className="simulation">
@@ -223,7 +328,7 @@ class Simulation extends Component {
               <h4>
                 Efficiency:
                 {' '}
-                {this.calculateEfficiencyScore(production, demand)}
+                {efficiency}
               </h4>
             </Col>
           </Row>

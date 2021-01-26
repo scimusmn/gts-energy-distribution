@@ -29,7 +29,7 @@ const ArduinoEmulator = ({ onChange }) => {
         <br />
         <p>SWITCH</p>
         <div className="vertical">
-          <Toggle msg={`gas-${panelNum}-switch`} onChange={onChange} />
+          <Toggle msg={`coal-${panelNum}-switch`} onChange={onChange} />
           <br />
         </div>
         <br />
