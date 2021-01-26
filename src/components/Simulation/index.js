@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import { Container, Row, Col } from 'reactstrap';
 import withSerialCommunication from '../../Arduino/arduino-base/ReactSerial/SerialHOC';
+import ArduinoEmulator from '../ArduinoEmulator';
 import DataManager from '../../data/data-manager';
 import Settings from '../../data/settings';
 import Forecast from '../Forecast';
@@ -133,7 +134,9 @@ class Simulation extends Component {
     this.setState({ forecast: DataManager.getForecastSummary(), chartData: this.energyData });
 
     this.hourlyInterval = setInterval(() => {
-      const { hourIndex } = this.state;
+
+      const { hourIndex, demand } = this.state;
+      console.log('hour passed ->', hourIndex, demand);
 
       if (hourIndex >= totalHoursInSession) {
         this.endSimulation();
@@ -193,6 +196,7 @@ class Simulation extends Component {
     } = this.state;
     return (
       <div className="simulation">
+        <ArduinoEmulator onChange={this.onData} />
         <Forecast days={forecast} />
         <div className="message-center window">
           <h3>Message Center</h3>
