@@ -11,7 +11,13 @@ const PowerMeter = ({
       <h3>{label}</h3>
       <div className="meter-container">
         <h3>{level}</h3>
-        <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.1)', border: '1px solid gray', height: `${barheight}px` }}>
+        <div style={{
+          backgroundColor: 'rgba(0, 0, 0, 0.1)',
+          border: '1px solid gray',
+          height: `${barheight}px`,
+          transform: 'rotate(180deg)',
+        }}
+        >
           <div className="tween-height" style={{ backgroundColor: color, height: `${Math.round((level / 100) * barheight)}px` }} />
         </div>
       </div>

@@ -63,8 +63,6 @@ class Simulation extends Component {
       let currentLevel = this.liveData[levelKey];
       if (!currentLevel) currentLevel = 0.0;
 
-      // How much effect each button press
-      // has on the control board level
       let adjustment = 1.0;
       // Increment if up arrow was pressed,
       // decrement if down arrow was pressed
@@ -111,13 +109,8 @@ class Simulation extends Component {
     // Gather environmental variables that affect
     // production/energy availability
     const { hourIndex } = this.state;
-    const condition = DataManager.getFieldAtHour(hourIndex, 'Condition');
-    const solarAvail = DataManager.getSolarAvailability(hourIndex);
-    console.log('condition', condition);
-    console.log('solarAvail', solarAvail);
 
     // COAL production
-    const coalAvailability = 1.0; // (0–1) How much coal power is available?
     let coalProduction = 0.0;
     for (let i = 0; i < activePanels.coal.length; i += 1) {
       const panelId = activePanels.coal[i];
@@ -130,13 +123,11 @@ class Simulation extends Component {
       // but we'll need to eventually swap for the decoupled "state"
       // of each panel. ('off', 'warming', 'on')
 
-      // TODO: Should gas availability act as a multiplier or a cap?
-      const panelProduction = controlLevel * coalAvailability;
+      const panelProduction = controlLevel * Settings.MAX_OUTPUT_PER_PANEL;
       coalProduction += panelProduction;
     }
 
     // GAS production
-    const gasAvailability = 1.0; // (0–1) How much gas power is available?
     let gasProduction = 0.0;
     for (let i = 0; i < activePanels.gas.length; i += 1) {
       const panelId = activePanels.gas[i];
@@ -144,44 +135,30 @@ class Simulation extends Component {
       // Gas input level (created from button presses)
       const controlLevel = this.liveData[`${panelId}-level`];
 
-      // TODO: Should gas availability act as a multiplier or a cap?
-      const panelProduction = controlLevel * gasAvailability;
+      const panelProduction = controlLevel * Settings.MAX_OUTPUT_PER_PANEL;
       gasProduction += panelProduction;
     }
 
     // HYDRO production
-    const hydroAvailability = 1.0; // (0–1) How much hydro power is available?
     let hydroProduction = 0.0;
     for (let i = 0; i < activePanels.hydro.length; i += 1) {
       const panelId = activePanels.hydro[i];
 
       // Hydro panel lever input
       const controlLevel = this.liveData[`${panelId}-lever`];
-
-      // TODO: Should hydro availability act as a multiplier or a cap?
-      const panelProduction = controlLevel * hydroAvailability;
+      const panelProduction = controlLevel * Settings.MAX_OUTPUT_PER_PANEL;
       hydroProduction += panelProduction;
     }
-    console.log('hydroProduction-->', hydroProduction);
 
     // SOLAR production
-    // TODO: Different "Condition" strings will be tied
-    // to specific solar potential values. E.g. "Partly Cloudy" = 55
-
-    const solarAvailability = 1.0; // (0–1) How much solar power is available?
-    // Note: Solar has no control inputs,
-    // so all active panels can be treated the same
+    const solarAvailability = DataManager.getSolarAvailability(hourIndex);
     const numSolarPanels = activePanels.solar.length;
-    const solarProduction = numSolarPanels * solarAvailability;
+    const solarProduction = numSolarPanels * solarAvailability * Settings.MAX_OUTPUT_PER_PANEL;
 
     // WIND production
-    // TODO: Use "Wind Speed" field - with a floor/ceiling cap on MPH.
-    // E.g. over 20mph they govern the speed. Under 10mph and the turbines don't even turn.
-    const windAvailability = 1.0; // (0–1) How much wind power is available?
-    // Note: Wind has no control inputs.
-    // so all active panels can be treated the same
+    const windAvailability = DataManager.getWindAvailability(hourIndex);
     const numWindPanels = activePanels.wind.length;
-    const windProduction = numWindPanels * windAvailability;
+    const windProduction = numWindPanels * windAvailability * Settings.MAX_OUTPUT_PER_PANEL;
 
     // Production snapshot object
     const production = {
@@ -192,12 +169,12 @@ class Simulation extends Component {
       wind: windProduction,
     };
 
-    // Sum all production values for ez total
+    // Sum all production values for easy total
     let total = 0;
     Object.values(production).forEach((value) => {
       total += value;
     });
-    production.production = total;
+    production.total = total;
 
     console.log('Production snapshot:');
     console.log(production);
@@ -213,7 +190,7 @@ class Simulation extends Component {
       solar: [],
       wind: [],
       demand: [],
-      production: [],
+      total: [],
     };
     this.liveData = {};
     clearInterval(this.hourlyInterval);
@@ -262,7 +239,9 @@ class Simulation extends Component {
         const demand = DataManager.getDemand(hourIndex);
 
         // Calculate efficiency score
+
         const difference = (demand - production);
+        console.log(difference);
         const efficiency = difference * Settings.EFFICIENCY_SCORE_MULTIPLIER;
 
         this.setState({
@@ -325,15 +304,17 @@ class Simulation extends Component {
           <br />
           <Row>
             <Col>
-              <h4>
+              <h3>
                 Efficiency:
                 {' '}
+              </h3>
+              <h1>
                 {efficiency}
-              </h4>
+              </h1>
             </Col>
           </Row>
         </Container>
-        <div className="energy-chart window">
+        <div className="energy-chart window" style={{ display: 'none' }}>
           <h3>Energy Chart</h3>
           <EnergyChart chartData={chartData} />
         </div>

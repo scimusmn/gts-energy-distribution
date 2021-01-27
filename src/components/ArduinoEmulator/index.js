@@ -130,9 +130,6 @@ const ArduinoEmulator = ({ onChange }) => {
         <Col className="panel">
           <Row>
             <Col>
-              <h1>Control Board Emulator</h1>
-            </Col>
-            <Col>
               <EventButton msg="start-button" label="Start" onChange={onChange} />
             </Col>
             <Col>

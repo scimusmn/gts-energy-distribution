@@ -42,24 +42,101 @@ const conditionToSolarPotential = (condition) => {
       potential = 1.0;
       break;
     case 'Partly Cloudy':
-      potential = 0.8;
+      potential = 0.75;
       break;
     case 'Mostly Cloudy':
-      potential = 0.7;
-      break;
-    case 'Cloudy':
-      potential = 0.6;
-      break;
-    case 'Cloudy / Windy':
       potential = 0.5;
       break;
+    case 'Cloudy':
+      potential = 0.3;
+      break;
+    case 'Cloudy / Windy':
+      potential = 0.3;
+      break;
     case 'Light Snow':
-      potential = 0.4;
+      potential = 0.2;
       break;
     default:
       console.log('Warning! Condition unaccounted for:', condition);
       potential = 1.0;
       break;
+  }
+  return potential;
+};
+
+// Convert time of day to a solar availability score
+const timeOfDayToSolarPotential = (time) => {
+  let potential = 1.0;
+  // TODO: For performance boost, all times
+  // could be converted to floats (0–24).
+  switch (time) {
+    case '12:00 AM':
+    case '1:00 AM':
+    case '2:00 AM':
+    case '3:00 AM':
+    case '4:00 AM':
+    case '5:00 AM':
+    case '6:00 AM':
+    case '7:00 AM':
+    case '8:00 AM':
+      potential = 0.0;
+      break;
+    case '9:00 AM':
+      potential = 0.35;
+      break;
+    case '10:00 AM':
+      potential = 0.7;
+      break;
+    case '11:00 AM':
+      potential = 1.0;
+      break;
+    case '12:00 PM':
+      potential = 1.0;
+      break;
+    case '1:00 PM':
+      potential = 1.0;
+      break;
+    case '2:00 PM':
+      potential = 1.0;
+      break;
+    case '3:00 PM':
+      potential = 0.85;
+      break;
+    case '4:00 PM':
+      potential = 0.65;
+      break;
+    case '5:00 PM':
+      potential = 0.4;
+      break;
+    case '6:00 PM':
+    case '7:00 PM':
+    case '8:00 PM':
+    case '9:00 PM':
+    case '10:00 PM':
+    case '11:00 PM':
+      potential = 0.0;
+      break;
+    default:
+      console.log('Warning! Time of day unaccounted for:', time);
+      potential = 1.0;
+      break;
+  }
+  return potential;
+};
+
+// Convert Condition string to a solar availability score
+const windSpeedToWindPotential = (windSpeed) => {
+  // Extract number from string ('23 mph' -> 23)
+  const speed = parseFloat(windSpeed.split(' ')[0]);
+  let potential = 1.0;
+  // TODO: replace windspeed max and min with Settings.values
+  if (speed < 8) {
+    potential = 0.0;
+  } else if (speed > 28) {
+    potential = 1.0;
+  } else {
+    // TODO: map 8–28 range to 0–1 range
+    potential = 0.75; // temp
   }
   return potential;
 };
@@ -74,7 +151,13 @@ const getTime = (hourIndex) => currentSessionForecast[hourIndex].Time;
 
 const getFieldAtHour = (hourIndex, field) => currentSessionForecast[hourIndex][field];
 
-const getSolarAvailability = (hourIndex) => conditionToSolarPotential(getFieldAtHour(hourIndex, 'Condition'));
+const getSolarAvailability = (hourIndex) => {
+  const conditionPotential = conditionToSolarPotential(getFieldAtHour(hourIndex, 'Condition'));
+  const timeOfDayPotential = timeOfDayToSolarPotential(getFieldAtHour(hourIndex, 'Time'));
+  return conditionPotential * timeOfDayPotential;
+};
+
+const getWindAvailability = (hourIndex) => windSpeedToWindPotential(getFieldAtHour(hourIndex, 'WindSpeed'));
 
 const getCurrentForecastField = (field) => currentSessionForecast.map((a) => a[field]);
 
@@ -88,6 +171,7 @@ const DataManager = {
   getFieldAtHour,
   getCurrentForecastField,
   getSolarAvailability,
+  getWindAvailability,
 };
 
 export default DataManager;
