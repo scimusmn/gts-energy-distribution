@@ -160,7 +160,7 @@ class Simulation extends Component {
     const numWindPanels = activePanels.wind.length;
     const windProduction = numWindPanels * windAvailability * Settings.MAX_OUTPUT_PER_PANEL;
 
-    // Production snapshot object
+    // Snapshot
     const production = {
       coal: coalProduction,
       gas: gasProduction,
@@ -169,7 +169,7 @@ class Simulation extends Component {
       wind: windProduction,
     };
 
-    // Sum all production values for easy total
+    // Sum total of all production values
     let total = 0;
     Object.values(production).forEach((value) => {
       total += value;
