@@ -92,6 +92,18 @@ body {
   }
 }
 
+.modals-container {
+  background-color: rgba(0, 0, 0, 0.3);
+  height: 100%;
+  width: 100%;
+
+  .window {
+    background-color: beige;
+    height: 88%;
+    width: 85%;
+  }
+}
+
 // Animation helpers
 .tween-height {
   transition: height 0.3s ease-in-out;

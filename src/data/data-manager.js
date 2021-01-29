@@ -15,6 +15,7 @@ delete FORECASTS[''];
 
 // We can use this JSON array as-is
 const MESSAGE_CENTER_MESSAGES = MessageCenterJSON;
+const SORTED_MOOD_MESSAGES = CollateByProperty(MessageCenterJSON, 'Mood');
 
 let currentSessionForecast;
 
@@ -141,6 +142,26 @@ const windSpeedToWindPotential = (windSpeed) => {
   return potential;
 };
 
+// Use Noon slide to summarize day
+const checkMessageCenterTriggers = (efficiency) => {
+  // TODO: This will need to get more complex at some point
+  // E.g. we should take into account how long it's been
+  // since the last msg center msg
+
+  if (efficiency > 50) {
+    return FishArray(SORTED_MOOD_MESSAGES.angry);
+  } if (efficiency < -50) {
+    return FishArray(SORTED_MOOD_MESSAGES.angry);
+  }
+  // If nothing is triggered, occasionally
+  // display a positive or neutral message
+  if (Math.random() > 0.8) {
+    return FishArray(SORTED_MOOD_MESSAGES.happy);
+  }
+
+  return null;
+};
+
 const getRandomForecast = () => FishObject(FORECASTS);
 
 const getRandomMessageCenter = () => FishArray(MESSAGE_CENTER_MESSAGES);
@@ -166,6 +187,7 @@ const DataManager = {
   getForecastSummary,
   getRandomForecast,
   getRandomMessageCenter,
+  checkMessageCenterTriggers,
   getDemand,
   getTime,
   getFieldAtHour,

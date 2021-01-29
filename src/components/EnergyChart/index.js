@@ -17,24 +17,34 @@ class EnergyChart extends Component {
   }
 
   componentDidMount() {
-    // TODO: Replace this interval with a requestAnimationFrame hook.
-    setInterval(() => {
-      const { chartData } = this.props;
-      const { datasets } = this.chartRef.current.chartInstance.config.data;
-      datasets[0].data = chartData.coal;
-      datasets[1].data = chartData.gas;
-      datasets[2].data = chartData.hydro;
-      datasets[3].data = chartData.solar;
-      datasets[4].data = chartData.wind;
-
-      this.chartRef.current.chartInstance.update({
-        preservation: true,
-      });
-    }, 33);
+    const { isLive } = this.props;
+    if (isLive) {
+      // TODO: Replace this interval with a requestAnimationFrame hook.
+      setInterval(() => {
+        this.updateChartData();
+      }, 33);
+    } else {
+      // Only update/render once
+      this.updateChartData();
+    }
   }
 
   shouldComponentUpdate() {
     return true;
+  }
+
+  updateChartData() {
+    const { chartData } = this.props;
+    const { datasets } = this.chartRef.current.chartInstance.config.data;
+    datasets[0].data = chartData.coal;
+    datasets[1].data = chartData.gas;
+    datasets[2].data = chartData.hydro;
+    datasets[3].data = chartData.solar;
+    datasets[4].data = chartData.wind;
+
+    this.chartRef.current.chartInstance.update({
+      preservation: true,
+    });
   }
 
   render() {
@@ -59,6 +69,7 @@ class EnergyChart extends Component {
     const yAxisMin = 0;
     const yAxisMax = parseFloat(highestDemand) + 10;
 
+    // Temp - these are no longer needed
     const coalData = [1, 5, 3, 5, 2, 5];
     const gasData = [1, 5, 3, 5, 2, 5];
     const hydroData = [1, 2, 3, 4, 5, 6];
@@ -173,10 +184,12 @@ class EnergyChart extends Component {
 
 EnergyChart.defaultProps = {
   chartData: {},
+  isLive: true,
 };
 
 EnergyChart.propTypes = {
   chartData: propTypes.instanceOf(Object),
+  isLive: propTypes.bool,
 };
 
 export default EnergyChart;

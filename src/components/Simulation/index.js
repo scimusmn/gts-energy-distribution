@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Moment from 'react-moment';
 import { Container, Row, Col } from 'reactstrap';
 import withSerialCommunication from '../../Arduino/arduino-base/ReactSerial/SerialHOC';
 import ArduinoEmulator from '../ArduinoEmulator';
@@ -11,27 +10,35 @@ import Settings from '../../data/settings';
 import Forecast from '../Forecast';
 import PowerMeter from '../PowerMeter';
 import EnergyChart from '../EnergyChart';
+import MessageCenter from '../MessageCenter';
+import ScoreScreen from '../ScoreScreen';
+import ReadyScreen from '../ReadyScreen';
 
 class Simulation extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      currentView: '',
       forecast: [],
       messageCenter: {},
       production: 0,
       demand: 0,
       efficiency: 0,
-      time: 0,
+      time: '0:00',
       hourIndex: 0,
       chartData: {},
+      finalEfficiencyScore: 0,
     };
 
     this.onData = this.onData.bind(this);
+    this.onStartButton = this.onStartButton.bind(this);
     this.outputSerial = this.outputSerial.bind(this);
     this.getCurrentProduction = this.getCurrentProduction.bind(this);
 
     this.liveData = {};
     this.energyData = {};
+    this.feedbackHistory = [];
+    this.scoreHistory = [];
 
     this.hourlyInterval = {};
   }
@@ -40,10 +47,7 @@ class Simulation extends Component {
   componentDidMount() {
     const { setOnDataCallback } = this.props;
     setOnDataCallback(this.onData);
-
-    console.log('Simulation mounted');
-
-    this.startSimulation();
+    this.reset();
   }
 
   onData(data) {
@@ -53,6 +57,11 @@ class Simulation extends Component {
     const value = Object.values(data)[0];
 
     this.liveData[message] = value;
+
+    if (message === 'start-button') {
+      this.onStartButton();
+      return;
+    }
 
     // Catch gas arrow buttons exceptions. These messages
     // don't provide the current value, but are used to adjust the
@@ -81,6 +90,19 @@ class Simulation extends Component {
     //   const { sendData } = this.props;
     //   sendData(responseMsg);
     // }
+  }
+
+  onStartButton() {
+    console.log('onStartButton()');
+
+    const { currentView } = this.state;
+
+    if (currentView === 'ready') {
+      this.setState({ currentView: '' });
+      this.startSimulation();
+    } else if (currentView === 'score') {
+      this.reset();
+    }
   }
 
   getCurrentProduction() {
@@ -193,17 +215,27 @@ class Simulation extends Component {
       total: [],
     };
     this.liveData = {};
+    this.feedbackHistory = [];
+    this.scoreHistory = [];
     clearInterval(this.hourlyInterval);
+
+    // Prepare next weather forecast
+    // Select forecast data for this session
+    DataManager.selectNewForecast();
+    this.setState({
+      hourIndex: 0,
+      forecast: DataManager.getForecastSummary(),
+      currentView: 'ready',
+    });
   }
 
   startSimulation() {
-    this.reset();
-
     // Get all starting states from Arduino
     const { sendData } = this.props;
     const getFullStateMsg = '{get-all-states:1}';
     sendData(getFullStateMsg);
 
+    console.log('SESSION_DURATION', Settings.SESSION_DURATION);
     const dayInterval = Settings.SESSION_DURATION / Settings.DAYS_PER_SESSION;
     console.log('dayInterval', dayInterval);
     const hourInterval = Math.ceil(dayInterval / 24);
@@ -212,13 +244,9 @@ class Simulation extends Component {
     console.log('totalHoursInSession', totalHoursInSession);
     console.log('starting session with hourInterval', hourInterval);
 
-    // Select forecast data for this session
-    DataManager.selectNewForecast();
-
     // Pre-populate chart with demand.
     this.energyData.demand = DataManager.getCurrentForecastField('Demand');
-
-    this.setState({ forecast: DataManager.getForecastSummary(), chartData: this.energyData });
+    this.setState({ chartData: this.energyData });
 
     this.hourlyInterval = setInterval(() => {
       const { hourIndex } = this.state;
@@ -239,16 +267,28 @@ class Simulation extends Component {
         const demand = DataManager.getDemand(hourIndex);
 
         // Calculate efficiency score
-
         const difference = (demand - production);
-        console.log(difference);
         const efficiency = difference * Settings.EFFICIENCY_SCORE_MULTIPLIER;
+        this.scoreHistory.push(efficiency);
+
+        // Check for Message Center triggers
+        // TODO: See if any message center is triggered based on
+        // current efficiency score.
+        const triggeredMessage = DataManager.checkMessageCenterTriggers(efficiency);
+        console.log('triggeredMessage');
+        console.log(triggeredMessage);
+        let { messageCenter } = this.state;
+        // Remember all triggered message centers for score screen
+        if (triggeredMessage) {
+          this.feedbackHistory.push(triggeredMessage);
+          messageCenter = triggeredMessage;
+        }
 
         this.setState({
           production,
           demand,
           efficiency,
-          messageCenter: DataManager.getRandomMessageCenter(),
+          messageCenter,
           time: DataManager.getTime(hourIndex),
           hourIndex: hourIndex + 1,
           chartData: this.energyData,
@@ -258,11 +298,24 @@ class Simulation extends Component {
   }
 
   endSimulation() {
-    console.log('endSimulation');
-    const { efficiencyScore } = this.state;
-    console.log('efficiency score', efficiencyScore);
+    console.log('==== endSimulation ====');
 
+    // Stop all timers
     clearInterval(this.hourlyInterval);
+
+    // Calcualte final efficiency score.
+    // TODO: Move this reusable func into utils
+    const averageArray = (array) => array.reduce((a, b) => a + b) / array.length;
+    const finalEfficiencyScore = averageArray(this.scoreHistory);
+    console.log('finalEfficiencyScore', finalEfficiencyScore);
+
+    // Display score screen
+    this.setState(
+      {
+        finalEfficiencyScore,
+        currentView: 'score',
+      },
+    );
   }
 
   outputSerial(msg) {
@@ -276,26 +329,21 @@ class Simulation extends Component {
 
   render() {
     const {
-      time, forecast, messageCenter, production, demand, efficiency, chartData,
+      currentView,
+      time,
+      forecast,
+      messageCenter,
+      production,
+      demand,
+      efficiency,
+      chartData,
+      finalEfficiencyScore,
     } = this.state;
     return (
       <div className="simulation">
         <ArduinoEmulator onChange={this.onData} />
         <Forecast days={forecast} />
-        <div className="message-center window">
-          <h3>Message Center</h3>
-          <h4>
-            {messageCenter.Mood === 'angry' ? <span role="img" aria-label="angry">😠</span> : <span role="img" aria-label="happy">😍</span>}
-          </h4>
-          <p>{messageCenter.Body}</p>
-          <h4>
-            Time:
-            {' '}
-            <Moment date={time} format="hh:mm" />
-            <br />
-            {time}
-          </h4>
-        </div>
+        <MessageCenter time={time} message={messageCenter} />
         <Container className="power-levels window">
           <Row>
             <PowerMeter label="Production" color="green" level={production} barHeight={450} />
@@ -317,6 +365,12 @@ class Simulation extends Component {
         <div className="energy-chart window" style={{ display: 'none' }}>
           <h3>Energy Chart</h3>
           <EnergyChart chartData={chartData} />
+        </div>
+        <div className="modals-container">
+          {{
+            ready: <ReadyScreen key="ready" forecast={forecast} />,
+            score: <ScoreScreen key="score" efficiencyScore={finalEfficiencyScore} chartData={chartData} customerFeedback={this.feedbackHistory} />,
+          }[currentView]}
         </div>
       </div>
     );
