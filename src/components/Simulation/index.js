@@ -13,6 +13,7 @@ import EnergyChart from '../EnergyChart';
 import MessageCenter from '../MessageCenter';
 import ScoreScreen from '../ScoreScreen';
 import ReadyScreen from '../ReadyScreen';
+import { AverageArray } from '../../utils';
 
 class Simulation extends Component {
   constructor(props) {
@@ -26,8 +27,8 @@ class Simulation extends Component {
       efficiency: 0,
       time: '0:00',
       hourIndex: 0,
-      chartData: {},
-      finalEfficiencyScore: 0,
+      energyData: {},
+      finalScore: 0,
     };
 
     this.onData = this.onData.bind(this);
@@ -36,9 +37,7 @@ class Simulation extends Component {
     this.getCurrentProduction = this.getCurrentProduction.bind(this);
 
     this.liveData = {};
-    this.energyData = {};
-    this.feedbackHistory = [];
-    this.scoreHistory = [];
+    this.sessionData = {};
 
     this.hourlyInterval = {};
   }
@@ -155,7 +154,8 @@ class Simulation extends Component {
       const panelId = activePanels.gas[i];
 
       // Gas input level (created from button presses)
-      const controlLevel = this.liveData[`${panelId}-level`];
+      let controlLevel = this.liveData[`${panelId}-level`];
+      if (!controlLevel) controlLevel = 0;
 
       const panelProduction = controlLevel * Settings.MAX_OUTPUT_PER_PANEL;
       gasProduction += panelProduction;
@@ -167,7 +167,8 @@ class Simulation extends Component {
       const panelId = activePanels.hydro[i];
 
       // Hydro panel lever input
-      const controlLevel = this.liveData[`${panelId}-lever`];
+      let controlLevel = this.liveData[`${panelId}-lever`];
+      if (!controlLevel) controlLevel = 0;
       const panelProduction = controlLevel * Settings.MAX_OUTPUT_PER_PANEL;
       hydroProduction += panelProduction;
     }
@@ -205,7 +206,8 @@ class Simulation extends Component {
   }
 
   reset() {
-    this.energyData = {
+    this.liveData = {};
+    const energy = {
       coal: [],
       gas: [],
       hydro: [],
@@ -214,9 +216,11 @@ class Simulation extends Component {
       demand: [],
       total: [],
     };
-    this.liveData = {};
-    this.feedbackHistory = [];
-    this.scoreHistory = [];
+    this.sessionData = {
+      energy,
+      feedback: [],
+      efficiency: [],
+    };
     clearInterval(this.hourlyInterval);
 
     // Prepare next weather forecast
@@ -245,8 +249,8 @@ class Simulation extends Component {
     console.log('starting session with hourInterval', hourInterval);
 
     // Pre-populate chart with demand.
-    this.energyData.demand = DataManager.getCurrentForecastField('Demand');
-    this.setState({ chartData: this.energyData });
+    this.sessionData.energy.demand = DataManager.getCurrentForecastField('Demand');
+    this.setState({ energyData: this.sessionData.energy });
 
     this.hourlyInterval = setInterval(() => {
       const { hourIndex } = this.state;
@@ -261,7 +265,7 @@ class Simulation extends Component {
         // Add live production snapshot to production history
         Object.entries(productionSnapshot).forEach((entry) => {
           const [key, value] = entry;
-          this.energyData[key].push(value);
+          this.sessionData.energy[key].push(value);
         });
 
         const demand = DataManager.getDemand(hourIndex);
@@ -269,18 +273,16 @@ class Simulation extends Component {
         // Calculate efficiency score
         const difference = (demand - production);
         const efficiency = difference * Settings.EFFICIENCY_SCORE_MULTIPLIER;
-        this.scoreHistory.push(efficiency);
+        this.sessionData.efficiency.push(efficiency);
 
         // Check for Message Center triggers
         // TODO: See if any message center is triggered based on
         // current efficiency score.
         const triggeredMessage = DataManager.checkMessageCenterTriggers(efficiency);
-        console.log('triggeredMessage');
-        console.log(triggeredMessage);
         let { messageCenter } = this.state;
         // Remember all triggered message centers for score screen
         if (triggeredMessage) {
-          this.feedbackHistory.push(triggeredMessage);
+          this.sessionData.feedback.push(triggeredMessage);
           messageCenter = triggeredMessage;
         }
 
@@ -291,28 +293,23 @@ class Simulation extends Component {
           messageCenter,
           time: DataManager.getTime(hourIndex),
           hourIndex: hourIndex + 1,
-          chartData: this.energyData,
+          energyData: this.sessionData.energy,
         });
       }
     }, hourInterval);
   }
 
   endSimulation() {
-    console.log('==== endSimulation ====');
-
     // Stop all timers
     clearInterval(this.hourlyInterval);
 
     // Calcualte final efficiency score.
-    // TODO: Move this reusable func into utils
-    const averageArray = (array) => array.reduce((a, b) => a + b) / array.length;
-    const finalEfficiencyScore = averageArray(this.scoreHistory);
-    console.log('finalEfficiencyScore', finalEfficiencyScore);
+    const finalScore = AverageArray(this.sessionData.efficiency);
 
     // Display score screen
     this.setState(
       {
-        finalEfficiencyScore,
+        finalScore,
         currentView: 'score',
       },
     );
@@ -336,8 +333,8 @@ class Simulation extends Component {
       production,
       demand,
       efficiency,
-      chartData,
-      finalEfficiencyScore,
+      energyData,
+      finalScore,
     } = this.state;
     return (
       <div className="simulation">
@@ -364,14 +361,12 @@ class Simulation extends Component {
         </Container>
         <div className="energy-chart window" style={{ display: 'none' }}>
           <h3>Energy Chart</h3>
-          <EnergyChart chartData={chartData} />
+          <EnergyChart chartData={energyData} />
         </div>
-        <div className="modals-container">
-          {{
-            ready: <ReadyScreen key="ready" forecast={forecast} />,
-            score: <ScoreScreen key="score" efficiencyScore={finalEfficiencyScore} chartData={chartData} customerFeedback={this.feedbackHistory} />,
-          }[currentView]}
-        </div>
+        {{
+          ready: <div className="modal-container"><ReadyScreen key="ready" forecast={forecast} /></div>,
+          score: <div className="modal-container"><ScoreScreen key="score" efficiencyScore={finalScore} chartData={energyData} customerFeedback={this.sessionData.feedback} /></div>,
+        }[currentView]}
       </div>
     );
   }

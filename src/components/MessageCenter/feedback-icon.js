@@ -9,8 +9,7 @@ function FeedbackIcon({ mood }) {
   );
 }
 
-FeedbackIcon.propTypes = {
-  mood: PropTypes.string.isRequired,
-};
+FeedbackIcon.defaultProps = { mood: 'happy' };
+FeedbackIcon.propTypes = { mood: PropTypes.string };
 
 export default FeedbackIcon;

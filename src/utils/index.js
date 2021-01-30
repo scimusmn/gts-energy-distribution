@@ -27,6 +27,12 @@ export const FishObject = (obj) => {
   return obj[rKey];
 };
 
+// Average an array of numbers
+export const AverageArray = (array) => array.reduce((a, b) => a + b) / array.length;
+
+// Sum an array of numbers
+export const SumArray = (array) => array.reduce((a, b) => a + b, 0);
+
 // Sort a larger array of objects into multiple
 // smaller arrays by a matching property
 export const CollateByProperty = (array, property) => array.reduce((acc, cur) => {
@@ -39,5 +45,7 @@ export default {
   FishArray,
   FishMany,
   FishObject,
+  AverageArray,
+  SumArray,
   CollateByProperty,
 };

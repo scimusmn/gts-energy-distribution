@@ -92,15 +92,17 @@ body {
   }
 }
 
-.modals-container {
-  background-color: rgba(0, 0, 0, 0.3);
+.modal-container {
+  background-color: rgba(0, 0, 0, 0.5);
   height: 100%;
   width: 100%;
 
-  .window {
-    background-color: beige;
-    height: 88%;
-    width: 85%;
+  .modal-screen {
+    background-color: white;
+    height: 980px;
+    left: 400px;
+    position: absolute;
+    top: 20px;
   }
 }
 

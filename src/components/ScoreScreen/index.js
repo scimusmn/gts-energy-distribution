@@ -2,12 +2,14 @@
 import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import PropTypes from 'prop-types';
+import { Doughnut } from 'react-chartjs-2';
 import EnergyChart from '../EnergyChart';
-import { NewKey } from '../../utils';
+import ChartColors from '../EnergyChart/chart-colors';
+import { NewKey, SumArray } from '../../utils';
 import FeedbackIcon from '../MessageCenter/feedback-icon';
 
 const ScoreScreen = ({ efficiencyScore, chartData, customerFeedback }) => (
-  <Container className="score-screen window">
+  <Container className="modal-screen window">
     <Row>
       <Col>
         <h1>How did you do?</h1>
@@ -20,8 +22,10 @@ const ScoreScreen = ({ efficiencyScore, chartData, customerFeedback }) => (
         <h1 className="large">{efficiencyScore.toFixed(1)}</h1>
       </Col>
       <Col>
-        <h4>Energy produced</h4>
-        <h1>[Pie chart goes here]</h1>
+        <Doughnut
+          data={ScoreScreen.collatePieData(chartData)}
+          options={ScoreScreen.PieOptions}
+        />
       </Col>
     </Row>
     <br />
@@ -57,6 +61,55 @@ const ScoreScreen = ({ efficiencyScore, chartData, customerFeedback }) => (
     </Row>
   </Container>
 );
+
+ScoreScreen.PieOptions = {
+  legend: {
+    display: true,
+    position: 'left',
+  },
+  elements: {
+    arc: {
+      borderWidth: 0,
+    },
+  },
+};
+
+ScoreScreen.collatePieData = (energyData) => {
+  const labels = ['Coal', 'Natural Gas', 'Hydro', 'Solar', 'Wind'];
+
+  const {
+    coal, gas, hydro, solar, wind,
+  } = energyData;
+
+  console.log('energyData');
+  console.log(energyData);
+
+  const energySums = [
+    SumArray(coal),
+    SumArray(gas),
+    SumArray(hydro),
+    SumArray(solar),
+    SumArray(wind),
+  ];
+
+  console.log('energySums');
+  console.log(energySums);
+
+  const pieData = {
+    maintainAspectRatio: false,
+    responsive: false,
+    labels,
+    datasets: [
+      {
+        data: energySums,
+        backgroundColor: ChartColors,
+        hoverBackgroundColor: ChartColors,
+      },
+    ],
+  };
+
+  return pieData;
+};
 
 ScoreScreen.defaultProps = {
   chartData: {},

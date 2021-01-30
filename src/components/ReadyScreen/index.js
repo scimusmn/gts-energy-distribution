@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import Forecast from '../Forecast';
 
 const ReadyScreen = ({ forecast }) => (
-  <Container className="score-screen window">
+  <Container className="modal-screen window">
     <Row>
       <Col>
         <h1>Ready?</h1>
