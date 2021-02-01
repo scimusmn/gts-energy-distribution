@@ -212,19 +212,24 @@ void onParse(char *message, char *value)
     else if (strcmp(message, "gas-3-light-bar") == 0)
         lightBarGraph(22, atoi(value)); // value of first pixel to be lit.
 
-    else if (strcmp(message, "solar-1-light-bar") == 0)
+    else if (strcmp(message, "hydro-1-light-bar") == 0)
         lightBarGraph(30, atoi(value)); // value of first pixel to be lit.
-    else if (strcmp(message, "solar-2-light-bar") == 0)
+    else if (strcmp(message, "hydro-2-light-bar") == 0)
         lightBarGraph(38, atoi(value)); // value of first pixel to be lit.
-    else if (strcmp(message, "solar-3-light-bar") == 0)
+
+    else if (strcmp(message, "solar-1-light-bar") == 0)
         lightBarGraph(46, atoi(value)); // value of first pixel to be lit.
+    else if (strcmp(message, "solar-2-light-bar") == 0)
+        lightBarGraph(54, atoi(value)); // value of first pixel to be lit.
+    else if (strcmp(message, "solar-3-light-bar") == 0)
+        lightBarGraph(62, atoi(value)); // value of first pixel to be lit.
 
     else if (strcmp(message, "wind-1-light-bar") == 0)
-        lightBarGraph(54, atoi(value)); // value of first pixel to be lit.
-    else if (strcmp(message, "wind-2-light-bar") == 0)
-        lightBarGraph(62, atoi(value)); // value of first pixel to be lit.
-    else if (strcmp(message, "wind-3-light-bar") == 0)
         lightBarGraph(70, atoi(value)); // value of first pixel to be lit.
+    else if (strcmp(message, "wind-2-light-bar") == 0)
+        lightBarGraph(78, atoi(value)); // value of first pixel to be lit.
+    else if (strcmp(message, "wind-3-light-bar") == 0)
+        lightBarGraph(86, atoi(value)); // value of first pixel to be lit.
 
     else if (strcmp(message, "get-all-states") == 0) //TODO
     {
@@ -234,6 +239,9 @@ void onParse(char *message, char *value)
             levers[i].sendPercent();
         }
     }
+
+    if (strcmp(message, "neopixels-show") == 0)
+        pixels.show();
 
     else if (strcmp(message, "wake-arduino") == 0 && strcmp(value, "1") == 0)
     {
@@ -256,10 +264,6 @@ void lightPixel(int pixel_index, char *status)
         pixels.setPixelColor(pixel_index, pixels.Color(40, 10, 0));
     else if (strcmp(status, "off") == 0)
         pixels.setPixelColor(pixel_index, pixels.Color(0, 0, 0));
-
-    pixels.show();
-
-    //TODO
 }
 
 void lightBarGraph(int first_pixel, int percent) // displays an int, 0-100 on 8 neopixels given a starting pixel.
@@ -279,5 +283,4 @@ void lightBarGraph(int first_pixel, int percent) // displays an int, 0-100 on 8 
             bar = 0;
         }
     }
-    pixels.show();
 }
