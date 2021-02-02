@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import { Line } from 'react-chartjs-2';
+import withAnimationFrame from '../AnimationFrameHOC';
 
 class EnergyChart extends Component {
   constructor(props) {
@@ -12,17 +13,16 @@ class EnergyChart extends Component {
     };
 
     this.chartRef = React.createRef();
+    this.onAnimationFrame = this.onAnimationFrame.bind(this);
 
     this.latestData = {};
   }
 
   componentDidMount() {
-    const { isLive } = this.props;
+    const { isLive, setAnimationFrameCallback } = this.props;
     if (isLive) {
-      // TODO: Replace this interval with a requestAnimationFrame hook.
-      setInterval(() => {
-        this.updateChartData();
-      }, 33);
+      // HOC function
+      setAnimationFrameCallback(this.onAnimationFrame);
     } else {
       // Only update/render once
       this.updateChartData();
@@ -31,6 +31,10 @@ class EnergyChart extends Component {
 
   shouldComponentUpdate() {
     return true;
+  }
+
+  onAnimationFrame() {
+    this.updateChartData();
   }
 
   updateChartData() {
@@ -48,11 +52,9 @@ class EnergyChart extends Component {
   }
 
   render() {
-    console.log('rendering chart');
-    const { chartData } = this.props;
-    const { demand } = chartData;
+    const { chartData, isLive } = this.props;
+    const { demand, timeLabels } = chartData;
 
-    const labels = [];
     const demandData = [];
 
     let highestDemand = 0;
@@ -61,7 +63,6 @@ class EnergyChart extends Component {
       for (let i = 0; i < demand.length; i += 1) {
         const demandVal = demand[i];
         demandData.push(demandVal);
-        labels.push(`h${i}`);
         if (demandVal > highestDemand) highestDemand = demandVal;
       }
     }
@@ -69,19 +70,12 @@ class EnergyChart extends Component {
     const yAxisMin = 0;
     const yAxisMax = parseFloat(highestDemand) + 10;
 
-    // Temp - these are no longer needed
-    const coalData = [1, 5, 3, 5, 2, 5];
-    const gasData = [1, 5, 3, 5, 2, 5];
-    const hydroData = [1, 2, 3, 4, 5, 6];
-    const solarData = [1, 3, 5, 7, 5, 1];
-    const windData = [1, 3, 5, 7, 5, 1];
-
     const data = {
-      labels,
+      labels: timeLabels,
       datasets: [
         {
           label: 'Coal',
-          data: coalData,
+          data: [],
           fill: true,
           borderWidth: 0,
           backgroundColor: 'yellow',
@@ -90,7 +84,7 @@ class EnergyChart extends Component {
         },
         {
           label: 'Gas',
-          data: gasData,
+          data: [],
           fill: true,
           borderWidth: 0,
           backgroundColor: 'orange',
@@ -99,7 +93,7 @@ class EnergyChart extends Component {
         },
         {
           label: 'Hydro',
-          data: hydroData,
+          data: [],
           fill: true,
           borderWidth: 0,
           backgroundColor: 'teal',
@@ -108,7 +102,7 @@ class EnergyChart extends Component {
         },
         {
           label: 'Solar',
-          data: solarData,
+          data: [],
           fill: true,
           borderWidth: 0,
           backgroundColor: 'purple',
@@ -117,7 +111,7 @@ class EnergyChart extends Component {
         },
         {
           label: 'Wind',
-          data: windData,
+          data: [],
           fill: true,
           borderWidth: 0,
           backgroundColor: 'red',
@@ -131,14 +125,13 @@ class EnergyChart extends Component {
           backgroundColor: 'rgba(0,0,0,0.7)',
           borderColor: 'rgba(0,0,0,0.7)',
           borderDash: [10, 5],
-
         },
       ],
     };
 
     const options = {
       animation: {
-        duration: 0,
+        duration: (!isLive ? 750 : 0),
       },
       maintainAspectRatio: true,
       elements: {
@@ -190,6 +183,7 @@ EnergyChart.defaultProps = {
 EnergyChart.propTypes = {
   chartData: propTypes.instanceOf(Object),
   isLive: propTypes.bool,
+  setAnimationFrameCallback: propTypes.instanceOf(Function).isRequired,
 };
 
-export default EnergyChart;
+export default withAnimationFrame(EnergyChart);

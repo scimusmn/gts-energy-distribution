@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Container, Row, Col } from 'reactstrap';
+import GaugeChart from 'react-gauge-chart';
 import withSerialCommunication from '../../Arduino/arduino-base/ReactSerial/SerialHOC';
 import ArduinoEmulator from '../ArduinoEmulator';
 import DataManager from '../../data/data-manager';
@@ -13,7 +14,7 @@ import EnergyChart from '../EnergyChart';
 import MessageCenter from '../MessageCenter';
 import ScoreScreen from '../ScoreScreen';
 import ReadyScreen from '../ReadyScreen';
-import { AverageArray } from '../../utils';
+import { AverageArray, Map } from '../../utils';
 
 class Simulation extends Component {
   constructor(props) {
@@ -33,31 +34,48 @@ class Simulation extends Component {
 
     this.onData = this.onData.bind(this);
     this.onStartButton = this.onStartButton.bind(this);
-    this.outputSerial = this.outputSerial.bind(this);
+    this.queueMessage = this.queueMessage.bind(this);
+    this.releaseQueue = this.releaseQueue.bind(this);
     this.getCurrentProduction = this.getCurrentProduction.bind(this);
 
     this.liveData = {};
     this.sessionData = {};
-
     this.hourlyInterval = {};
+    this.messageQueue = {};
   }
-
 
   componentDidMount() {
     const { setOnDataCallback } = this.props;
     setOnDataCallback(this.onData);
     this.reset();
+
+    // This timed release of outgoing
+    // Arduino messages ensures
+    // the Arduino NeoPixel library
+    // has enough time to execute it's
+    // 'show' method that can corrupt
+    // incoming serial data - tn, 2021
+    this.interruptInterval = setInterval(() => {
+      this.releaseQueue();
+    }, 60);
+
+    // Wake up the Arduino
+    this.queueMessage('wake-arduino', '1');
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interruptInterval);
   }
 
   onData(data) {
-    // console.log('onData:', data);
+    console.log('onData:', data);
 
     const message = Object.keys(data)[0];
     const value = Object.values(data)[0];
 
     this.liveData[message] = value;
 
-    if (message === 'start-button') {
+    if (message === 'start-button' && value === '1') {
       this.onStartButton();
       return;
     }
@@ -75,20 +93,22 @@ class Simulation extends Component {
       // Increment if up arrow was pressed,
       // decrement if down arrow was pressed
       if (message.endsWith('-down')) adjustment *= -1;
-      let newVal = currentLevel + adjustment;
+      let controlLevel = currentLevel + adjustment;
       // Clamp to 0–100;
-      newVal = Math.min(Math.max(newVal, 0), 100);
-      this.liveData[levelKey] = newVal;
-      console.log('arrow btn pressed', panelId, newVal);
+      controlLevel = Math.min(Math.max(controlLevel, 0), 100);
+      this.liveData[levelKey] = controlLevel;
+
+      // Immediately echo back gas light bar message
+      this.queueMessage(`{hydro-${panelId}-light-bar`, controlLevel);
+
+      return;
     }
 
-    // Immediately echo back light bar messages
-    // if (message.startsWith('hydro-') && message.endsWith('-lever')) {
-    //   const panelId = message.substring(6, 7);
-    //   const responseMsg = `{hydro-${panelId}-light-bar:${value}}`;
-    //   const { sendData } = this.props;
-    //   sendData(responseMsg);
-    // }
+    // Immediately echo back hydro light bar messages
+    if (message.startsWith('hydro-') && message.endsWith('-lever')) {
+      const panelId = message.substring(6, 7);
+      this.queueMessage(`{hydro-${panelId}-light-bar`, value);
+    }
   }
 
   onStartButton() {
@@ -97,6 +117,8 @@ class Simulation extends Component {
     const { currentView } = this.state;
 
     if (currentView === 'ready') {
+      // Stop flashing start button
+      this.queueMessage('start-button-light', '0');
       this.setState({ currentView: '' });
       this.startSimulation();
     } else if (currentView === 'score') {
@@ -144,7 +166,7 @@ class Simulation extends Component {
       // but we'll need to eventually swap for the decoupled "state"
       // of each panel. ('off', 'warming', 'on')
 
-      const panelProduction = controlLevel * Settings.MAX_OUTPUT_PER_PANEL;
+      const panelProduction = parseFloat(controlLevel) * Settings.MAX_OUTPUT_PER_PANEL;
       coalProduction += panelProduction;
     }
 
@@ -157,7 +179,7 @@ class Simulation extends Component {
       let controlLevel = this.liveData[`${panelId}-level`];
       if (!controlLevel) controlLevel = 0;
 
-      const panelProduction = controlLevel * Settings.MAX_OUTPUT_PER_PANEL;
+      const panelProduction = (parseFloat(controlLevel) / 100) * Settings.MAX_OUTPUT_PER_PANEL;
       gasProduction += panelProduction;
     }
 
@@ -169,7 +191,7 @@ class Simulation extends Component {
       // Hydro panel lever input
       let controlLevel = this.liveData[`${panelId}-lever`];
       if (!controlLevel) controlLevel = 0;
-      const panelProduction = controlLevel * Settings.MAX_OUTPUT_PER_PANEL;
+      const panelProduction = (parseFloat(controlLevel) / 100) * Settings.MAX_OUTPUT_PER_PANEL;
       hydroProduction += panelProduction;
     }
 
@@ -199,8 +221,8 @@ class Simulation extends Component {
     });
     production.total = total;
 
-    console.log('Production snapshot:');
-    console.log(production);
+    // console.log('Production snapshot:');
+    // console.log(production);
 
     return production;
   }
@@ -231,30 +253,26 @@ class Simulation extends Component {
       forecast: DataManager.getForecastSummary(),
       currentView: 'ready',
     });
+
+    // Flash start button
+    this.queueMessage('start-button-light', '1');
   }
 
   startSimulation() {
     // Get all starting states from Arduino
-    const { sendData } = this.props;
-    const getFullStateMsg = '{get-all-states:1}';
-    sendData(getFullStateMsg);
+    this.queueMessage('get-all-states', '1');
 
-    console.log('SESSION_DURATION', Settings.SESSION_DURATION);
     const dayInterval = Settings.SESSION_DURATION / Settings.DAYS_PER_SESSION;
-    console.log('dayInterval', dayInterval);
     const hourInterval = Math.ceil(dayInterval / 24);
-    console.log('hourInterval', hourInterval);
     const totalHoursInSession = 24 * Settings.DAYS_PER_SESSION;
-    console.log('totalHoursInSession', totalHoursInSession);
-    console.log('starting session with hourInterval', hourInterval);
 
     // Pre-populate chart with demand.
     this.sessionData.energy.demand = DataManager.getCurrentForecastField('Demand');
+    this.sessionData.energy.timeLabels = DataManager.getCurrentForecastField('Time');
     this.setState({ energyData: this.sessionData.energy });
 
     this.hourlyInterval = setInterval(() => {
       const { hourIndex } = this.state;
-      console.log('Hour passed ->', hourIndex);
 
       if (hourIndex >= totalHoursInSession) {
         this.endSimulation();
@@ -313,15 +331,37 @@ class Simulation extends Component {
         currentView: 'score',
       },
     );
+
+    // Flash start button
+    this.queueMessage('start-button-light', '1');
   }
 
-  outputSerial(msg) {
-    console.log('outputSerial:', msg);
+  queueMessage(message, value) {
+    // Set latest data using message as key
+    // This will intentionally overwrite any data
+    // that has not already been output with same key
+    this.messageQueue[message] = value;
+  }
 
-    // This is where we pass messages
-    // to Serial device.
+  releaseQueue() {
     const { sendData } = this.props;
-    sendData(msg);
+    const messageObjects = Object.entries(this.messageQueue);
+
+    if (messageObjects.length > 0) {
+      // Send all queued messages
+      for (let i = 0; i < messageObjects.length; i += 1) {
+        const [key, value] = messageObjects[i];
+        sendData(`{${key}:${value}}`);
+      }
+
+      // Clear the message queue so we don't
+      // make uneccessary updates.
+      this.messageQueue = {};
+
+      // After sending all queued messages (including light bar updates),
+      // publish them by following a the neopixel show command
+      sendData('{neopixels-show:1}');
+    }
   }
 
   render() {
@@ -349,19 +389,29 @@ class Simulation extends Component {
           <br />
           <Row>
             <Col>
+              <GaugeChart
+                id="gauge-chart1"
+                percent={Map(efficiency, -100, 100, 0.1, 0.9)}
+                colors={['#EA4228', '#5BE12C', '#F5CD19']}
+                hideText
+              />
               <h3>
-                Efficiency:
+                Efficiency
                 {' '}
               </h3>
-              <h1>
+              <h3>
                 {efficiency}
+              </h3>
+              <h1>
+                {Map(Math.abs(efficiency), 0, 100, 100, 75)}
+                %
               </h1>
             </Col>
           </Row>
         </Container>
-        <div className="energy-chart window" style={{ display: 'none' }}>
+        <div className="energy-chart window" style={{ display: 'block' }}>
           <h3>Energy Chart</h3>
-          <EnergyChart chartData={energyData} />
+          <EnergyChart chartData={energyData} isLive />
         </div>
         {{
           ready: <div className="modal-container"><ReadyScreen key="ready" forecast={forecast} /></div>,
