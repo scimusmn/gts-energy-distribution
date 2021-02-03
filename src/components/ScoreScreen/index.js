@@ -1,6 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import { Container, Row, Col } from 'reactstrap';
+import {
+  Modal, ModalHeader, ModalBody, ModalFooter, Container, Row, Col,
+} from 'reactstrap';
 import PropTypes from 'prop-types';
 import { Doughnut } from 'react-chartjs-2';
 import EnergyChart from '../EnergyChart';
@@ -9,57 +11,59 @@ import { NewKey, SumArray } from '../../utils';
 import FeedbackIcon from '../MessageCenter/feedback-icon';
 
 const ScoreScreen = ({ efficiencyScore, chartData, customerFeedback }) => (
-  <Container className="modal-screen window">
-    <Row>
-      <Col>
-        <h1>How did you do?</h1>
-      </Col>
-    </Row>
-    <hr />
-    <Row>
-      <Col>
-        <h4>Final efficiency score</h4>
-        <h1 className="large">{efficiencyScore.toFixed(1)}</h1>
-      </Col>
-      <Col>
-        <Doughnut
-          data={ScoreScreen.collatePieData(chartData)}
-          options={ScoreScreen.PieOptions}
-        />
-      </Col>
-    </Row>
-    <br />
-    <br />
-    <Row>
-      <Col>
-        <h4>Customer approval</h4>
-        <div className="customer-approval window">
-          {customerFeedback.map((feedback) => (
-            <FeedbackIcon
-              key={NewKey()}
-              mood={feedback.Mood}
+  <Modal isOpen size="xl">
+    <ModalHeader><h1>How did you do?</h1></ModalHeader>
+    <ModalBody>
+      <Container fluid className="modal-screen container-fluid">
+        <Row>
+          <Col>
+            <h4>Final efficiency score</h4>
+            <h1 className="large">
+              {efficiencyScore}
+              %
+            </h1>
+          </Col>
+          <Col>
+            <h4>Production breakdown</h4>
+            <Doughnut
+              data={ScoreScreen.collatePieData(chartData)}
+              options={ScoreScreen.PieOptions}
             />
-          ))}
-        </div>
-      </Col>
-      <Col>
-        <h4>Demand</h4>
-        <EnergyChart chartData={chartData} isLive={false} />
-      </Col>
-    </Row>
-    <hr />
-    <Row>
-      <Col>
-        <h2>
-          Press
-          {' '}
-          <strong>Start</strong>
-          {' '}
-          button to try again.
-        </h2>
-      </Col>
-    </Row>
-  </Container>
+          </Col>
+        </Row>
+        <br />
+        <br />
+        <Row>
+          <Col style={{ display: 'none' }}>
+            <h4>Customer approval</h4>
+            <div className="customer-approval window">
+              {customerFeedback.map((feedback) => (
+                <FeedbackIcon
+                  key={NewKey()}
+                  mood={feedback.Mood}
+                />
+              ))}
+            </div>
+          </Col>
+          <Col>
+            <h4>Demand</h4>
+            <EnergyChart chartData={chartData} isLive={false} />
+          </Col>
+        </Row>
+      </Container>
+    </ModalBody>
+    <ModalFooter>
+      <h2>
+        Press
+        {' '}
+        <strong>Start</strong>
+        {' '}
+        button to try again!
+      </h2>
+    </ModalFooter>
+  </Modal>
+
+
 );
 
 ScoreScreen.PieOptions = {
@@ -81,9 +85,6 @@ ScoreScreen.collatePieData = (energyData) => {
     coal, gas, hydro, solar, wind,
   } = energyData;
 
-  console.log('energyData');
-  console.log(energyData);
-
   const energySums = [
     SumArray(coal),
     SumArray(gas),
@@ -91,9 +92,6 @@ ScoreScreen.collatePieData = (energyData) => {
     SumArray(solar),
     SumArray(wind),
   ];
-
-  console.log('energySums');
-  console.log(energySums);
 
   const pieData = {
     maintainAspectRatio: false,

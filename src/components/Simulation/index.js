@@ -10,7 +10,6 @@ import DataManager from '../../data/data-manager';
 import Settings from '../../data/settings';
 import Forecast from '../Forecast';
 import PowerMeter from '../PowerMeter';
-import EnergyChart from '../EnergyChart';
 import MessageCenter from '../MessageCenter';
 import ScoreScreen from '../ScoreScreen';
 import ReadyScreen from '../ReadyScreen';
@@ -290,7 +289,15 @@ class Simulation extends Component {
 
         // Calculate efficiency score
         const difference = (demand - production);
-        const efficiency = difference * Settings.EFFICIENCY_SCORE_MULTIPLIER;
+        // TODO: Check for blackout condition using difference.
+
+        let efficiency = difference * Settings.EFFICIENCY_SCORE_MULTIPLIER;
+        console.log('efficiency effi===', efficiency);
+        // Convert difference to 0–1 percentage score
+        efficiency = Math.abs(efficiency); // Distance from 0
+        efficiency = Map(efficiency, 0, Settings.MAX_EXPECTED_DEMAND, 1, 0); // Map to 0–1
+
+        console.log('calced effi===', efficiency);
         this.sessionData.efficiency.push(efficiency);
 
         // Check for Message Center triggers
@@ -322,7 +329,7 @@ class Simulation extends Component {
     clearInterval(this.hourlyInterval);
 
     // Calcualte final efficiency score.
-    const finalScore = AverageArray(this.sessionData.efficiency);
+    const finalScore = Math.ceil(AverageArray(this.sessionData.efficiency));
 
     // Display score screen
     this.setState(
@@ -376,6 +383,7 @@ class Simulation extends Component {
       energyData,
       finalScore,
     } = this.state;
+
     return (
       <div className="simulation">
         <ArduinoEmulator onChange={this.onData} />
@@ -391,7 +399,7 @@ class Simulation extends Component {
             <Col style={{ textAlign: 'center' }}>
               <GaugeChart
                 id="gauge-chart1"
-                percent={Map(Math.abs(efficiency), 0, 100, 1.0, 0.0)}
+                percent={efficiency}
                 colors={['#EA4228', '#F5CD19', '#5BE12C']}
                 hideText
               />
@@ -400,19 +408,15 @@ class Simulation extends Component {
                 {' '}
               </h3>
               <h1>
-                {Math.round(Map(Math.abs(efficiency), 0, 100, 100, 0.0))}
+                {Math.ceil(efficiency * 100)}
                 %
               </h1>
             </Col>
           </Row>
         </Container>
-        <div className="energy-chart window" style={{ display: 'block' }}>
-          <h3>Energy Chart</h3>
-          <EnergyChart chartData={energyData} isLive />
-        </div>
         {{
-          ready: <div className="modal-container"><ReadyScreen key="ready" forecast={forecast} /></div>,
-          score: <div className="modal-container"><ScoreScreen key="score" efficiencyScore={finalScore} chartData={energyData} customerFeedback={this.sessionData.feedback} /></div>,
+          ready: <ReadyScreen key="ready" forecast={forecast} />,
+          score: <ScoreScreen key="score" efficiencyScore={finalScore * 100} chartData={energyData} customerFeedback={this.sessionData.feedback} />,
         }[currentView]}
       </div>
     );

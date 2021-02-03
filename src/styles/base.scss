@@ -41,7 +41,7 @@ body {
 
 .message-center {
   left: 5%;
-  top: 38%;
+  top: 50%;
   width: 50%;
 }
 
@@ -63,12 +63,12 @@ body {
 
 .emulator {
   background-color: none;
-  bottom: 0%;
   left: 0%;
   padding: 18px;
   position: absolute;
+  top: 90%;
   width: 100%;
-  z-index: 99;
+  z-index: 99999;
 
   .panel {
     background-color: rgba(255, 255, 255, 1);
@@ -81,8 +81,8 @@ body {
 
     .col {
       background-color: rgba(255, 255, 255, 0.4);
-      border: 1px solid #ddd;
-      border-radius: 7px;
+      // border: 1px solid #ddd;
+      // border-radius: 7px;
       margin: 2px;
     }
 
@@ -92,21 +92,7 @@ body {
   }
 }
 
-.modal-container {
-  background-color: rgba(0, 0, 0, 0.5);
-  height: 100%;
-  width: 100%;
-
-  .modal-screen {
-    background-color: white;
-    height: 980px;
-    left: 400px;
-    position: absolute;
-    top: 20px;
-  }
-}
-
 // Animation helpers
 .tween-height {
-  transition: height 0.3s ease-in-out;
+  transition: height 0.2s ease-in-out;
 }

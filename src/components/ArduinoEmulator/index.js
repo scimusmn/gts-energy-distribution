@@ -23,7 +23,7 @@ const ArduinoEmulator = ({ onChange }) => {
     const panelNum = i + 1;
     coalPanels.push((
       <Col key={i}>
-        <p>{panelNum}</p>
+        {/* <p>{panelNum}</p> */}
         <Toggle msg={`coal-${panelNum}-jack`} onChange={onChange} />
         <br />
         <br />
@@ -42,7 +42,7 @@ const ArduinoEmulator = ({ onChange }) => {
     const panelNum = i + 1;
     gasPanels.push((
       <Col key={i}>
-        <p>{panelNum}</p>
+        {/* <p>{panelNum}</p> */}
         <Toggle msg={`gas-${panelNum}-jack`} onChange={onChange} />
         <br />
         <br />
@@ -59,7 +59,7 @@ const ArduinoEmulator = ({ onChange }) => {
     const panelNum = i + 1;
     hydroPanels.push((
       <Col key={i}>
-        <p>{panelNum}</p>
+        {/* <p>{panelNum}</p> */}
         <Toggle msg={`hydro-${panelNum}-jack`} onChange={onChange} />
         <Range msg={`hydro-${panelNum}-lever`} onChange={onChange} />
       </Col>
@@ -71,7 +71,7 @@ const ArduinoEmulator = ({ onChange }) => {
     const panelNum = i + 1;
     solarPanels.push((
       <Col key={i}>
-        <p>{panelNum}</p>
+        {/* <p>{panelNum}</p> */}
         <Toggle msg={`solar-${panelNum}-jack`} onChange={onChange} />
       </Col>
     ));
@@ -82,7 +82,7 @@ const ArduinoEmulator = ({ onChange }) => {
     const panelNum = i + 1;
     windPanels.push((
       <Col key={i}>
-        <p>{panelNum}</p>
+        {/* <p>{panelNum}</p> */}
         <Toggle msg={`wind-${panelNum}-jack`} onChange={onChange} />
       </Col>
     ));
@@ -91,8 +91,11 @@ const ArduinoEmulator = ({ onChange }) => {
   return (
     <div className="emulator" style={visible ? { display: 'block' } : { display: 'none' }}>
       <GlobalHotKeys
-        keyMap={{ TOGGLE_EMULATION: 'e' }}
-        handlers={{ TOGGLE_EMULATION: () => setVisible((state) => !state) }}
+        keyMap={{ TOGGLE_EMULATION: 'e', START_BUTTON: 's' }}
+        handlers={{
+          TOGGLE_EMULATION: () => setVisible((state) => !state),
+          START_BUTTON: () => onChange({ 'start-button': 1 }),
+        }}
       />
       <Row>
         <Col className="panel">

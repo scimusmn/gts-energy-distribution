@@ -40,11 +40,16 @@ class EnergyChart extends Component {
   updateChartData() {
     const { chartData } = this.props;
     const { datasets } = this.chartRef.current.chartInstance.config.data;
-    datasets[0].data = chartData.coal;
-    datasets[1].data = chartData.gas;
-    datasets[2].data = chartData.hydro;
-    datasets[3].data = chartData.solar;
-    datasets[4].data = chartData.wind;
+
+    // Uncomment for stacked mode
+    // datasets[0].data = chartData.coal;
+    // datasets[1].data = chartData.gas;
+    // datasets[2].data = chartData.hydro;
+    // datasets[3].data = chartData.solar;
+    // datasets[4].data = chartData.wind;
+
+    // Show total production
+    datasets[0].data = chartData.total;
 
     this.chartRef.current.chartInstance.update({
       preservation: true,
@@ -70,63 +75,85 @@ class EnergyChart extends Component {
     const yAxisMin = 0;
     const yAxisMax = parseFloat(highestDemand) + 10;
 
+    // const datasets = [
+    //   {
+    //     label: 'Coal',
+    //     data: [],
+    //     fill: true,
+    //     borderWidth: 0,
+    //     backgroundColor: 'yellow',
+    //     borderColor: 'rgba(0,0,0,0)',
+    //     yAxisID: 'production',
+    //   },
+    //   {
+    //     label: 'Gas',
+    //     data: [],
+    //     fill: true,
+    //     borderWidth: 0,
+    //     backgroundColor: 'orange',
+    //     borderColor: 'rgba(0,0,0,0)',
+    //     yAxisID: 'production',
+    //   },
+    //   {
+    //     label: 'Hydro',
+    //     data: [],
+    //     fill: true,
+    //     borderWidth: 0,
+    //     backgroundColor: 'teal',
+    //     borderColor: 'rgba(0,0,0,0)',
+    //     yAxisID: 'production',
+    //   },
+    //   {
+    //     label: 'Solar',
+    //     data: [],
+    //     fill: true,
+    //     borderWidth: 0,
+    //     backgroundColor: 'purple',
+    //     borderColor: 'rgba(0,0,0,0)',
+    //     yAxisID: 'production',
+    //   },
+    //   {
+    //     label: 'Wind',
+    //     data: [],
+    //     fill: true,
+    //     borderWidth: 0,
+    //     backgroundColor: 'red',
+    //     borderColor: 'rgba(0,0,0,0)',
+    //     yAxisID: 'production',
+    //   },
+    //   {
+    //     label: 'Demand',
+    //     data: demandData,
+    //     fill: false,
+    //     backgroundColor: 'rgba(0,0,0,0.7)',
+    //     borderColor: 'rgba(0,0,0,0.7)',
+    //     borderDash: [10, 5],
+    //   },
+    // ];
+
+    const datasets = [
+      {
+        label: 'Production',
+        data: [],
+        fill: true,
+        borderWidth: 2,
+        backgroundColor: 'rgba(20, 85, 255, 0.7)',
+        borderColor: 'rgba(20, 85, 255, 1.0)',
+        yAxisID: 'production',
+      },
+      {
+        label: 'Demand',
+        data: demandData,
+        fill: false,
+        backgroundColor: 'rgba(0,0,0,0.0)',
+        borderColor: 'rgba(0,0,0,0.7)',
+        borderDash: [10, 5],
+      },
+    ];
+
     const data = {
       labels: timeLabels,
-      datasets: [
-        {
-          label: 'Coal',
-          data: [],
-          fill: true,
-          borderWidth: 0,
-          backgroundColor: 'yellow',
-          borderColor: 'rgba(0,0,0,0)',
-          yAxisID: 'production',
-        },
-        {
-          label: 'Gas',
-          data: [],
-          fill: true,
-          borderWidth: 0,
-          backgroundColor: 'orange',
-          borderColor: 'rgba(0,0,0,0)',
-          yAxisID: 'production',
-        },
-        {
-          label: 'Hydro',
-          data: [],
-          fill: true,
-          borderWidth: 0,
-          backgroundColor: 'teal',
-          borderColor: 'rgba(0,0,0,0)',
-          yAxisID: 'production',
-        },
-        {
-          label: 'Solar',
-          data: [],
-          fill: true,
-          borderWidth: 0,
-          backgroundColor: 'purple',
-          borderColor: 'rgba(0,0,0,0)',
-          yAxisID: 'production',
-        },
-        {
-          label: 'Wind',
-          data: [],
-          fill: true,
-          borderWidth: 0,
-          backgroundColor: 'red',
-          borderColor: 'rgba(0,0,0,0)',
-          yAxisID: 'production',
-        },
-        {
-          label: 'Demand',
-          data: demandData,
-          fill: false,
-          backgroundColor: 'rgba(0,0,0,0.7)',
-          borderColor: 'rgba(0,0,0,0.7)',
-          borderDash: [10, 5],
-        },
-      ],
+      datasets,
     };
 
     const options = {
