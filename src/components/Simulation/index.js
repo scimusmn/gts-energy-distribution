@@ -75,7 +75,7 @@ class Simulation extends Component {
 
     this.liveData[message] = value;
 
-    if (message === 'start-button' && value === '1') {
+    if (message === 'start-button' && parseInt(value, 2) === 1) {
       this.onStartButton();
       return;
     }
@@ -388,22 +388,19 @@ class Simulation extends Component {
           </Row>
           <br />
           <Row>
-            <Col>
+            <Col style={{ textAlign: 'center' }}>
               <GaugeChart
                 id="gauge-chart1"
-                percent={Map(efficiency, -100, 100, 0.1, 0.9)}
-                colors={['#EA4228', '#5BE12C', '#F5CD19']}
+                percent={Map(Math.abs(efficiency), 0, 100, 1.0, 0.0)}
+                colors={['#EA4228', '#F5CD19', '#5BE12C']}
                 hideText
               />
               <h3>
                 Efficiency
                 {' '}
               </h3>
-              <h3>
-                {efficiency}
-              </h3>
               <h1>
-                {Map(Math.abs(efficiency), 0, 100, 100, 75)}
+                {Math.round(Map(Math.abs(efficiency), 0, 100, 100, 0.0))}
                 %
               </h1>
             </Col>
