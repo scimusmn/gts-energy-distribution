@@ -46,8 +46,12 @@ class Simulation extends Component {
   componentDidMount() {
     const { setOnDataCallback } = this.props;
     setOnDataCallback(this.onData);
-    this.reset();
 
+    // Wake up the Arduino
+    this.queueMessage('wake-arduino', '1');
+    this.releaseQueue();
+
+    this.reset();
     // This timed release of outgoing
     // Arduino messages ensures
     // the Arduino NeoPixel library
@@ -57,9 +61,6 @@ class Simulation extends Component {
     this.interruptInterval = setInterval(() => {
       this.releaseQueue();
     }, 60);
-
-    // Wake up the Arduino
-    this.queueMessage('wake-arduino', '1');
   }
 
   componentWillUnmount() {
@@ -88,7 +89,7 @@ class Simulation extends Component {
       let currentLevel = this.liveData[levelKey];
       if (!currentLevel) currentLevel = 0.0;
 
-      let adjustment = 1.0;
+      let adjustment = 6.0;
       // Increment if up arrow was pressed,
       // decrement if down arrow was pressed
       if (message.endsWith('-down')) adjustment *= -1;

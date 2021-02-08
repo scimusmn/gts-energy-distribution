@@ -38,7 +38,7 @@ const ReadyScreen = ({ forecast }) => (
         {' '}
         <strong>Start</strong>
         {' '}
-        button to begin!
+        button to begin.
       </h1>
     </ModalFooter>
   </Modal>

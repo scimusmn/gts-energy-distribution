@@ -9,6 +9,7 @@ const Settings = {
   MAX_OUTPUT_PER_PANEL: 50,
   MAX_EXPECTED_DEMAND: 250,
   BLACKOUT_THRESHOLD: 3,
+  GAS_ARROW_POWER: 5.0,
 };
 
 export default Settings;
