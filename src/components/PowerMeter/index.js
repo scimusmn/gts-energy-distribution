@@ -8,7 +8,7 @@ const PowerMeter = ({
 }) => (
   <>
     <Col>
-      <h3>{label}</h3>
+      <h2>{label}</h2>
       <div className="meter-container">
         <h3>{level}</h3>
         <div style={{

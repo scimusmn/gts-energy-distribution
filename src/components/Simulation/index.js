@@ -29,6 +29,9 @@ class Simulation extends Component {
       hourIndex: 0,
       energyData: {},
       finalScore: 0,
+      wind: '',
+      temp: '',
+      condition: '',
     };
 
     this.onData = this.onData.bind(this);
@@ -293,12 +296,10 @@ class Simulation extends Component {
         // TODO: Check for blackout condition using difference.
 
         let efficiency = difference * Settings.EFFICIENCY_SCORE_MULTIPLIER;
-        console.log('efficiency effi===', efficiency);
+
         // Convert difference to 0–1 percentage score
         efficiency = Math.abs(efficiency); // Distance from 0
         efficiency = Map(efficiency, 0, Settings.MAX_EXPECTED_DEMAND, 1, 0); // Map to 0–1
-
-        console.log('calced effi===', efficiency);
         this.sessionData.efficiency.push(efficiency);
 
         // Check for Message Center triggers
@@ -320,6 +321,9 @@ class Simulation extends Component {
           time: DataManager.getTime(hourIndex),
           hourIndex: hourIndex + 1,
           energyData: this.sessionData.energy,
+          wind: DataManager.getFieldAtHour(hourIndex, 'WindSpeed'),
+          temp: DataManager.getFieldAtHour(hourIndex, 'Temperature'),
+          condition: DataManager.getFieldAtHour(hourIndex, 'Condition'),
         });
       }
     }, hourInterval);
@@ -383,6 +387,9 @@ class Simulation extends Component {
       efficiency,
       energyData,
       finalScore,
+      wind,
+      temp,
+      condition,
     } = this.state;
 
     return (
@@ -390,6 +397,28 @@ class Simulation extends Component {
         <ArduinoEmulator onChange={this.onData} />
         <Forecast days={forecast} />
         <MessageCenter time={time} message={messageCenter} />
+        <Container className="current-conditions window">
+          <Row>
+            <Col>
+              <h2>Current conditions</h2>
+            </Col>
+          </Row>
+          <hr />
+          <Row>
+            <Col>
+              <p>Condition</p>
+              <h2>{condition}</h2>
+            </Col>
+            <Col>
+              <p>Temp</p>
+              <h2>{temp}</h2>
+            </Col>
+            <Col>
+              <p>Wind</p>
+              <h2>{wind}</h2>
+            </Col>
+          </Row>
+        </Container>
         <Container className="power-levels window">
           <Row>
             <PowerMeter label="Production" color="green" level={production} barHeight={450} />
@@ -399,9 +428,10 @@ class Simulation extends Component {
           <Row>
             <Col style={{ textAlign: 'center' }}>
               <GaugeChart
-                id="gauge-chart1"
+                id="gauge-efficiency"
                 percent={efficiency}
                 colors={['#EA4228', '#F5CD19', '#5BE12C']}
+                animDelay={0}
                 hideText
               />
               <h3>

@@ -9,9 +9,10 @@ const Forecast = ({ days }) => (
   <Container className="forecast window">
     <Row>
       <Col>
-        <h2>Weather Forecast</h2>
+        <h2>Weather forecast</h2>
       </Col>
     </Row>
+    <hr />
     <Row>
       {days.map((day) => (
         <Day

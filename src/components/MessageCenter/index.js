@@ -1,24 +1,35 @@
 import React from 'react';
-// import Moment from 'react-moment';
 import PropTypes from 'prop-types';
+import { Container, Row, Col } from 'reactstrap';
 import FeedbackIcon from './feedback-icon';
 
 function MessageCenter({ time, message }) {
   return (
-    <div className="message-center window">
-      <h3>Message Center</h3>
-      <h4>
-        <FeedbackIcon mood={message.Mood} />
-      </h4>
-      <p>{message.Body}</p>
-      <h4>
-        Time:
-        {' '}
-        {/* <Moment date={time} format="hh:mm" /> */}
-        <br />
-        {time}
-      </h4>
-    </div>
+    <Container className="message-center window">
+      <Row>
+        <Col>
+          <h2>Message center</h2>
+        </Col>
+      </Row>
+      <hr />
+      <Row>
+        <Col>
+          <h6>
+            {message.Body}
+          </h6>
+        </Col>
+        <Col>
+          <h1>
+            <FeedbackIcon mood={message.Mood} />
+          </h1>
+        </Col>
+        <Col>
+          <h1>
+            {time}
+          </h1>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

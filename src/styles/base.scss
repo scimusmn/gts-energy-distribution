@@ -19,7 +19,7 @@ body {
 }
 
 .window {
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.7);
   border: 1px solid #ccc;
   border-radius: 25px;
   margin: 20px;
@@ -41,7 +41,13 @@ body {
 
 .message-center {
   left: 5%;
-  top: 50%;
+  top: 41%;
+  width: 50%;
+}
+
+.current-conditions {
+  left: 5%;
+  top: 66%;
   width: 50%;
 }
 
@@ -55,10 +61,10 @@ body {
 }
 
 .power-levels {
-  height: 80%;
+  height: 86%;
   left: 65%;
-  top: 5%;
-  width: 20%;
+  top: 2%;
+  width: 24%;
 }
 
 .emulator {
