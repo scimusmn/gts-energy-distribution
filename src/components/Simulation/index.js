@@ -13,7 +13,7 @@ import PowerMeter from '../PowerMeter';
 import MessageCenter from '../MessageCenter';
 import ScoreScreen from '../ScoreScreen';
 import ReadyScreen from '../ReadyScreen';
-import { AverageArray, Map } from '../../utils';
+import { AverageArray, Map, Clamp } from '../../utils';
 
 class Simulation extends Component {
   constructor(props) {
@@ -92,17 +92,17 @@ class Simulation extends Component {
       let currentLevel = this.liveData[levelKey];
       if (!currentLevel) currentLevel = 0.0;
 
-      let adjustment = 6.0;
+      let adjustment = Settings.GAS_ARROW_POWER;
       // Increment if up arrow was pressed,
       // decrement if down arrow was pressed
       if (message.endsWith('-down')) adjustment *= -1;
       let controlLevel = currentLevel + adjustment;
       // Clamp to 0–100;
-      controlLevel = Math.min(Math.max(controlLevel, 0), 100);
+      controlLevel = Clamp(controlLevel, 0, 100);
       this.liveData[levelKey] = controlLevel;
 
       // Immediately echo back gas light bar message
-      this.queueMessage(`{hydro-${panelId}-light-bar`, controlLevel);
+      this.queueMessage(`{gas-${panelId}-light-bar`, controlLevel);
 
       return;
     }
@@ -300,6 +300,7 @@ class Simulation extends Component {
         // Convert difference to 0–1 percentage score
         efficiency = Math.abs(efficiency); // Distance from 0
         efficiency = Map(efficiency, 0, Settings.MAX_EXPECTED_DEMAND, 1, 0); // Map to 0–1
+        efficiency = Clamp(efficiency, 0, 1); // Clamp between 0–1
         this.sessionData.efficiency.push(efficiency);
 
         // Check for Message Center triggers
@@ -421,8 +422,8 @@ class Simulation extends Component {
         </Container>
         <Container className="power-levels window">
           <Row>
-            <PowerMeter label="Production" color="green" level={production} barHeight={450} />
-            <PowerMeter label="Demand" color="orange" level={demand} barHeight={450} />
+            <PowerMeter label="Production" color="green" level={production} maxlevel={Settings.MAX_EXPECTED_DEMAND} barheight={500} />
+            <PowerMeter label="Demand" color="orange" level={demand} maxlevel={Settings.MAX_EXPECTED_DEMAND} barheight={500} />
           </Row>
           <br />
           <Row>

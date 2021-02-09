@@ -57,23 +57,18 @@ class EnergyChart extends Component {
   }
 
   render() {
-    const { chartData, isLive } = this.props;
+    const {
+      chartData, isLive, yAxisMin, yAxisMax,
+    } = this.props;
     const { demand, timeLabels } = chartData;
 
     const demandData = [];
 
-    let highestDemand = 0;
-
     if (demand) {
       for (let i = 0; i < demand.length; i += 1) {
-        const demandVal = demand[i];
-        demandData.push(demandVal);
-        if (demandVal > highestDemand) highestDemand = demandVal;
+        demandData.push(demand[i]);
       }
     }
-
-    const yAxisMin = 0;
-    const yAxisMax = parseFloat(highestDemand) + 10;
 
     // const datasets = [
     //   {
@@ -205,11 +200,15 @@ class EnergyChart extends Component {
 EnergyChart.defaultProps = {
   chartData: {},
   isLive: true,
+  yAxisMin: 0,
+  yAxisMax: 500,
 };
 
 EnergyChart.propTypes = {
   chartData: propTypes.instanceOf(Object),
   isLive: propTypes.bool,
+  yAxisMin: propTypes.number,
+  yAxisMax: propTypes.number,
   setAnimationFrameCallback: propTypes.instanceOf(Function).isRequired,
 };
 

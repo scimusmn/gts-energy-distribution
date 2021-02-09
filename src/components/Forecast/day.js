@@ -44,7 +44,7 @@ Day.lookupIcon = (condition) => {
     case 'Light Snow':
       return 'chancesnow';
     default:
-      console.warn('Condition unrecognized:', condition);
+      console.log('Warning! Condition unrecognized:', condition);
       return 'clear';
   }
 };

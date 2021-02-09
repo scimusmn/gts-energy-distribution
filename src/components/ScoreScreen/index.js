@@ -9,6 +9,7 @@ import EnergyChart from '../EnergyChart';
 import ChartColors from '../EnergyChart/chart-colors';
 import { NewKey, SumArray } from '../../utils';
 import FeedbackIcon from '../MessageCenter/feedback-icon';
+import Settings from '../../data/settings';
 
 const ScoreScreen = ({ efficiencyScore, chartData, customerFeedback }) => (
   <Modal isOpen size="xl">
@@ -47,7 +48,11 @@ const ScoreScreen = ({ efficiencyScore, chartData, customerFeedback }) => (
           </Col>
           <Col>
             <h4>Demand</h4>
-            <EnergyChart chartData={chartData} isLive={false} />
+            <EnergyChart
+              chartData={chartData}
+              isLive={false}
+              yAxisMax={Settings.MAX_EXPECTED_DEMAND}
+            />
           </Col>
         </Row>
       </Container>

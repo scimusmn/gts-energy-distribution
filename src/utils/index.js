@@ -36,6 +36,9 @@ export const SumArray = (array) => array.reduce((a, b) => a + b, 0);
 // Map a value from one range onto anothe range
 export const Map = (val, x1, x2, y1, y2) => ((val - x1) * (y2 - y1)) / (x2 - x1) + y1;
 
+// Clamp a value to a range
+export const Clamp = (val, min, max) => Math.min(Math.max(val, min), max);
+
 // Sort a larger array of objects into multiple
 // smaller arrays by a matching property
 export const CollateByProperty = (array, property) => array.reduce((acc, cur) => {
