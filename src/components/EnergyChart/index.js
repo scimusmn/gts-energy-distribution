@@ -1,8 +1,9 @@
 /* eslint no-console: 0 */
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
-import { Line } from 'react-chartjs-2';
+import { Line, Chart } from 'react-chartjs-2';
 import withAnimationFrame from '../AnimationFrameHOC';
+// import ChartColors from './chart-colors';
 
 class EnergyChart extends Component {
   constructor(props) {
@@ -16,6 +17,36 @@ class EnergyChart extends Component {
     this.onAnimationFrame = this.onAnimationFrame.bind(this);
 
     this.latestData = {};
+
+    const { isLive } = props;
+
+    if (isLive) {
+      Chart.pluginService.register({
+        afterDraw(chart) {
+          // Draw vertical line at most recent production data point.
+          /* eslint no-underscore-dangle: 0 */
+          const metadata = chart.data.datasets[0]._meta['0'];
+          if (metadata) {
+            const { data } = metadata;
+            if (data.length > 0) {
+              const topY = chart.scales['y-axis-0'].top;
+              const bottomY = chart.scales['y-axis-0'].bottom;
+              const lineX = data[data.length - 1]._model.x;
+
+              const { ctx } = chart;
+              ctx.save();
+              ctx.beginPath();
+              ctx.moveTo(lineX, topY);
+              ctx.lineTo(lineX, bottomY);
+              ctx.lineWidth = 2;
+              ctx.strokeStyle = '#e23fa9';
+              ctx.stroke();
+              ctx.restore();
+            }
+          }
+        },
+      });
+    }
   }
 
   componentDidMount() {
@@ -76,7 +107,7 @@ class EnergyChart extends Component {
     //     data: [],
     //     fill: true,
     //     borderWidth: 0,
-    //     backgroundColor: 'yellow',
+    //     backgroundColor: ChartColors[0],
     //     borderColor: 'rgba(0,0,0,0)',
     //     yAxisID: 'production',
     //   },
@@ -85,7 +116,7 @@ class EnergyChart extends Component {
     //     data: [],
     //     fill: true,
     //     borderWidth: 0,
-    //     backgroundColor: 'orange',
+    //     backgroundColor: ChartColors[1],
     //     borderColor: 'rgba(0,0,0,0)',
     //     yAxisID: 'production',
     //   },
@@ -94,7 +125,7 @@ class EnergyChart extends Component {
     //     data: [],
     //     fill: true,
     //     borderWidth: 0,
-    //     backgroundColor: 'teal',
+    //     backgroundColor: ChartColors[2],
     //     borderColor: 'rgba(0,0,0,0)',
     //     yAxisID: 'production',
     //   },
@@ -103,7 +134,7 @@ class EnergyChart extends Component {
     //     data: [],
     //     fill: true,
     //     borderWidth: 0,
-    //     backgroundColor: 'purple',
+    //     backgroundColor: ChartColors[3],
     //     borderColor: 'rgba(0,0,0,0)',
     //     yAxisID: 'production',
     //   },
@@ -112,7 +143,7 @@ class EnergyChart extends Component {
     //     data: [],
     //     fill: true,
     //     borderWidth: 0,
-    //     backgroundColor: 'red',
+    //     backgroundColor: ChartColors[4],
     //     borderColor: 'rgba(0,0,0,0)',
     //     yAxisID: 'production',
     //   },

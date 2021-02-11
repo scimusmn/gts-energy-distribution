@@ -6,7 +6,7 @@ import { NewKey } from '../../utils';
 import Day from './day';
 
 const Forecast = ({ days }) => (
-  <Container className="forecast window">
+  <Container className="forecast window" style={{ display: 'none' }}>
     <Row>
       <Col>
         <h2>Weather forecast</h2>

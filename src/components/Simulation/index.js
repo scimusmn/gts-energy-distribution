@@ -9,6 +9,7 @@ import ArduinoEmulator from '../ArduinoEmulator';
 import DataManager from '../../data/data-manager';
 import Settings from '../../data/settings';
 import Forecast from '../Forecast';
+import EnergyChart from '../EnergyChart';
 import PowerMeter from '../PowerMeter';
 import MessageCenter from '../MessageCenter';
 import ScoreScreen from '../ScoreScreen';
@@ -397,6 +398,14 @@ class Simulation extends Component {
       <div className="simulation">
         <ArduinoEmulator onChange={this.onData} />
         <Forecast days={forecast} />
+        <Container className="forecast window">
+          <EnergyChart
+            chartData={energyData}
+            yAxisMax={Settings.MAX_EXPECTED_DEMAND}
+            isLive
+          />
+        </Container>
+
         <MessageCenter time={time} message={messageCenter} />
         <Container className="current-conditions window">
           <Row>
