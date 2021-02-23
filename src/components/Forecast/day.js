@@ -2,6 +2,7 @@
 import React from 'react';
 import { Col } from 'reactstrap';
 import PropTypes from 'prop-types';
+import ConditionIcon from './condition-icon';
 
 const Day = ({
   day, description, temperature, icon,
@@ -14,7 +15,7 @@ const Day = ({
       °
     </h2>
     <p>{description}</p>
-    <i className={`wu wu-black wu-128 wu-${Day.lookupIcon(icon)}`} />
+    <ConditionIcon condition={icon} />
   </Col>
 
 );
@@ -29,24 +30,6 @@ Day.propTypes = {
   description: PropTypes.string,
   icon: PropTypes.string,
   temperature: PropTypes.string.isRequired,
-};
-
-Day.lookupIcon = (condition) => {
-  switch (condition) {
-    case 'Fair':
-      return 'clear';
-    case 'Partly Cloudy':
-      return 'partlycloudy';
-    case 'Mostly Cloudy':
-      return 'mostlycloudy';
-    case 'Cloudy':
-      return 'cloudy';
-    case 'Light Snow':
-      return 'chancesnow';
-    default:
-      console.log('Warning! Condition unrecognized:', condition);
-      return 'clear';
-  }
 };
 
 export default Day;

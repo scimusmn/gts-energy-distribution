@@ -8,11 +8,12 @@ import withSerialCommunication from '../../Arduino/arduino-base/ReactSerial/Seri
 import ArduinoEmulator from '../ArduinoEmulator';
 import DataManager from '../../data/data-manager';
 import Settings from '../../data/settings';
-import Forecast from '../Forecast';
+import EnergyChart from '../EnergyChart';
 import PowerMeter from '../PowerMeter';
 import MessageCenter from '../MessageCenter';
 import ScoreScreen from '../ScoreScreen';
 import ReadyScreen from '../ReadyScreen';
+import ConditionIcon from '../Forecast/condition-icon';
 import { AverageArray, Map, Clamp } from '../../utils';
 
 class Simulation extends Component {
@@ -396,19 +397,33 @@ class Simulation extends Component {
     return (
       <div className="simulation">
         <ArduinoEmulator onChange={this.onData} />
-        <Forecast days={forecast} />
+        <Container className="forecast window" style={{ display: 'none' }}>
+          <EnergyChart
+            chartData={energyData}
+            yAxisMax={Settings.MAX_EXPECTED_DEMAND}
+            isLive
+          />
+        </Container>
         <MessageCenter time={time} message={messageCenter} />
         <Container className="current-conditions window">
           <Row>
             <Col>
               <h2>Current conditions</h2>
             </Col>
+            <Col className="text-center text-md-right">
+              <h1><strong>{time}</strong></h1>
+            </Col>
           </Row>
           <hr />
           <Row>
             <Col>
               <p>Condition</p>
-              <h2>{condition}</h2>
+              <h2>
+                {condition}
+              </h2>
+            </Col>
+            <Col className="text-left text-md-left">
+              <ConditionIcon condition={condition} pixelSize={128} />
             </Col>
             <Col>
               <p>Temp</p>

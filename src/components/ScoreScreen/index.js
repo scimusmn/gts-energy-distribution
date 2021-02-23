@@ -35,9 +35,9 @@ const ScoreScreen = ({ efficiencyScore, chartData, customerFeedback }) => (
         <br />
         <br />
         <Row>
-          <Col style={{ display: 'none' }}>
+          <Col>
             <h4>Customer approval</h4>
-            <div className="customer-approval window">
+            <div className="customer-approval">
               {customerFeedback.map((feedback) => (
                 <FeedbackIcon
                   key={NewKey()}
