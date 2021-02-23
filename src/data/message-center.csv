@@ -1,19 +1,14 @@
 Mood,Trigger,Body
-happy,When the efficiency score has been above 95% for more than 15 seconds.,Oh wow! You are doing such a great job!
-happy,,The city is looking good. Power up! I'm buying you a cappucino. 
-neutral,,Make sure to keep an eye on the power demand.
-neutral,At the beginning of each simulation session.,Look at the forecast and plan ahead. 
-angry,,People have lost all power! Take a look at how you are distributing power. 
-angry,,Hey what is going on?! FIX IT
-happy,,Oh wow! You are doing such a great job!
-happy,,The city is looking good. Power up! I'm buying you a cappucino. 
-neutral,random,Make sure to keep an eye on the power demand.
-neutral,random,Look at the forecast and plan ahead. 
-angry,,People have lost all power! Take a look at how you are distributing power. 
-angry,,Hey what is going on?! FIX IT
-happy,,Oh wow! You are doing such a great job!
-happy,,The city is looking good. Power up! I'm buying you a cappucino. 
-neutral,,Make sure to keep an eye on the power demand.
-neutral,,Look at the forecast and plan ahead. 
-angry,blackout,People have lost all power! Take a look at how you are distributing power. 
-angry,blackout,Hey what is going on?! FIX IT
+happy,AFFIRMATION,Lorem ipsum aff 1.
+happy,AFFIRMATION,Lorem ipsum aff 2.
+neutral,OVER_PRODUCTION,Lorem ipsum op 3.
+neutral,OVER_PRODUCTION,Lorem ipsum op 4.
+angry,BLACKOUT_WARNING,Lorem ipsum (blackout) 5.
+angry,BLACKOUT_WARNING,Lorem ipsum (blackout) 6.
+,,
+,,
+,,
+neutral,FEEDBACK_DIVERSIFY_FOSSILS,Lorem ipsum (fb fossils).
+neutral,FEEDBACK_DIVERSIFY_RENEWABLES,Lorem ipsum (fb renewables).
+angry,FEEDBACK_BLACKOUT,Lorem ipsum (fb blackout).
+happy,FEEDBACK_SUCCESS,Lorem ipsum (fb success).

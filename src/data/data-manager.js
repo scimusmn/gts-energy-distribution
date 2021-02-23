@@ -16,6 +16,9 @@ delete FORECASTS[''];
 // We can use this JSON array as-is
 const MESSAGE_CENTER_MESSAGES = MessageCenterJSON;
 const SORTED_MOOD_MESSAGES = CollateByProperty(MessageCenterJSON, 'Mood');
+const SORTED_TRIGGER_MESSAGES = CollateByProperty(MessageCenterJSON, 'Trigger');
+console.log('SORTED_TRIGGER_MESSAGES');
+console.log(SORTED_TRIGGER_MESSAGES);
 
 let currentSessionForecast;
 
@@ -148,15 +151,18 @@ const checkMessageCenterTriggers = (efficiency) => {
   // E.g. we should take into account how long it's been
   // since the last msg center msg
 
-  if (efficiency > 50) {
-    return FishArray(SORTED_MOOD_MESSAGES.angry);
-  } if (efficiency < -50) {
+  console.log('checkMessageCenterTriggers', efficiency);
+  if (efficiency < 0.1) {
     return FishArray(SORTED_MOOD_MESSAGES.angry);
   }
-  // If nothing is triggered, occasionally
+  // TEMP: If nothing is triggered, occasionally
   // display a positive or neutral message
-  if (Math.random() > 0.8) {
+  if (Math.random() > 0.2) {
     return FishArray(SORTED_MOOD_MESSAGES.happy);
+  }
+
+  if (Math.random() > 0.3) {
+    return FishArray(SORTED_MOOD_MESSAGES.neutral);
   }
 
   return null;

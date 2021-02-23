@@ -33,21 +33,40 @@ body {
   width: 50%;
 
   .day {
-    // border: 1px solid #fff;
     border-radius: 7px;
     padding: 15px;
   }
 }
 
 .message-center {
+  height: 56%;
   left: 5%;
-  top: 41%;
+  top: 30%;
   width: 50%;
+
+  .message-container {
+    opacity: 0.3;
+    transition: opacity 3s;
+  }
+
+  .message-container.pop-in {
+    opacity: 1;
+    transition: opacity 0s;
+  }
+
+  .message-body {
+    font-family: monospace;
+    font-size: 4.2em;
+  }
+
+  .feedback-icon {
+    font-size: 3em;
+  }
 }
 
 .current-conditions {
   left: 5%;
-  top: 66%;
+  top: 2%;
   width: 50%;
 }
 
@@ -65,6 +84,16 @@ body {
   left: 65%;
   top: 2%;
   width: 24%;
+}
+
+.customer-approval {
+  background-color: white;
+  border: none;
+  width: 85%;
+
+  .feedback-icon {
+    font-size: 1.5em;
+  }
 }
 
 .emulator {
