@@ -11,16 +11,18 @@ import { NewKey, SumArray } from '../../utils';
 import FeedbackIcon from '../MessageCenter/feedback-icon';
 import Settings from '../../data/settings';
 
-const ScoreScreen = ({ efficiencyScore, chartData, customerFeedback }) => (
-  <Modal isOpen size="xl">
-    <ModalHeader><h1>How did you do?</h1></ModalHeader>
+const ScoreScreen = ({
+  feedbackMessage, efficiencyScore, chartData, customerFeedback,
+}) => (
+  <Modal isOpen size="xl" className="score-screen">
+    <ModalHeader><h1>{feedbackMessage}</h1></ModalHeader>
     <ModalBody>
       <Container fluid className="modal-screen container-fluid">
         <Row>
           <Col>
-            <h4>Final efficiency score</h4>
-            <h1 className="large">
-              {efficiencyScore}
+            <h4>Efficiency score</h4>
+            <h1 className="billboard-score">
+              {Math.ceil(efficiencyScore * 100)}
               %
             </h1>
           </Col>
@@ -115,12 +117,14 @@ ScoreScreen.collatePieData = (energyData) => {
 };
 
 ScoreScreen.defaultProps = {
+  feedbackMessage: 'How did you do?',
   chartData: {},
   customerFeedback: [],
   efficiencyScore: 0.0,
 };
 
 ScoreScreen.propTypes = {
+  feedbackMessage: PropTypes.string,
   efficiencyScore: PropTypes.number,
   chartData: PropTypes.instanceOf(Object),
   customerFeedback: PropTypes.instanceOf(Array),

@@ -28,6 +28,7 @@ function MessageCenter({ time, message }) {
           <h2 className="message-body">
             {message.Body}
           </h2>
+          <br />
           <h1>
             <FeedbackIcon mood={message.Mood} />
           </h1>

@@ -20,7 +20,7 @@ const PowerMeter = ({
           <div className="tween-height" style={{ backgroundColor: color, height: PowerMeter.calcBarHeight(level, maxlevel, barheight) }} />
         </div>
         <h3>
-          {level}
+          {Math.round(level)}
           /
           {maxlevel}
         </h3>

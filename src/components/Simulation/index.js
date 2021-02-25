@@ -33,6 +33,8 @@ class Simulation extends Component {
       wind: '',
       temp: '',
       condition: '',
+      blackout: false,
+      finalFeedback: null,
     };
 
     this.onData = this.onData.bind(this);
@@ -82,6 +84,29 @@ class Simulation extends Component {
     if (message === 'start-button' && parseInt(value, 2) === 1) {
       this.onStartButton();
       return;
+    }
+
+    // Catch coal switches. They don't immediately affect
+    // current value, which we add to the liveData object.
+    if (message.startsWith('coal-') && message.endsWith('-switch')) {
+      const panelId = message.substring(5, 6);
+      const stateKey = `coal-${panelId}-state`;
+
+      console.log('++ Coal switch change', panelId);
+
+      // Switch turned off. No delay necessary.
+      if (value === 0) {
+        this.queueMessage(`{coal-${panelId}-light`, 'off');
+        this.liveData[stateKey] = 'off';
+        return;
+      }
+
+      // Switch turned on. Go into warming mode.
+      if (value === 1) {
+        this.queueMessage(`{coal-${panelId}-light`, 'warming');
+        this.liveData[stateKey] = 'warming';
+        return;
+      }
     }
 
     // Catch gas arrow buttons exceptions. These messages
@@ -163,14 +188,27 @@ class Simulation extends Component {
       const panelId = activePanels.coal[i];
 
       // Coal input level based on switch
-      let controlLevel = this.liveData[`${panelId}-switch`];
-      if (!controlLevel || controlLevel !== 1) controlLevel = 0.0;
+      const stateKey = `${panelId}-state`;
+      const coalState = this.liveData[stateKey] || 'off'; // ('off', 'warming', 'on')
 
-      // TODO: We currently are using the current switch value (1/0),
-      // but we'll need to eventually swap for the decoupled "state"
-      // of each panel. ('off', 'warming', 'on')
+      let outputLevel = 0;
+      if (coalState === 'on') {
+        outputLevel = 1.0;
+      } else if (coalState === 'warming') {
+        // Tick up warming counter.
+        // After X ticks on warming, shift into 'on'
+        const wtKey = `coal-${panelId}-warming-ticks`;
+        const warmingTicks = this.liveData[wtKey] || 0;
+        if (warmingTicks > 6) {
+          this.liveData[stateKey] = 'on';
+          outputLevel = 1.0;
+          this.liveData[wtKey] = 0;
+        } else {
+          this.liveData[wtKey] = warmingTicks + 1;
+        }
+      }
 
-      const panelProduction = parseFloat(controlLevel) * Settings.MAX_OUTPUT_PER_PANEL;
+      const panelProduction = parseFloat(outputLevel) * Settings.MAX_OUTPUT_PER_PANEL;
       coalProduction += panelProduction;
     }
 
@@ -256,6 +294,7 @@ class Simulation extends Component {
       hourIndex: 0,
       forecast: DataManager.getForecastSummary(),
       currentView: 'ready',
+      blackout: false,
     });
 
     // Flash start button
@@ -294,7 +333,6 @@ class Simulation extends Component {
 
         // Calculate efficiency score
         const difference = (demand - production);
-        // TODO: Check for blackout condition using difference.
 
         let efficiency = difference * Settings.EFFICIENCY_SCORE_MULTIPLIER;
 
@@ -305,14 +343,24 @@ class Simulation extends Component {
         this.sessionData.efficiency.push(efficiency);
 
         // Check for Message Center triggers
-        // TODO: See if any message center is triggered based on
-        // current efficiency score.
-        const triggeredMessage = DataManager.checkMessageCenterTriggers(efficiency);
+        const polarity = Math.sign(difference);
+        const triggeredMessage = DataManager.checkMessageCenterTriggers(efficiency, polarity);
         let { messageCenter } = this.state;
         // Remember all triggered message centers for score screen
         if (triggeredMessage) {
-          this.sessionData.feedback.push(triggeredMessage);
-          messageCenter = triggeredMessage;
+          if (triggeredMessage === 'TRIGGER_BLACKOUT') {
+            this.setState({
+              blackout: true,
+              finalFeedback: DataManager.getFeedbackMessage('FEEDBACK_BLACKOUT'),
+            });
+            clearInterval(this.hourlyInterval);
+            setTimeout(() => {
+              this.endSimulation();
+            }, 2750);
+          } else {
+            this.sessionData.feedback.push(triggeredMessage);
+            messageCenter = triggeredMessage;
+          }
         }
 
         this.setState({
@@ -336,7 +384,7 @@ class Simulation extends Component {
     clearInterval(this.hourlyInterval);
 
     // Calcualte final efficiency score.
-    const finalScore = Math.ceil(AverageArray(this.sessionData.efficiency));
+    const finalScore = AverageArray(this.sessionData.efficiency);
 
     // Display score screen
     this.setState(
@@ -392,6 +440,8 @@ class Simulation extends Component {
       wind,
       temp,
       condition,
+      blackout,
+      finalFeedback,
     } = this.state;
 
     return (
@@ -461,9 +511,10 @@ class Simulation extends Component {
             </Col>
           </Row>
         </Container>
+        <div className={`blackout ${blackout ? 'show' : ''}`} />
         {{
           ready: <ReadyScreen key="ready" forecast={forecast} />,
-          score: <ScoreScreen key="score" efficiencyScore={finalScore * 100} chartData={energyData} customerFeedback={this.sessionData.feedback} />,
+          score: <ScoreScreen key="score" feedbackMessage={finalFeedback} efficiencyScore={finalScore} chartData={energyData} customerFeedback={this.sessionData.feedback} />,
         }[currentView]}
       </div>
     );

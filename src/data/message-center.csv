@@ -1,14 +1,17 @@
 Mood,Trigger,Body
-happy,AFFIRMATION,Lorem ipsum aff 1.
-happy,AFFIRMATION,Lorem ipsum aff 2.
-neutral,OVER_PRODUCTION,Lorem ipsum op 3.
-neutral,OVER_PRODUCTION,Lorem ipsum op 4.
-angry,BLACKOUT_WARNING,Lorem ipsum (blackout) 5.
-angry,BLACKOUT_WARNING,Lorem ipsum (blackout) 6.
+happy,AFFIRMATION,Customers are happy. Keep up the good work!
+happy,AFFIRMATION,This city's power has never been managed better. Amazing job!
+happy,AFFIRMATION,"Customers are so happy with your energy managment, they're going throw you a party!"
+neutral,OVER_PRODUCTION,Customers are experiencing power glitches — you're overproducing! Adjust your energy sources.
+neutral,OVER_PRODUCTION,Customers are reporting blown fuses. Fix the issue!
+neutral,OVER_PRODUCTION,A customer called and reported their TV blew up — you're overproducing! Adjust your energy sources.
+angry,BLACKOUT_WARNING,You're underproducing! Be careful not to cause a blackout!
+angry,BLACKOUT_WARNING,People are starting to lose power left and right — don't cause a blackout!
+angry,BLACKOUT_WARNING,#@!?*!!! Warning: on the verge of causing a blackout!
+angry,BLACKOUT_WARNING,Customers are losing their internet due to power underproduction! Fix it!
 ,,
 ,,
-,,
-neutral,FEEDBACK_DIVERSIFY_FOSSILS,Lorem ipsum (fb fossils).
-neutral,FEEDBACK_DIVERSIFY_RENEWABLES,Lorem ipsum (fb renewables).
-angry,FEEDBACK_BLACKOUT,Lorem ipsum (fb blackout).
-happy,FEEDBACK_SUCCESS,Lorem ipsum (fb success).
+neutral,FEEDBACK_DIVERSIFY_FOSSILS,"You powered the city, but you used primarily fossil fuels. Do you think diversifying your energy sources would produce a different or better outcome?"
+neutral,FEEDBACK_DIVERSIFY_RENEWABLES,"You powered the city, but you used primarily renewable energy. Do you think diversifying your energy sources would produce a different or better outcome?"
+angry,FEEDBACK_BLACKOUT,Game over! You were unable to power the city due to a blackout. What could you do differently to succesfully power the city? Better luck next time!
+happy,FEEDBACK_SUCCESS,Congratulations! You successfully powered the city and the citizens are happy. Do you think you can beat your score? 

@@ -14,11 +14,7 @@ const FORECASTS = CollateByProperty(EnvironmentalJSON, 'Set');
 delete FORECASTS[''];
 
 // We can use this JSON array as-is
-const MESSAGE_CENTER_MESSAGES = MessageCenterJSON;
-const SORTED_MOOD_MESSAGES = CollateByProperty(MessageCenterJSON, 'Mood');
 const SORTED_TRIGGER_MESSAGES = CollateByProperty(MessageCenterJSON, 'Trigger');
-console.log('SORTED_TRIGGER_MESSAGES');
-console.log(SORTED_TRIGGER_MESSAGES);
 
 let currentSessionForecast;
 
@@ -145,24 +141,42 @@ const windSpeedToWindPotential = (windSpeed) => {
   return potential;
 };
 
-// Use Noon slide to summarize day
-const checkMessageCenterTriggers = (efficiency) => {
-  // TODO: This will need to get more complex at some point
-  // E.g. we should take into account how long it's been
-  // since the last msg center msg
+// Use a polarized efficiency to trigger message
+// center messages. Over-producing comes in as a
+// negative polarity. Under-producing is positive.
+let prevTriggerType = '';
+let triggerCounter = 0;
+const checkMessageCenterTriggers = (efficiency, polarity) => {
+  console.log('checkMessageCenterTriggers', efficiency, polarity);
 
-  console.log('checkMessageCenterTriggers', efficiency);
-  if (efficiency < 0.1) {
-    return FishArray(SORTED_MOOD_MESSAGES.angry);
-  }
-  // TEMP: If nothing is triggered, occasionally
-  // display a positive or neutral message
-  if (Math.random() > 0.2) {
-    return FishArray(SORTED_MOOD_MESSAGES.happy);
+  let triggerType;
+
+  // BLACKOUT_WARNING
+  if (polarity === 1 && efficiency < 0.33) triggerType = 'BLACKOUT_WARNING';
+  // OVER_PRODUCTION
+  if (polarity === -1 && efficiency < 0.33) triggerType = 'OVER_PRODUCTION';
+  // AFFIRMATION
+  if (efficiency > 0.66) triggerType = 'AFFIRMATION';
+
+  console.log(triggerType, triggerCounter);
+
+  if (triggerType === prevTriggerType) {
+    triggerCounter += 1;
+  } else {
+    triggerCounter = 0;
   }
 
-  if (Math.random() > 0.3) {
-    return FishArray(SORTED_MOOD_MESSAGES.neutral);
+  // Trigger a real blackout if X warnings have
+  // been displayed
+  if (triggerType === 'BLACKOUT_WARNING' && triggerCounter > 5) {
+    triggerCounter = 0;
+    return 'TRIGGER_BLACKOUT';
+  }
+
+  if (triggerType !== prevTriggerType || triggerCounter > 9) {
+    triggerCounter = 0;
+    prevTriggerType = triggerType;
+    if (triggerType) return FishArray(SORTED_TRIGGER_MESSAGES[triggerType]);
   }
 
   return null;
@@ -170,7 +184,7 @@ const checkMessageCenterTriggers = (efficiency) => {
 
 const getRandomForecast = () => FishObject(FORECASTS);
 
-const getRandomMessageCenter = () => FishArray(MESSAGE_CENTER_MESSAGES);
+const getFeedbackMessage = (triggerId) => FishArray(SORTED_TRIGGER_MESSAGES[triggerId]).Body;
 
 const getDemand = (hourIndex) => parseFloat(currentSessionForecast[hourIndex].Demand);
 
@@ -192,8 +206,8 @@ const DataManager = {
   selectNewForecast,
   getForecastSummary,
   getRandomForecast,
-  getRandomMessageCenter,
   checkMessageCenterTriggers,
+  getFeedbackMessage,
   getDemand,
   getTime,
   getFieldAtHour,
