@@ -20,7 +20,7 @@ const ScoreScreen = ({
       <Container fluid className="modal-screen container-fluid">
         <Row>
           <Col>
-            <h4>Final efficiency score</h4>
+            <h4>Efficiency score</h4>
             <h1 className="billboard-score">
               {Math.ceil(efficiencyScore * 100)}
               %

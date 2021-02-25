@@ -168,12 +168,12 @@ const checkMessageCenterTriggers = (efficiency, polarity) => {
 
   // Trigger a real blackout if X warnings have
   // been displayed
-  if (triggerType === 'BLACKOUT_WARNING' && triggerCounter > 4) {
+  if (triggerType === 'BLACKOUT_WARNING' && triggerCounter > 5) {
     triggerCounter = 0;
     return 'TRIGGER_BLACKOUT';
   }
 
-  if (triggerType !== prevTriggerType || triggerCounter > 8) {
+  if (triggerType !== prevTriggerType || triggerCounter > 9) {
     triggerCounter = 0;
     prevTriggerType = triggerType;
     if (triggerType) return FishArray(SORTED_TRIGGER_MESSAGES[triggerType]);

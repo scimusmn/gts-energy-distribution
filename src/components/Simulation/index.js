@@ -86,6 +86,29 @@ class Simulation extends Component {
       return;
     }
 
+    // Catch coal switches. They don't immediately affect
+    // current value, which we add to the liveData object.
+    if (message.startsWith('coal-') && message.endsWith('-switch')) {
+      const panelId = message.substring(5, 6);
+      const stateKey = `coal-${panelId}-state`;
+
+      console.log('++ Coal switch change', panelId);
+
+      // Switch turned off. No delay necessary.
+      if (value === 0) {
+        this.queueMessage(`{coal-${panelId}-light`, 'off');
+        this.liveData[stateKey] = 'off';
+        return;
+      }
+
+      // Switch turned on. Go into warming mode.
+      if (value === 1) {
+        this.queueMessage(`{coal-${panelId}-light`, 'warming');
+        this.liveData[stateKey] = 'warming';
+        return;
+      }
+    }
+
     // Catch gas arrow buttons exceptions. These messages
     // don't provide the current value, but are used to adjust the
     // current value, which we add to the liveData object.
@@ -165,14 +188,27 @@ class Simulation extends Component {
       const panelId = activePanels.coal[i];
 
       // Coal input level based on switch
-      let controlLevel = this.liveData[`${panelId}-switch`];
-      if (!controlLevel || controlLevel !== 1) controlLevel = 0.0;
+      const stateKey = `${panelId}-state`;
+      const coalState = this.liveData[stateKey] || 'off'; // ('off', 'warming', 'on')
 
-      // TODO: We currently are using the current switch value (1/0),
-      // but we'll need to eventually swap for the decoupled "state"
-      // of each panel. ('off', 'warming', 'on')
+      let outputLevel = 0;
+      if (coalState === 'on') {
+        outputLevel = 1.0;
+      } else if (coalState === 'warming') {
+        // Tick up warming counter.
+        // After X ticks on warming, shift into 'on'
+        const wtKey = `coal-${panelId}-warming-ticks`;
+        const warmingTicks = this.liveData[wtKey] || 0;
+        if (warmingTicks > 6) {
+          this.liveData[stateKey] = 'on';
+          outputLevel = 1.0;
+          this.liveData[wtKey] = 0;
+        } else {
+          this.liveData[wtKey] = warmingTicks + 1;
+        }
+      }
 
-      const panelProduction = parseFloat(controlLevel) * Settings.MAX_OUTPUT_PER_PANEL;
+      const panelProduction = parseFloat(outputLevel) * Settings.MAX_OUTPUT_PER_PANEL;
       coalProduction += panelProduction;
     }
 
