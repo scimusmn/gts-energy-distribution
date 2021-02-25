@@ -33,6 +33,8 @@ class Simulation extends Component {
       wind: '',
       temp: '',
       condition: '',
+      blackout: false,
+      finalFeedback: null,
     };
 
     this.onData = this.onData.bind(this);
@@ -256,6 +258,7 @@ class Simulation extends Component {
       hourIndex: 0,
       forecast: DataManager.getForecastSummary(),
       currentView: 'ready',
+      blackout: false,
     });
 
     // Flash start button
@@ -294,7 +297,6 @@ class Simulation extends Component {
 
         // Calculate efficiency score
         const difference = (demand - production);
-        // TODO: Check for blackout condition using difference.
 
         let efficiency = difference * Settings.EFFICIENCY_SCORE_MULTIPLIER;
 
@@ -305,14 +307,24 @@ class Simulation extends Component {
         this.sessionData.efficiency.push(efficiency);
 
         // Check for Message Center triggers
-        // TODO: See if any message center is triggered based on
-        // current efficiency score.
-        const triggeredMessage = DataManager.checkMessageCenterTriggers(efficiency);
+        const polarity = Math.sign(difference);
+        const triggeredMessage = DataManager.checkMessageCenterTriggers(efficiency, polarity);
         let { messageCenter } = this.state;
         // Remember all triggered message centers for score screen
         if (triggeredMessage) {
-          this.sessionData.feedback.push(triggeredMessage);
-          messageCenter = triggeredMessage;
+          if (triggeredMessage === 'TRIGGER_BLACKOUT') {
+            this.setState({
+              blackout: true,
+              finalFeedback: DataManager.getFeedbackMessage('FEEDBACK_BLACKOUT'),
+            });
+            clearInterval(this.hourlyInterval);
+            setTimeout(() => {
+              this.endSimulation();
+            }, 2750);
+          } else {
+            this.sessionData.feedback.push(triggeredMessage);
+            messageCenter = triggeredMessage;
+          }
         }
 
         this.setState({
@@ -336,7 +348,7 @@ class Simulation extends Component {
     clearInterval(this.hourlyInterval);
 
     // Calcualte final efficiency score.
-    const finalScore = Math.ceil(AverageArray(this.sessionData.efficiency));
+    const finalScore = AverageArray(this.sessionData.efficiency);
 
     // Display score screen
     this.setState(
@@ -392,6 +404,8 @@ class Simulation extends Component {
       wind,
       temp,
       condition,
+      blackout,
+      finalFeedback,
     } = this.state;
 
     return (
@@ -461,9 +475,10 @@ class Simulation extends Component {
             </Col>
           </Row>
         </Container>
+        <div className={`blackout ${blackout ? 'show' : ''}`} />
         {{
           ready: <ReadyScreen key="ready" forecast={forecast} />,
-          score: <ScoreScreen key="score" efficiencyScore={finalScore * 100} chartData={energyData} customerFeedback={this.sessionData.feedback} />,
+          score: <ScoreScreen key="score" feedbackMessage={finalFeedback} efficiencyScore={finalScore} chartData={energyData} customerFeedback={this.sessionData.feedback} />,
         }[currentView]}
       </div>
     );

@@ -9,8 +9,6 @@ function FeedbackIcon({ mood }) {
     icon = '😍';
   }
 
-  console.log('mood->', mood, icon);
-
   return <span role="img" className="feedback-icon" aria-label={mood}>{icon}</span>;
 }
 

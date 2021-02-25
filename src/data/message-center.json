@@ -1,15 +1,21 @@
 [
-{"Mood":"happy","Trigger":"AFFIRMATION","Body":"Lorem ipsum aff 1."},
-{"Mood":"happy","Trigger":"AFFIRMATION","Body":"Lorem ipsum aff 2."},
-{"Mood":"neutral","Trigger":"OVER_PRODUCTION","Body":"Lorem ipsum op 3."},
-{"Mood":"neutral","Trigger":"OVER_PRODUCTION","Body":"Lorem ipsum op 4."},
-{"Mood":"angry","Trigger":"BLACKOUT_WARNING","Body":"Lorem ipsum (blackout) 5."},
-{"Mood":"angry","Trigger":"BLACKOUT_WARNING","Body":"Lorem ipsum (blackout) 6."},
+{"Mood":"happy","Trigger":"AFFIRMATION","Body":"Customers are happy. Keep up the good work!"},
+{"Mood":"happy","Trigger":"AFFIRMATION","Body":"This city's power has never been managed better. Amazing job!"},
+{"Mood":"happy","Trigger":"AFFIRMATION","Body":"Customers are so happy with your energy managment, they're going throw you a party!"},
+{"Mood":"neutral","Trigger":"OVER_PRODUCTION","Body":"Customers are experiencing power glitches — you're overproducing! Adjust your energy sources."}
+,
+{"Mood":"neutral","Trigger":"OVER_PRODUCTION","Body":"Customers are reporting blown fuses. Fix the issue!"},
+{"Mood":"neutral","Trigger":"OVER_PRODUCTION","Body":"A customer called and reported their TV blew up — you're overproducing! Adjust your energy sources."}
+,
+{"Mood":"angry","Trigger":"BLACKOUT_WARNING","Body":"You're underproducing! Be careful not to cause a blackout!"},
+{"Mood":"angry","Trigger":"BLACKOUT_WARNING","Body":"People are starting to lose power left and right — don't cause a blackout!"}
+,
+{"Mood":"angry","Trigger":"BLACKOUT_WARNING","Body":"#@!?*!!! Warning: on the verge of causing a blackout!"},
+{"Mood":"angry","Trigger":"BLACKOUT_WARNING","Body":"Customers are losing their internet due to power underproduction! Fix it!"},
 {"Mood":"","Trigger":"","Body":""},
 {"Mood":"","Trigger":"","Body":""},
-{"Mood":"","Trigger":"","Body":""},
-{"Mood":"neutral","Trigger":"FEEDBACK_DIVERSIFY_FOSSILS","Body":"Lorem ipsum (fb fossils)."},
-{"Mood":"neutral","Trigger":"FEEDBACK_DIVERSIFY_RENEWABLES","Body":"Lorem ipsum (fb renewables)."},
-{"Mood":"angry","Trigger":"FEEDBACK_BLACKOUT","Body":"Lorem ipsum (fb blackout)."},
-{"Mood":"happy","Trigger":"FEEDBACK_SUCCESS","Body":"Lorem ipsum (fb success)."}
+{"Mood":"neutral","Trigger":"FEEDBACK_DIVERSIFY_FOSSILS","Body":"You powered the city, but you used primarily fossil fuels. Do you think diversifying your energy sources would produce a different or better outcome?"},
+{"Mood":"neutral","Trigger":"FEEDBACK_DIVERSIFY_RENEWABLES","Body":"You powered the city, but you used primarily renewable energy. Do you think diversifying your energy sources would produce a different or better outcome?"},
+{"Mood":"angry","Trigger":"FEEDBACK_BLACKOUT","Body":"Game over! You were unable to power the city due to a blackout. What could you do differently to succesfully power the city? Better luck next time!"},
+{"Mood":"happy","Trigger":"FEEDBACK_SUCCESS","Body":"Congratulations! You successfully powered the city and the citizens are happy. Do you think you can beat your score?"}
 ]
