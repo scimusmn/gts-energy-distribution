@@ -98,6 +98,8 @@ class Simulation extends Component {
       if (value === 0) {
         this.queueMessage(`{coal-${panelId}-light`, 'off');
         this.liveData[stateKey] = 'off';
+        const wtKey = `coal-${panelId}-warming-ticks`;
+        this.liveData[wtKey] = 0;
         return;
       }
 
@@ -345,20 +347,21 @@ class Simulation extends Component {
         // Check for Message Center triggers
         const polarity = Math.sign(difference);
         const triggeredMessage = DataManager.checkMessageCenterTriggers(efficiency, polarity);
+
         let { messageCenter } = this.state;
         // Remember all triggered message centers for score screen
         if (triggeredMessage) {
-          if (triggeredMessage === 'TRIGGER_BLACKOUT') {
+          this.sessionData.feedback.push(triggeredMessage);
+          if (triggeredMessage.Trigger === 'FEEDBACK_BLACKOUT') {
             this.setState({
               blackout: true,
-              finalFeedback: DataManager.getFeedbackMessage('FEEDBACK_BLACKOUT'),
+              finalFeedback: triggeredMessage.Body,
             });
             clearInterval(this.hourlyInterval);
             setTimeout(() => {
               this.endSimulation();
             }, 2750);
           } else {
-            this.sessionData.feedback.push(triggeredMessage);
             messageCenter = triggeredMessage;
           }
         }
@@ -383,13 +386,15 @@ class Simulation extends Component {
     // Stop all timers
     clearInterval(this.hourlyInterval);
 
-    // Calcualte final efficiency score.
+    // Calculate final scores and feedback
     const finalScore = AverageArray(this.sessionData.efficiency);
+    const sessionFeedback = DataManager.getSessionFeedback(this.sessionData);
 
     // Display score screen
     this.setState(
       {
         finalScore,
+        finalFeedback: sessionFeedback.Body,
         currentView: 'score',
       },
     );

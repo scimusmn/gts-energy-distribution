@@ -40,7 +40,7 @@ export const Map = (val, x1, x2, y1, y2) => ((val - x1) * (y2 - y1)) / (x2 - x1)
 export const Clamp = (val, min, max) => Math.min(Math.max(val, min), max);
 
 // Sort a larger array of objects into multiple
-// smaller arrays by a matching property
+// smaller arrays by matching a property
 export const CollateByProperty = (array, property) => array.reduce((acc, cur) => {
   acc[cur[property]] = [...acc[cur[property]] || [], cur];
   return acc;

@@ -1,7 +1,7 @@
 /* eslint no-console: 0 */
 
 import {
-  FishArray, FishObject, CollateByProperty,
+  FishArray, FishObject, CollateByProperty, SumArray,
 } from '../utils';
 
 import EnvironmentalJSON from './environmental-data.json';
@@ -165,12 +165,11 @@ const checkMessageCenterTriggers = (efficiency, polarity) => {
   } else {
     triggerCounter = 0;
   }
-
   // Trigger a real blackout if X warnings have
   // been displayed
-  if (triggerType === 'BLACKOUT_WARNING' && triggerCounter > 5) {
+  if (triggerType === 'BLACKOUT_WARNING' && triggerCounter > 8) {
     triggerCounter = 0;
-    return 'TRIGGER_BLACKOUT';
+    return FishArray(SORTED_TRIGGER_MESSAGES.FEEDBACK_BLACKOUT);
   }
 
   if (triggerType !== prevTriggerType || triggerCounter > 9) {
@@ -180,6 +179,38 @@ const checkMessageCenterTriggers = (efficiency, polarity) => {
   }
 
   return null;
+};
+
+const getSessionFeedback = (sessionData) => {
+  console.log('getSessionFeedback');
+  const { feedback, energy } = sessionData;
+
+  // We can use this JSON array as-is.
+  const triggers = CollateByProperty(feedback, 'Trigger');
+
+  // If session ended in blackout, return blackout.
+  if (triggers.FEEDBACK_BLACKOUT) return triggers.FEEDBACK_BLACKOUT[0];
+
+  const {
+    coal, gas, hydro, solar, wind,
+  } = energy;
+
+  let renewables = SumArray(solar) + SumArray(wind) + SumArray(hydro);
+  let fossils = SumArray(coal) + SumArray(gas);
+  const total = renewables + fossils;
+
+  // Convert to fractions
+  renewables /= total;
+  fossils /= total;
+
+  // Player over-reliant on fossil fuels
+  if (fossils > 0.75) return FishArray(SORTED_TRIGGER_MESSAGES.FEEDBACK_DIVERSIFY_FOSSILS);
+
+  // Player over-reliant on renewables
+  if (renewables > 0.75) return FishArray(SORTED_TRIGGER_MESSAGES.FEEDBACK_DIVERSIFY_RENEWABLES);
+
+  // Give a generic "good job"
+  return FishArray(SORTED_TRIGGER_MESSAGES.FEEDBACK_SUCCESS);
 };
 
 const getRandomForecast = () => FishObject(FORECASTS);
@@ -208,6 +239,7 @@ const DataManager = {
   getRandomForecast,
   checkMessageCenterTriggers,
   getFeedbackMessage,
+  getSessionFeedback,
   getDemand,
   getTime,
   getFieldAtHour,
