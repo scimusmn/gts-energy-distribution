@@ -146,6 +146,7 @@ const windSpeedToWindPotential = (windSpeed) => {
 // negative polarity. Under-producing is positive.
 let prevTriggerType = '';
 let triggerCounter = 0;
+let blackoutWarnings = 0;
 const checkMessageCenterTriggers = (efficiency, polarity) => {
   console.log('checkMessageCenterTriggers', efficiency, polarity);
 
@@ -171,10 +172,18 @@ const checkMessageCenterTriggers = (efficiency, polarity) => {
     triggerCounter = 0;
     return FishArray(SORTED_TRIGGER_MESSAGES.FEEDBACK_BLACKOUT);
   }
-
-  if (triggerType !== prevTriggerType || triggerCounter > 9) {
+  if (triggerType !== prevTriggerType || triggerCounter > 5) {
     triggerCounter = 0;
     prevTriggerType = triggerType;
+    if (triggerType === 'BLACKOUT_WARNING') {
+      blackoutWarnings += 1;
+      if (blackoutWarnings > 3) {
+        blackoutWarnings = 0;
+        return FishArray(SORTED_TRIGGER_MESSAGES.FEEDBACK_BLACKOUT);
+      }
+    } else {
+      blackoutWarnings = 0;
+    }
     if (triggerType) return FishArray(SORTED_TRIGGER_MESSAGES[triggerType]);
   }
 

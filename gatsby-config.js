@@ -3,6 +3,7 @@ require('dotenv').config({
 });
 
 module.exports = {
+  pathPrefix: '/gt-energy-dist-0002',
   siteMetadata: {
     author: '@scimusmn',
     description: 'Science Museum of Minnesota exhibit template',

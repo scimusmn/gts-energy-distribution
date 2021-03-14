@@ -45,6 +45,9 @@ body {
   width: 50%;
 
   .message-container {
+    background-color: white;
+    border-radius: 21px;
+    margin: 30px 40px;
     opacity: 0.1;
     padding: 30px 40px;
     transition: opacity 3s;
