@@ -39,12 +39,12 @@ function MessageCenter({ time, message }) {
 }
 
 MessageCenter.defaultProps = {
-  time: '0:00',
+  time: 0,
   message: {},
 };
 
 MessageCenter.propTypes = {
-  time: PropTypes.string,
+  time: PropTypes.number,
   message: PropTypes.instanceOf(Object),
 };
 

@@ -1,11 +1,34 @@
 /* eslint no-console: 0 */
-
 import {
-  FishArray, FishObject, CollateByProperty, SumArray,
+  FishArray,
+  FishObject,
+  CollateByProperty,
+  SumArray,
+  Map,
+  ExtractFloat,
 } from '../utils';
 
 import EnvironmentalJSON from './environmental-data.json';
 import MessageCenterJSON from './message-center.json';
+
+// Creative numerical Time values from Time strings
+EnvironmentalJSON.forEach((row) => {
+  const [hrMin, amPm] = row.Time.split(' ');
+  const [hours, minutes] = hrMin.split(':');
+  let timeNum = parseFloat((minutes * 60)) + parseFloat((hours * 3600));
+  if (amPm === 'PM') timeNum += (12 * 3600);
+  row.TimeNum = timeNum; // eslint-disable-line no-param-reassign
+});
+
+// Create numerical Temperature values
+EnvironmentalJSON.forEach((row) => {
+  row.TemperatureNum = ExtractFloat(row.Temperature); // eslint-disable-line no-param-reassign
+});
+
+// Create numericaal WindSpeed values
+EnvironmentalJSON.forEach((row) => {
+  row.WindSpeedNum = ExtractFloat(row.WindSpeed); // eslint-disable-line no-param-reassign
+});
 
 // We organize forecasts into 3-Day "sets" using the "Set" field.
 const FORECASTS = CollateByProperty(EnvironmentalJSON, 'Set');
@@ -148,8 +171,6 @@ let prevTriggerType = '';
 let triggerCounter = 0;
 let blackoutWarnings = 0;
 const checkMessageCenterTriggers = (efficiency, polarity) => {
-  console.log('checkMessageCenterTriggers', efficiency, polarity);
-
   let triggerType;
 
   // BLACKOUT_WARNING
@@ -158,8 +179,6 @@ const checkMessageCenterTriggers = (efficiency, polarity) => {
   if (polarity === -1 && efficiency < 0.33) triggerType = 'OVER_PRODUCTION';
   // AFFIRMATION
   if (efficiency > 0.66) triggerType = 'AFFIRMATION';
-
-  console.log(triggerType, triggerCounter);
 
   if (triggerType === prevTriggerType) {
     triggerCounter += 1;
@@ -191,7 +210,6 @@ const checkMessageCenterTriggers = (efficiency, polarity) => {
 };
 
 const getSessionFeedback = (sessionData) => {
-  console.log('getSessionFeedback');
   const { feedback, energy } = sessionData;
 
   // We can use this JSON array as-is.
@@ -232,13 +250,39 @@ const getTime = (hourIndex) => currentSessionForecast[hourIndex].Time;
 
 const getFieldAtHour = (hourIndex, field) => currentSessionForecast[hourIndex][field];
 
-const getSolarAvailability = (hourIndex) => {
-  const conditionPotential = conditionToSolarPotential(getFieldAtHour(hourIndex, 'Condition'));
-  const timeOfDayPotential = timeOfDayToSolarPotential(getFieldAtHour(hourIndex, 'Time'));
-  return conditionPotential * timeOfDayPotential;
+const interpolate = (hourIndex, hourProgress, field) => {
+  const nextVal = parseFloat(getFieldAtHour(hourIndex, field));
+  const prevVal = parseFloat(getFieldAtHour(hourIndex - 1, field));
+  const interpolatedVal = Map(hourProgress, 0, 1, prevVal, nextVal);
+  return interpolatedVal;
 };
 
-const getWindAvailability = (hourIndex) => windSpeedToWindPotential(getFieldAtHour(hourIndex, 'WindSpeed'));
+const getSolarAvailability = (hourIndex, hourProgress) => {
+  const nexConditionPotential = conditionToSolarPotential(getFieldAtHour(hourIndex, 'Condition'));
+  const nextTimeOfDayPotential = timeOfDayToSolarPotential(getFieldAtHour(hourIndex, 'Time'));
+  const nextAvailibility = nexConditionPotential * nextTimeOfDayPotential;
+
+  if (hourIndex <= 0) return nextAvailibility;
+
+  const prevConditionPotential = conditionToSolarPotential(getFieldAtHour(hourIndex - 1, 'Condition'));
+  const prevTimeOfDayPotential = timeOfDayToSolarPotential(getFieldAtHour(hourIndex - 1, 'Time'));
+  const prevAvailibility = prevConditionPotential * prevTimeOfDayPotential;
+
+  const interpolatedVal = Map(hourProgress, 0, 1, prevAvailibility, nextAvailibility);
+
+  return interpolatedVal;
+};
+
+const getWindAvailability = (hourIndex, hourProgress) => {
+  const nextWindAvailibility = windSpeedToWindPotential(getFieldAtHour(hourIndex, 'WindSpeed'));
+
+  if (hourIndex <= 0) return nextWindAvailibility;
+
+  const prevWindAvailibility = windSpeedToWindPotential(getFieldAtHour(hourIndex - 1, 'WindSpeed'));
+
+  const interpolatedVal = Map(hourProgress, 0, 1, prevWindAvailibility, nextWindAvailibility);
+  return interpolatedVal;
+};
 
 const getCurrentForecastField = (field) => currentSessionForecast.map((a) => a[field]);
 
@@ -252,6 +296,7 @@ const DataManager = {
   getDemand,
   getTime,
   getFieldAtHour,
+  interpolate,
   getCurrentForecastField,
   getSolarAvailability,
   getWindAvailability,

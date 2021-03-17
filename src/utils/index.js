@@ -46,6 +46,21 @@ export const CollateByProperty = (array, property) => array.reduce((acc, cur) =>
   return acc;
 }, {});
 
+// Finds and return first number found in string
+export const ExtractFloat = (string) => parseFloat(string.match(/\d+/)[0]);
+
+export const SecsToTimeString = (secs) => {
+  let amPm = 'AM';
+  if (secs > (12 * 3600)) {
+    amPm = 'PM';
+    secs -= (12 * 3600); // eslint-disable-line no-param-reassign
+  }
+
+  const timeString = new Date(secs * 1000).toISOString().substr(11, 5);
+
+  return `${timeString} ${amPm}`;
+};
+
 export default {
   NewKey,
   FishArray,
@@ -54,4 +69,6 @@ export default {
   AverageArray,
   SumArray,
   CollateByProperty,
+  ExtractFloat,
+  SecsToTimeString,
 };

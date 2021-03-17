@@ -10,14 +10,22 @@ const PowerMeter = ({
     <Col>
       <h2>{label}</h2>
       <div className="meter-container">
-        <div style={{
-          backgroundColor: 'rgba(0, 0, 0, 0.1)',
-          border: '1px solid gray',
-          height: `${barheight}px`,
-          transform: 'rotate(180deg)',
-        }}
+        <div
+          className={`${(level >= maxlevel) ? 'full' : ''}`}
+          style={{
+            backgroundColor: 'rgba(0, 0, 0, 0.1)',
+            border: '1px solid gray',
+            height: `${barheight}px`,
+            transform: 'rotate(180deg)',
+          }}
         >
-          <div className="tween-height" style={{ backgroundColor: color, height: PowerMeter.calcBarHeight(level, maxlevel, barheight) }} />
+          <div
+            className="tween-height"
+            style={{
+              backgroundColor: color,
+              height: PowerMeter.calcBarHeight(level, maxlevel, barheight),
+            }}
+          />
         </div>
         <h3>
           {Math.round(level)}
@@ -30,10 +38,10 @@ const PowerMeter = ({
 );
 
 PowerMeter.calcBarHeight = (level, maxlevel, barheight) => {
-  const fillPercentage = level / maxlevel;
+  let fillPercentage = level / maxlevel;
+  if (fillPercentage > 1) fillPercentage = 1;
   return `${Math.ceil(fillPercentage * barheight)}px`;
 };
-
 
 PowerMeter.defaultProps = {
   label: 'Power',

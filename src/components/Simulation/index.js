@@ -14,7 +14,9 @@ import MessageCenter from '../MessageCenter';
 import ScoreScreen from '../ScoreScreen';
 import ReadyScreen from '../ReadyScreen';
 import ConditionIcon from '../Forecast/condition-icon';
-import { AverageArray, Map, Clamp } from '../../utils';
+import {
+  AverageArray, Map, Clamp, SecsToTimeString,
+} from '../../utils';
 
 class Simulation extends Component {
   constructor(props) {
@@ -26,12 +28,13 @@ class Simulation extends Component {
       production: 0,
       demand: 0,
       efficiency: 0,
-      time: '0:00',
+      day: '',
+      time: 0,
       hourIndex: 0,
       energyData: {},
       finalScore: 0,
-      wind: '',
-      temp: '',
+      wind: 0,
+      temp: 0,
       condition: '',
       blackout: false,
       finalFeedback: null,
@@ -157,10 +160,7 @@ class Simulation extends Component {
     }
   }
 
-  getCurrentProduction() {
-    // Calculate current production levels
-    console.log('getCurrentProduction - ', this.liveData);
-
+  getCurrentProduction(hourProgress) {
     // Get ACTIVE panels (by checking jack state)
     const entries = Object.entries(this.liveData);
     const activePanels = {
@@ -240,12 +240,12 @@ class Simulation extends Component {
     }
 
     // SOLAR production
-    const solarAvailability = DataManager.getSolarAvailability(hourIndex);
+    const solarAvailability = DataManager.getSolarAvailability(hourIndex, hourProgress);
     const numSolarPanels = activePanels.solar.length;
     const solarProduction = numSolarPanels * solarAvailability * Settings.MAX_OUTPUT_PER_PANEL;
 
     // WIND production
-    const windAvailability = DataManager.getWindAvailability(hourIndex);
+    const windAvailability = DataManager.getWindAvailability(hourIndex, hourProgress);
     const numWindPanels = activePanels.wind.length;
     const windProduction = numWindPanels * windAvailability * Settings.MAX_OUTPUT_PER_PANEL;
 
@@ -286,6 +286,7 @@ class Simulation extends Component {
       energy,
       feedback: [],
       efficiency: [],
+      timestamps: [],
     };
     clearInterval(this.hourlyInterval);
 
@@ -319,10 +320,12 @@ class Simulation extends Component {
     this.hourlyInterval = setInterval(() => {
       const { hourIndex } = this.state;
 
+      this.sessionData.timestamps.push(Date.now());
+
       if (hourIndex >= totalHoursInSession) {
         this.endSimulation();
       } else {
-        const productionSnapshot = this.getCurrentProduction();
+        const productionSnapshot = this.getCurrentProduction(1.0);
         const production = productionSnapshot.total;
 
         // Add live production snapshot to production history
@@ -334,14 +337,8 @@ class Simulation extends Component {
         const demand = DataManager.getDemand(hourIndex);
 
         // Calculate efficiency score
-        const difference = (demand - production);
-
-        let efficiency = difference * Settings.EFFICIENCY_SCORE_MULTIPLIER;
-
-        // Convert difference to 0–1 percentage score
-        efficiency = Math.abs(efficiency); // Distance from 0
-        efficiency = Map(efficiency, 0, Settings.MAX_EXPECTED_DEMAND, 1, 0); // Map to 0–1
-        efficiency = Clamp(efficiency, 0, 1); // Clamp between 0–1
+        const difference = demand - production;
+        const efficiency = Simulation.calculateEfficiency(difference);
         this.sessionData.efficiency.push(efficiency);
 
         // Check for Message Center triggers
@@ -371,15 +368,52 @@ class Simulation extends Component {
           demand,
           efficiency,
           messageCenter,
-          time: DataManager.getTime(hourIndex),
+          time: DataManager.getFieldAtHour(hourIndex, 'TimeNum'),
+          day: DataManager.getFieldAtHour(hourIndex, 'Day'),
           hourIndex: hourIndex + 1,
           energyData: this.sessionData.energy,
-          wind: DataManager.getFieldAtHour(hourIndex, 'WindSpeed'),
-          temp: DataManager.getFieldAtHour(hourIndex, 'Temperature'),
+          wind: DataManager.getFieldAtHour(hourIndex, 'WindSpeedNum'),
+          temp: DataManager.getFieldAtHour(hourIndex, 'TemperatureNum'),
           condition: DataManager.getFieldAtHour(hourIndex, 'Condition'),
         });
       }
     }, hourInterval);
+
+    // TODO: Replace with reqAnimationFrame HOC
+    this.interpInterval = setInterval(() => {
+      const { hourIndex } = this.state;
+      if (hourIndex <= 0) return;
+
+      const { timestamps } = this.sessionData;
+      const prevTimestamp = timestamps[timestamps.length - 1];
+      const nowTimestamp = Date.now();
+      const hourProgress = (nowTimestamp - prevTimestamp) / hourInterval;
+
+      // Demand
+      const demand = DataManager.interpolate(hourIndex, hourProgress, 'Demand');
+
+      // Production
+      const productionSnapshot = this.getCurrentProduction(hourProgress);
+      const production = productionSnapshot.total;
+      // TODO: Update live chart here.
+
+      // Efficiency
+      const difference = demand - production;
+      const efficiency = Simulation.calculateEfficiency(difference);
+
+      const time = DataManager.interpolate(hourIndex, hourProgress, 'TimeNum');
+      const temp = Math.round(DataManager.interpolate(hourIndex, hourProgress, 'TemperatureNum'));
+      const wind = Math.round(DataManager.interpolate(hourIndex, hourProgress, 'WindSpeedNum'));
+
+      this.setState({
+        time,
+        demand,
+        production,
+        efficiency,
+        temp,
+        wind,
+      });
+    }, 156);
   }
 
   endSimulation() {
@@ -435,6 +469,7 @@ class Simulation extends Component {
     const {
       currentView,
       time,
+      day,
       forecast,
       messageCenter,
       production,
@@ -466,7 +501,13 @@ class Simulation extends Component {
               <h2>Current conditions</h2>
             </Col>
             <Col className="text-center text-md-right">
-              <h1><strong>{time}</strong></h1>
+              <h2>
+                {day}
+                {' '}
+                |
+                {' '}
+                <strong>{SecsToTimeString(time)}</strong>
+              </h2>
             </Col>
           </Row>
           <hr />
@@ -482,11 +523,11 @@ class Simulation extends Component {
             </Col>
             <Col>
               <p>Temp</p>
-              <h2>{temp}</h2>
+              <h2>{`${temp} F`}</h2>
             </Col>
             <Col>
               <p>Wind</p>
-              <h2>{wind}</h2>
+              <h2>{`${wind} MPH`}</h2>
             </Col>
           </Row>
         </Container>
@@ -525,6 +566,14 @@ class Simulation extends Component {
     );
   }
 }
+
+Simulation.calculateEfficiency = (difference) => {
+  let efficiency = difference * Settings.EFFICIENCY_SCORE_MULTIPLIER;
+  efficiency = Math.abs(efficiency); // Distance from 0
+  efficiency = Map(efficiency, 0, Settings.MAX_EXPECTED_DEMAND, 1, 0); // Map to 0–1
+  efficiency = Clamp(efficiency, 0, 1); // Clamp between 0–1
+  return efficiency;
+};
 
 Simulation.propTypes = {
   sendData: PropTypes.func.isRequired,
