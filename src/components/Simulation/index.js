@@ -244,11 +244,22 @@ class Simulation extends Component {
     const solarAvailability = DataManager.getSolarAvailability(hourIndex);
     const numSolarPanels = activePanels.solar.length;
     const solarProduction = numSolarPanels * solarAvailability * Settings.MAX_OUTPUT_PER_PANEL;
+    const solarLightBar = Map(solarAvailability, 0, Settings.MAX_OUTPUT_PER_PANEL, 0, 100);
+    for (let i = 0; i < numSolarPanels; i += 1) {
+      // Update light bar
+      this.queueMessage(`{${activePanels.solar[i]}-light-bar`, Math.round(solarLightBar));
+    }
+
 
     // WIND production
     const windAvailability = DataManager.getWindAvailability(hourIndex);
     const numWindPanels = activePanels.wind.length;
     const windProduction = numWindPanels * windAvailability * Settings.MAX_OUTPUT_PER_PANEL;
+    const windLightBar = Map(windAvailability, 0, Settings.MAX_OUTPUT_PER_PANEL, 0, 100);
+    for (let i = 0; i < numWindPanels; i += 1) {
+      // Update light bar
+      this.queueMessage(`{${activePanels.wind[i]}-light-bar`, Math.round(windLightBar));
+    }
 
     // Snapshot
     const production = {

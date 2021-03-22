@@ -24,7 +24,7 @@ const ArduinoEmulator = ({ onChange }) => {
     coalPanels.push((
       <Col key={i}>
         {/* <p>{panelNum}</p> */}
-        <Toggle msg={`coal-${panelNum}-jack`} onChange={onChange} />
+        <Toggle msg={`coal-${panelNum}-jack`} onChange={onChange} invert />
         <br />
         <br />
         <p>SWITCH</p>
@@ -43,7 +43,7 @@ const ArduinoEmulator = ({ onChange }) => {
     gasPanels.push((
       <Col key={i}>
         {/* <p>{panelNum}</p> */}
-        <Toggle msg={`gas-${panelNum}-jack`} onChange={onChange} />
+        <Toggle msg={`gas-${panelNum}-jack`} onChange={onChange} invert />
         <br />
         <br />
         <EventButton msg={`gas-${panelNum}-button-up`} label="▲" onChange={onChange} />
@@ -60,7 +60,7 @@ const ArduinoEmulator = ({ onChange }) => {
     hydroPanels.push((
       <Col key={i}>
         {/* <p>{panelNum}</p> */}
-        <Toggle msg={`hydro-${panelNum}-jack`} onChange={onChange} />
+        <Toggle msg={`hydro-${panelNum}-jack`} onChange={onChange} invert />
         <Range msg={`hydro-${panelNum}-lever`} onChange={onChange} />
       </Col>
     ));
@@ -72,7 +72,7 @@ const ArduinoEmulator = ({ onChange }) => {
     solarPanels.push((
       <Col key={i}>
         {/* <p>{panelNum}</p> */}
-        <Toggle msg={`solar-${panelNum}-jack`} onChange={onChange} />
+        <Toggle msg={`solar-${panelNum}-jack`} onChange={onChange} invert />
       </Col>
     ));
   }
@@ -83,7 +83,7 @@ const ArduinoEmulator = ({ onChange }) => {
     windPanels.push((
       <Col key={i}>
         {/* <p>{panelNum}</p> */}
-        <Toggle msg={`wind-${panelNum}-jack`} onChange={onChange} />
+        <Toggle msg={`wind-${panelNum}-jack`} onChange={onChange} invert />
       </Col>
     ));
   }
