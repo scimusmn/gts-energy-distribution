@@ -57,7 +57,6 @@ class Simulation extends Component {
     this.queueMessage('wake-arduino', '1');
     this.releaseQueue();
 
-    this.reset();
     // This timed release of outgoing
     // Arduino messages ensures
     // the Arduino NeoPixel library
@@ -67,6 +66,8 @@ class Simulation extends Component {
     this.interruptInterval = setInterval(() => {
       this.releaseQueue();
     }, 60);
+
+    setTimeout(() => { this.reset(); }, 100);
   }
 
   componentWillUnmount() {
@@ -86,25 +87,52 @@ class Simulation extends Component {
       return;
     }
 
+    // Any time a jack is unplugged, zero the associated light bar
+    if (message.endsWith('-jack') && value === '1') {
+      const panelId = message.split('-jack')[0];
+      this.queueMessage(`${panelId}-light-bar`, 0);
+
+      // Certain energy types resest when unplugged
+      if (message.startsWith('gas-')) this.liveData[`${panelId}-level`] = 0;
+      if (message.startsWith('coal-')) this.queueMessage(`${panelId}-light`, 'off');
+
+      return;
+    }
+
+    // Certain energy types must be immediately updated when plugged in
+    if (message.endsWith('-jack' && value === '0')) {
+      const panelId = message.split('-jack')[0];
+      if (message.startsWith('coal-')) {
+        const prevState = this.liveData[`${panelId}-state`];
+        if (prevState === 'on' || prevState === 'warming') {
+          this.liveData[`${panelId}-state`] = 'warming';
+          this.liveData[`${panelId}-warming-ticks`] = 0;
+          this.queueMessage(`${panelId}-light`, 'warming');
+        }
+      }
+      return;
+    }
+
     // Catch coal switches. They don't immediately affect
     // current value, which we add to the liveData object.
     if (message.startsWith('coal-') && message.endsWith('-switch')) {
       const panelId = message.substring(5, 6);
+      const isPluggedIn = (this.liveData[`coal-${panelId}-jack`] === '0');
       const stateKey = `coal-${panelId}-state`;
 
       // Switch turned off. No delay necessary.
       if (value === '0') {
-        this.queueMessage(`{coal-${panelId}-light`, 'off');
         this.liveData[stateKey] = 'off';
         const wtKey = `coal-${panelId}-warming-ticks`;
         this.liveData[wtKey] = 0;
+        if (isPluggedIn) this.queueMessage(`coal-${panelId}-light`, 'off');
         return;
       }
 
       // Switch turned on. Go into warming mode.
       if (value === '1') {
-        this.queueMessage(`{coal-${panelId}-light`, 'warming');
         this.liveData[stateKey] = 'warming';
+        if (isPluggedIn) this.queueMessage(`coal-${panelId}-light`, 'warming');
         return;
       }
     }
@@ -128,7 +156,7 @@ class Simulation extends Component {
       this.liveData[levelKey] = controlLevel;
 
       // Immediately echo back gas light bar message
-      this.queueMessage(`{gas-${panelId}-light-bar`, controlLevel);
+      this.queueMessage(`gas-${panelId}-light-bar`, controlLevel);
 
       return;
     }
@@ -136,7 +164,7 @@ class Simulation extends Component {
     // Immediately echo back hydro light bar messages
     if (message.startsWith('hydro-') && message.endsWith('-lever')) {
       const panelId = message.substring(6, 7);
-      this.queueMessage(`{hydro-${panelId}-light-bar`, value);
+      this.queueMessage(`hydro-${panelId}-light-bar`, value);
     }
   }
 
@@ -166,9 +194,6 @@ class Simulation extends Component {
     };
     for (let i = 0; i < entries.length; i += 1) {
       const [key, value] = entries[i];
-      // TODO: This boolean check is inverted, but Joe will eventually
-      // swap the int in the arduino code (1/0)
-      // if (key.endsWith('-jack') && parseInt(value, 2) === 1) {
       if (key.endsWith('-jack') && parseInt(value, 2) === 0) {
         const split = key.split('-');
         const panelType = split[0];
@@ -206,6 +231,7 @@ class Simulation extends Component {
           this.liveData[stateKey] = 'on';
           outputLevel = 1.0;
           this.liveData[wtKey] = 0;
+          this.queueMessage(`coal-${panelId}-light`, 'on');
         } else {
           this.liveData[wtKey] = warmingTicks + 1;
         }
@@ -244,21 +270,18 @@ class Simulation extends Component {
     const solarAvailability = DataManager.getSolarAvailability(hourIndex);
     const numSolarPanels = activePanels.solar.length;
     const solarProduction = numSolarPanels * solarAvailability * Settings.MAX_OUTPUT_PER_PANEL;
-    const solarLightBar = Map(solarAvailability, 0, Settings.MAX_OUTPUT_PER_PANEL, 0, 100);
+    const solarLightBar = Math.ceil(solarAvailability * 100);
     for (let i = 0; i < numSolarPanels; i += 1) {
-      // Update light bar
-      this.queueMessage(`{${activePanels.solar[i]}-light-bar`, Math.round(solarLightBar));
+      this.queueMessage(`${activePanels.solar[i]}-light-bar`, solarLightBar);
     }
-
 
     // WIND production
     const windAvailability = DataManager.getWindAvailability(hourIndex);
     const numWindPanels = activePanels.wind.length;
     const windProduction = numWindPanels * windAvailability * Settings.MAX_OUTPUT_PER_PANEL;
-    const windLightBar = Map(windAvailability, 0, Settings.MAX_OUTPUT_PER_PANEL, 0, 100);
+    const windLightBar = Math.ceil(windAvailability * 100);
     for (let i = 0; i < numWindPanels; i += 1) {
-      // Update light bar
-      this.queueMessage(`{${activePanels.wind[i]}-light-bar`, Math.round(windLightBar));
+      this.queueMessage(`${activePanels.wind[i]}-light-bar`, windLightBar);
     }
 
     // Snapshot
@@ -283,7 +306,22 @@ class Simulation extends Component {
     return production;
   }
 
+  zeroLightBars() {
+    const entries = Object.entries(this.liveData);
+    for (let i = 0; i < entries.length; i += 1) {
+      const [key] = entries[i];
+      if (key.endsWith('-light-bar')) {
+        this.queueMessage(key, 0);
+      }
+    }
+  }
+
   reset() {
+    // Zero-out all light bars
+    this.zeroLightBars();
+
+    clearInterval(this.hourlyInterval);
+
     this.liveData = {};
     const energy = {
       coal: [],
@@ -299,7 +337,6 @@ class Simulation extends Component {
       feedback: [],
       efficiency: [],
     };
-    clearInterval(this.hourlyInterval);
 
     // Prepare next weather forecast
     // Select forecast data for this session
