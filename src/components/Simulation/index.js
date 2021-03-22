@@ -92,8 +92,6 @@ class Simulation extends Component {
       const panelId = message.substring(5, 6);
       const stateKey = `coal-${panelId}-state`;
 
-      console.log('++ Coal switch change', panelId);
-
       // Switch turned off. No delay necessary.
       if (value === 0) {
         this.queueMessage(`{coal-${panelId}-light`, 'off');
@@ -168,7 +166,7 @@ class Simulation extends Component {
     };
     for (let i = 0; i < entries.length; i += 1) {
       const [key, value] = entries[i];
-      if (key.endsWith('-jack') && value === 1) {
+      if (key.endsWith('-jack') && parseInt(value, 2) === 1) {
         const split = key.split('-');
         const panelType = split[0];
         const panelId = `${split[0]}-${split[1]}`;

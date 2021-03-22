@@ -19,7 +19,7 @@ class Toggle extends Component {
 
     // Create data object that mimics what comes
     // from SerialHOC
-    const dataObj = { [msg]: intBool };
+    const dataObj = { [msg]: intBool.toString() };
     onChange(dataObj);
   }
 
