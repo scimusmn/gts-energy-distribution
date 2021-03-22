@@ -166,7 +166,10 @@ class Simulation extends Component {
     };
     for (let i = 0; i < entries.length; i += 1) {
       const [key, value] = entries[i];
-      if (key.endsWith('-jack') && parseInt(value, 2) === 1) {
+      // TODO: This boolean check is inverted, but Joe will eventually
+      // swap the int in the arduino code (1/0)
+      // if (key.endsWith('-jack') && parseInt(value, 2) === 1) {
+      if (key.endsWith('-jack') && parseInt(value, 2) === 0) {
         const split = key.split('-');
         const panelType = split[0];
         const panelId = `${split[0]}-${split[1]}`;
