@@ -93,7 +93,7 @@ class Simulation extends Component {
       const stateKey = `coal-${panelId}-state`;
 
       // Switch turned off. No delay necessary.
-      if (value === 0) {
+      if (value === '0') {
         this.queueMessage(`{coal-${panelId}-light`, 'off');
         this.liveData[stateKey] = 'off';
         const wtKey = `coal-${panelId}-warming-ticks`;
@@ -102,7 +102,7 @@ class Simulation extends Component {
       }
 
       // Switch turned on. Go into warming mode.
-      if (value === 1) {
+      if (value === '1') {
         this.queueMessage(`{coal-${panelId}-light`, 'warming');
         this.liveData[stateKey] = 'warming';
         return;
