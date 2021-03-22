@@ -82,13 +82,33 @@ class Simulation extends Component {
 
     this.liveData[message] = value;
 
-    if (message === 'start-button' && parseInt(value, 2) === 1) {
+    if (message === 'start-button' && value === '1') {
       this.onStartButton();
       return;
     }
 
+    if (message.endsWith('-jack')) {
+      this.onJackChange(message, value);
+      return;
+    }
+
+    if (message.startsWith('hydro-')) {
+      this.onHydroChange(message, value);
+    }
+
+    if (message.startsWith('gas-')) {
+      this.onGasChange(message);
+      return;
+    }
+
+    if (message.startsWith('coal-')) {
+      this.onCoalChange(message, value);
+    }
+  }
+
+  onJackChange(message, value) {
     // Any time a jack is unplugged, zero the associated light bar
-    if (message.endsWith('-jack') && value === '1') {
+    if (value === '1') {
       const panelId = message.split('-jack')[0];
       this.queueMessage(`${panelId}-light-bar`, 0);
 
@@ -99,8 +119,8 @@ class Simulation extends Component {
       return;
     }
 
-    // Certain energy types must be immediately updated when plugged in
-    if (message.endsWith('-jack' && value === '0')) {
+    // Certain energy types must be updated when plugged in
+    if (value === '0') {
       const panelId = message.split('-jack')[0];
       if (message.startsWith('coal-')) {
         const prevState = this.liveData[`${panelId}-state`];
@@ -109,46 +129,33 @@ class Simulation extends Component {
           this.liveData[`${panelId}-warming-ticks`] = 0;
           this.queueMessage(`${panelId}-light`, 'warming');
         }
-      }
-      return;
-    }
-
-    // Catch coal switches. They don't immediately affect
-    // current value, which we add to the liveData object.
-    if (message.startsWith('coal-') && message.endsWith('-switch')) {
-      const panelId = message.substring(5, 6);
-      const isPluggedIn = (this.liveData[`coal-${panelId}-jack`] === '0');
-      const stateKey = `coal-${panelId}-state`;
-
-      // Switch turned off. No delay necessary.
-      if (value === '0') {
-        this.liveData[stateKey] = 'off';
-        const wtKey = `coal-${panelId}-warming-ticks`;
-        this.liveData[wtKey] = 0;
-        if (isPluggedIn) this.queueMessage(`coal-${panelId}-light`, 'off');
         return;
       }
-
-      // Switch turned on. Go into warming mode.
-      if (value === '1') {
-        this.liveData[stateKey] = 'warming';
-        if (isPluggedIn) this.queueMessage(`coal-${panelId}-light`, 'warming');
-        return;
+      if (message.startsWith('hydro-')) {
+        const prevLightBar = this.liveData[`${panelId}-light-bar`];
+        this.queueMessage(`${panelId}-light-bar`, prevLightBar);
       }
     }
+  }
 
-    // Catch gas arrow buttons exceptions. These messages
-    // don't provide the current value, but are used to adjust the
-    // current value, which we add to the liveData object.
-    if (message.startsWith('gas-') && message.includes('-button-')) {
-      const panelId = message.substring(4, 5);
-      const levelKey = `gas-${panelId}-level`;
+  onHydroChange(message, value) {
+    // Echo back hydro light bar messages
+    if (message.endsWith('-lever')) {
+      const panelId = message.split('-lever')[0];
+      this.queueMessage(`${panelId}-light-bar`, value);
+    }
+  }
+
+  onGasChange(message) {
+    if (message.includes('-button-')) {
+      const panelId = message.split('-button-')[0];
+      const levelKey = `${panelId}-level`;
       let currentLevel = this.liveData[levelKey];
       if (!currentLevel) currentLevel = 0.0;
 
+      // Increment if up was pressed,
+      // decrement if down was pressed
       let adjustment = Settings.GAS_ARROW_POWER;
-      // Increment if up arrow was pressed,
-      // decrement if down arrow was pressed
       if (message.endsWith('-down')) adjustment *= -1;
       let controlLevel = currentLevel + adjustment;
       // Clamp to 0–100;
@@ -156,25 +163,36 @@ class Simulation extends Component {
       this.liveData[levelKey] = controlLevel;
 
       // Immediately echo back gas light bar message
-      this.queueMessage(`gas-${panelId}-light-bar`, controlLevel);
-
-      return;
+      this.queueMessage(`${panelId}-light-bar`, controlLevel);
     }
+  }
 
-    // Immediately echo back hydro light bar messages
-    if (message.startsWith('hydro-') && message.endsWith('-lever')) {
-      const panelId = message.substring(6, 7);
-      this.queueMessage(`hydro-${panelId}-light-bar`, value);
+  onCoalChange(message, value) {
+    if (message.endsWith('-switch')) {
+      const panelId = message.split('-switch')[0];
+      const isPluggedIn = (this.liveData[`${panelId}-jack`] === '0');
+      const stateKey = `${panelId}-state`;
+
+      // Switch has turned off.
+      if (value === '0') {
+        this.liveData[stateKey] = 'off';
+        this.liveData[`${panelId}-warming-ticks`] = 0;
+        if (isPluggedIn) this.queueMessage(`${panelId}-light`, 'off');
+        return;
+      }
+
+      // Switch has turned on. Go into warming mode.
+      if (value === '1') {
+        this.liveData[stateKey] = 'warming';
+        if (isPluggedIn) this.queueMessage(`${panelId}-light`, 'warming');
+      }
     }
   }
 
   onStartButton() {
-    console.log('onStartButton()');
-
     const { currentView } = this.state;
 
     if (currentView === 'ready') {
-      // Stop flashing start button
       this.queueMessage('start-button-light', '0');
       this.setState({ currentView: '' });
       this.startSimulation();

@@ -94,7 +94,7 @@ const ArduinoEmulator = ({ onChange }) => {
         keyMap={{ TOGGLE_EMULATION: 'e', START_BUTTON: 's' }}
         handlers={{
           TOGGLE_EMULATION: () => setVisible((state) => !state),
-          START_BUTTON: () => onChange({ 'start-button': 1 }),
+          START_BUTTON: () => onChange({ 'start-button': '1' }),
         }}
       />
       <Row>
