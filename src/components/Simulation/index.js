@@ -35,6 +35,7 @@ class Simulation extends Component {
       condition: '',
       blackout: false,
       finalFeedback: null,
+      boardEnabled: true,
     };
 
     this.onData = this.onData.bind(this);
@@ -53,10 +54,6 @@ class Simulation extends Component {
     const { setOnDataCallback } = this.props;
     setOnDataCallback(this.onData);
 
-    // Wake up the Arduino
-    this.queueMessage('wake-arduino', '1');
-    this.releaseQueue();
-
     // This timed release of outgoing
     // Arduino messages ensures
     // the Arduino NeoPixel library
@@ -67,7 +64,14 @@ class Simulation extends Component {
       this.releaseQueue();
     }, 60);
 
-    setTimeout(() => { this.reset(); }, 100);
+    // TODO: Something is goofy with the
+    // initial start-light message not working.
+    setTimeout(() => {
+      this.queueMessage('wake-arduino', '1');
+      setTimeout(() => {
+        this.reset();
+      }, 150);
+    }, 1000);
   }
 
   componentWillUnmount() {
@@ -86,6 +90,9 @@ class Simulation extends Component {
       this.onStartButton();
       return;
     }
+
+    const { boardEnabled } = this.state;
+    if (!boardEnabled) return;
 
     if (message.endsWith('-jack')) {
       this.onJackChange(message, value);
@@ -142,28 +149,34 @@ class Simulation extends Component {
     // Echo back hydro light bar messages
     if (message.endsWith('-lever')) {
       const panelId = message.split('-lever')[0];
-      this.queueMessage(`${panelId}-light-bar`, value);
+      const isPluggedIn = (this.liveData[`${panelId}-jack`] === '0');
+      if (isPluggedIn) {
+        this.queueMessage(`${panelId}-light-bar`, value);
+      }
     }
   }
 
   onGasChange(message) {
     if (message.includes('-button-')) {
       const panelId = message.split('-button-')[0];
-      const levelKey = `${panelId}-level`;
-      let currentLevel = this.liveData[levelKey];
-      if (!currentLevel) currentLevel = 0.0;
+      const isPluggedIn = (this.liveData[`${panelId}-jack`] === '0');
+      if (isPluggedIn) {
+        const levelKey = `${panelId}-level`;
+        let currentLevel = this.liveData[levelKey];
+        if (!currentLevel) currentLevel = 0.0;
 
-      // Increment if up was pressed,
-      // decrement if down was pressed
-      let adjustment = Settings.GAS_ARROW_POWER;
-      if (message.endsWith('-down')) adjustment *= -1;
-      let controlLevel = currentLevel + adjustment;
-      // Clamp to 0–100;
-      controlLevel = Clamp(controlLevel, 0, 100);
-      this.liveData[levelKey] = controlLevel;
+        // Increment if up was pressed,
+        // decrement if down was pressed
+        let adjustment = Settings.GAS_ARROW_POWER;
+        if (message.endsWith('-down')) adjustment *= -1;
+        let controlLevel = currentLevel + adjustment;
+        // Clamp to 0–100;
+        controlLevel = Clamp(controlLevel, 0, 100);
+        this.liveData[levelKey] = controlLevel;
 
-      // Immediately echo back gas light bar message
-      this.queueMessage(`${panelId}-light-bar`, controlLevel);
+        // Immediately echo back gas light bar message
+        this.queueMessage(`${panelId}-light-bar`, controlLevel);
+      }
     }
   }
 
@@ -243,13 +256,13 @@ class Simulation extends Component {
       } else if (coalState === 'warming') {
         // Tick up warming counter.
         // After X ticks on warming, shift into 'on'
-        const wtKey = `coal-${panelId}-warming-ticks`;
+        const wtKey = `${panelId}-warming-ticks`;
         const warmingTicks = this.liveData[wtKey] || 0;
         if (warmingTicks > 6) {
           this.liveData[stateKey] = 'on';
           outputLevel = 1.0;
           this.liveData[wtKey] = 0;
-          this.queueMessage(`coal-${panelId}-light`, 'on');
+          this.queueMessage(`${panelId}-light`, 'on');
         } else {
           this.liveData[wtKey] = warmingTicks + 1;
         }
@@ -324,20 +337,34 @@ class Simulation extends Component {
     return production;
   }
 
+  disableControlBoard() {
+    this.setState({ boardEnabled: false }, () => {
+      this.zeroLightBars();
+    });
+  }
+
+  enableControlBoard() {
+    this.setState({ boardEnabled: true }, () => {
+      this.queueMessage('get-all-states', '1');
+    });
+  }
+
   zeroLightBars() {
-    const entries = Object.entries(this.liveData);
-    for (let i = 0; i < entries.length; i += 1) {
-      const [key] = entries[i];
-      if (key.endsWith('-light-bar')) {
-        this.queueMessage(key, 0);
+    const lightBarEnergyTypes = ['coal', 'gas', 'hydro', 'solar', 'wind'];
+    const maxPanels = 6;
+    for (let i = 0; i < lightBarEnergyTypes.length; i += 1) {
+      for (let j = 0; j < maxPanels; j += 1) {
+        const panelId = `${lightBarEnergyTypes[i]}-${j + 1}`;
+        if (lightBarEnergyTypes[i] === 'coal') {
+          this.queueMessage(`${panelId}-light`, 'off');
+        } else {
+          this.queueMessage(`${panelId}-light-bar`, 0);
+        }
       }
     }
   }
 
   reset() {
-    // Zero-out all light bars
-    this.zeroLightBars();
-
     clearInterval(this.hourlyInterval);
 
     this.liveData = {};
@@ -365,6 +392,8 @@ class Simulation extends Component {
       currentView: 'ready',
       blackout: false,
     });
+
+    this.enableControlBoard();
 
     // Flash start button
     this.queueMessage('start-button-light', '1');
@@ -453,6 +482,8 @@ class Simulation extends Component {
     // Stop all timers
     clearInterval(this.hourlyInterval);
 
+    this.disableControlBoard();
+
     // Calculate final scores and feedback
     const finalScore = AverageArray(this.sessionData.efficiency);
     const sessionFeedback = DataManager.getSessionFeedback(this.sessionData);
@@ -485,6 +516,7 @@ class Simulation extends Component {
       // Send all queued messages
       for (let i = 0; i < messageObjects.length; i += 1) {
         const [key, value] = messageObjects[i];
+        console.log(`sendData: {${key}:${value}}`); // TEMP: Remove for production.
         sendData(`{${key}:${value}}`);
       }
 

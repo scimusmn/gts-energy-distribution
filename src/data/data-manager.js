@@ -147,8 +147,6 @@ const windSpeedToWindPotential = (windSpeed) => {
 let prevTriggerType = '';
 let triggerCounter = 0;
 const checkMessageCenterTriggers = (efficiency, polarity) => {
-  console.log('checkMessageCenterTriggers', efficiency, polarity);
-
   let triggerType;
 
   // BLACKOUT_WARNING
@@ -157,8 +155,6 @@ const checkMessageCenterTriggers = (efficiency, polarity) => {
   if (polarity === -1 && efficiency < 0.33) triggerType = 'OVER_PRODUCTION';
   // AFFIRMATION
   if (efficiency > 0.66) triggerType = 'AFFIRMATION';
-
-  console.log(triggerType, triggerCounter);
 
   if (triggerType === prevTriggerType) {
     triggerCounter += 1;
@@ -182,7 +178,6 @@ const checkMessageCenterTriggers = (efficiency, polarity) => {
 };
 
 const getSessionFeedback = (sessionData) => {
-  console.log('getSessionFeedback');
   const { feedback, energy } = sessionData;
 
   // We can use this JSON array as-is.
