@@ -11,15 +11,18 @@ class Toggle extends Component {
   }
 
   handleChange(checked) {
-    const { msg, onChange } = this.props;
+    const { msg, onChange, invert } = this.props;
+
     this.setState({ checked });
 
     // Convert bool to 1/0
-    const intBool = checked ? 1 : 0;
+    let intBool = checked ? 1 : 0;
+
+    if (invert) intBool = 1 - intBool;
 
     // Create data object that mimics what comes
     // from SerialHOC
-    const dataObj = { [msg]: intBool };
+    const dataObj = { [msg]: intBool.toString() };
     onChange(dataObj);
   }
 
@@ -33,9 +36,14 @@ class Toggle extends Component {
   }
 }
 
+Toggle.defaultProps = {
+  invert: false,
+};
+
 Toggle.propTypes = {
   msg: PropTypes.string.isRequired,
   onChange: PropTypes.instanceOf(Function).isRequired,
+  invert: PropTypes.bool,
 };
 
 export default Toggle;

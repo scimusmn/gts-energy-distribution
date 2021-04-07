@@ -38,6 +38,7 @@ class Simulation extends Component {
       condition: '',
       blackout: false,
       finalFeedback: null,
+      boardEnabled: true,
     };
 
     this.onData = this.onData.bind(this);
@@ -100,72 +101,126 @@ class Simulation extends Component {
 
     this.liveData[message] = value;
 
-    if (message === 'start-button' && parseInt(value, 2) === 1) {
+    if (message === 'start-button' && value === '1') {
       this.onStartButton();
       return;
     }
 
-    // Catch coal switches. They don't immediately affect
-    // current value, which we add to the liveData object.
-    if (message.startsWith('coal-') && message.endsWith('-switch')) {
-      const panelId = message.substring(5, 6);
-      const stateKey = `coal-${panelId}-state`;
+    const { boardEnabled } = this.state;
+    if (!boardEnabled) return;
 
-      // Switch turned off. No delay necessary.
-      if (value === 0) {
-        this.queueMessage(`coal-${panelId}-light`, 'off');
-        this.liveData[stateKey] = 'off';
-        const wtKey = `coal-${panelId}-warming-ticks`;
-        this.liveData[wtKey] = 0;
-        return;
-      }
-
-      // Switch turned on. Go into warming mode.
-      if (value === 1) {
-        this.queueMessage(`coal-${panelId}-light`, 'warming');
-        this.liveData[stateKey] = 'warming';
-        return;
-      }
+    if (message.endsWith('-jack')) {
+      this.onJackChange(message, value);
+      return;
     }
 
-    // Catch gas arrow buttons exceptions. These messages
-    // don't provide the current value, but are used to adjust the
-    // current value, which we add to the liveData object.
-    if (message.startsWith('gas-') && message.includes('-button-')) {
-      const panelId = message.substring(4, 5);
-      const levelKey = `gas-${panelId}-level`;
-      let currentLevel = this.liveData[levelKey];
-      if (!currentLevel) currentLevel = 0.0;
+    if (message.startsWith('hydro-')) {
+      this.onHydroChange(message, value);
+    }
 
-      let adjustment = Settings.GAS_ARROW_POWER;
-      // Increment if up arrow was pressed,
-      // decrement if down arrow was pressed
-      if (message.endsWith('-down')) adjustment *= -1;
-      let controlLevel = currentLevel + adjustment;
-      // Clamp to 0–100;
-      controlLevel = Clamp(controlLevel, 0, 100);
-      this.liveData[levelKey] = controlLevel;
+    if (message.startsWith('gas-')) {
+      this.onGasChange(message);
+      return;
+    }
 
-      // Immediately echo back gas light bar message
-      this.queueMessage(`gas-${panelId}-light-bar`, controlLevel);
+    if (message.startsWith('coal-')) {
+      this.onCoalChange(message, value);
+    }
+  }
+
+  onJackChange(message, value) {
+    // Any time a jack is unplugged, zero the associated light bar
+    if (value === '1') {
+      const panelId = message.split('-jack')[0];
+      this.queueMessage(`${panelId}-light-bar`, 0);
+
+      // Certain energy types resest when unplugged
+      if (message.startsWith('gas-')) this.liveData[`${panelId}-level`] = 0;
+      if (message.startsWith('coal-')) this.queueMessage(`${panelId}-light`, 'off');
 
       return;
     }
 
-    // Immediately echo back hydro light bar messages
-    if (message.startsWith('hydro-') && message.endsWith('-lever')) {
-      const panelId = message.substring(6, 7);
-      this.queueMessage(`hydro-${panelId}-light-bar`, value);
+    // Certain energy types must be updated when plugged in
+    if (value === '0') {
+      const panelId = message.split('-jack')[0];
+      if (message.startsWith('coal-')) {
+        const prevState = this.liveData[`${panelId}-state`];
+        if (prevState === 'on' || prevState === 'warming') {
+          this.liveData[`${panelId}-state`] = 'warming';
+          this.liveData[`${panelId}-warming-ticks`] = 0;
+          this.queueMessage(`${panelId}-light`, 'warming');
+        }
+        return;
+      }
+      if (message.startsWith('hydro-')) {
+        const prevLightBar = this.liveData[`${panelId}-light-bar`];
+        this.queueMessage(`${panelId}-light-bar`, prevLightBar);
+      }
+    }
+  }
+
+  onHydroChange(message, value) {
+    // Echo back hydro light bar messages
+    if (message.endsWith('-lever')) {
+      const panelId = message.split('-lever')[0];
+      const isPluggedIn = (this.liveData[`${panelId}-jack`] === '0');
+      if (isPluggedIn) {
+        this.queueMessage(`${panelId}-light-bar`, value);
+      }
+    }
+  }
+
+  onGasChange(message) {
+    if (message.includes('-button-')) {
+      const panelId = message.split('-button-')[0];
+      const isPluggedIn = (this.liveData[`${panelId}-jack`] === '0');
+      if (isPluggedIn) {
+        const levelKey = `${panelId}-level`;
+        let currentLevel = this.liveData[levelKey];
+        if (!currentLevel) currentLevel = 0.0;
+
+        // Increment if up was pressed,
+        // decrement if down was pressed
+        let adjustment = Settings.GAS_ARROW_POWER;
+        if (message.endsWith('-down')) adjustment *= -1;
+        let controlLevel = currentLevel + adjustment;
+        // Clamp to 0–100;
+        controlLevel = Clamp(controlLevel, 0, 100);
+        this.liveData[levelKey] = controlLevel;
+
+        // Immediately echo back gas light bar message
+        this.queueMessage(`${panelId}-light-bar`, controlLevel);
+      }
+    }
+  }
+
+  onCoalChange(message, value) {
+    if (message.endsWith('-switch')) {
+      const panelId = message.split('-switch')[0];
+      const isPluggedIn = (this.liveData[`${panelId}-jack`] === '0');
+      const stateKey = `${panelId}-state`;
+
+      // Switch has turned off.
+      if (value === '0') {
+        this.liveData[stateKey] = 'off';
+        this.liveData[`${panelId}-warming-ticks`] = 0;
+        if (isPluggedIn) this.queueMessage(`${panelId}-light`, 'off');
+        return;
+      }
+
+      // Switch has turned on. Go into warming mode.
+      if (value === '1') {
+        this.liveData[stateKey] = 'warming';
+        if (isPluggedIn) this.queueMessage(`${panelId}-light`, 'warming');
+      }
     }
   }
 
   onStartButton() {
-    console.log('onStartButton()');
-
     const { currentView } = this.state;
 
     if (currentView === 'ready') {
-      // Stop flashing start button
       this.queueMessage('start-button-light', '0');
       this.setState({ currentView: '' });
       this.startSimulation();
@@ -182,7 +237,7 @@ class Simulation extends Component {
     };
     for (let i = 0; i < entries.length; i += 1) {
       const [key, value] = entries[i];
-      if (key.endsWith('-jack') && value === 1) {
+      if (key.endsWith('-jack') && parseInt(value, 2) === 0) {
         const split = key.split('-');
         const panelType = split[0];
         const panelId = `${split[0]}-${split[1]}`;
@@ -213,12 +268,13 @@ class Simulation extends Component {
       } else if (coalState === 'warming') {
         // Tick up warming counter.
         // After X ticks on warming, shift into 'on'
-        const wtKey = `coal-${panelId}-warming-ticks`;
+        const wtKey = `${panelId}-warming-ticks`;
         const warmingTicks = this.liveData[wtKey] || 0;
         if (warmingTicks > Settings.COAL_WARMING_DELAY) {
           this.liveData[stateKey] = 'on';
           outputLevel = 1.0;
           this.liveData[wtKey] = 0;
+          this.queueMessage(`${panelId}-light`, 'on');
         } else {
           this.liveData[wtKey] = warmingTicks + 1;
         }
@@ -257,11 +313,19 @@ class Simulation extends Component {
     const solarAvailability = DataManager.getSolarAvailability(hourIndex, hourProgress);
     const numSolarPanels = activePanels.solar.length;
     const solarProduction = numSolarPanels * solarAvailability * Settings.MAX_OUTPUT_PER_PANEL;
+    const solarLightBar = Math.ceil(solarAvailability * 100);
+    for (let i = 0; i < numSolarPanels; i += 1) {
+      this.queueMessage(`${activePanels.solar[i]}-light-bar`, solarLightBar);
+    }
 
     // WIND production
     const windAvailability = DataManager.getWindAvailability(hourIndex, hourProgress);
     const numWindPanels = activePanels.wind.length;
     const windProduction = numWindPanels * windAvailability * Settings.MAX_OUTPUT_PER_PANEL;
+    const windLightBar = Math.ceil(windAvailability * 100);
+    for (let i = 0; i < numWindPanels; i += 1) {
+      this.queueMessage(`${activePanels.wind[i]}-light-bar`, windLightBar);
+    }
 
     // Snapshot
     const production = {
@@ -285,7 +349,36 @@ class Simulation extends Component {
     return production;
   }
 
+  disableControlBoard() {
+    this.setState({ boardEnabled: false }, () => {
+      this.zeroLightBars();
+    });
+  }
+
+  enableControlBoard() {
+    this.setState({ boardEnabled: true }, () => {
+      this.queueMessage('get-all-states', '1');
+    });
+  }
+
+  zeroLightBars() {
+    const lightBarEnergyTypes = ['coal', 'gas', 'hydro', 'solar', 'wind'];
+    const maxPanels = 6;
+    for (let i = 0; i < lightBarEnergyTypes.length; i += 1) {
+      for (let j = 0; j < maxPanels; j += 1) {
+        const panelId = `${lightBarEnergyTypes[i]}-${j + 1}`;
+        if (lightBarEnergyTypes[i] === 'coal') {
+          this.queueMessage(`${panelId}-light`, 'off');
+        } else {
+          this.queueMessage(`${panelId}-light-bar`, 0);
+        }
+      }
+    }
+  }
+
   reset() {
+    clearInterval(this.hourlyInterval);
+
     this.liveData = {};
     const energy = {
       coal: [],
@@ -302,7 +395,6 @@ class Simulation extends Component {
       efficiency: [],
       timestamps: [],
     };
-    clearInterval(this.hourlyInterval);
 
     // Prepare next weather forecast
     // Select forecast data for this session
@@ -313,6 +405,8 @@ class Simulation extends Component {
       currentView: 'ready',
       blackout: false,
     });
+
+    this.enableControlBoard();
 
     // Flash start button
     this.queueMessage('start-button-light', '1');
@@ -435,6 +529,8 @@ class Simulation extends Component {
     clearInterval(this.hourlyInterval);
     clearInterval(this.interpInterval);
 
+    this.disableControlBoard();
+
     // Calculate final scores and feedback
     const finalScore = AverageArray(this.sessionData.efficiency);
     const sessionFeedback = DataManager.getSessionFeedback(this.sessionData);
@@ -467,6 +563,7 @@ class Simulation extends Component {
       // Send all queued messages
       for (let i = 0; i < messageObjects.length; i += 1) {
         const [key, value] = messageObjects[i];
+        console.log(`sendData: {${key}:${value}}`); // TEMP: Remove for production.
         sendData(`{${key}:${value}}`);
       }
 

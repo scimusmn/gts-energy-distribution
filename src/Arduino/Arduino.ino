@@ -30,32 +30,34 @@ const int gas2_btn_down_pin = 12;
 SerialController serialController;
 const long baudrate = 115200;
 
-const char str_1[] PROGMEM = "coal-1-jack";     // shift in board 1
-const char str_2[] PROGMEM = "coal-2-jack";     // 2
-const char str_3[] PROGMEM = "coal-3-jack";     // 3
-const char str_4[] PROGMEM = "coal-4-jack";     // 4
-const char str_5[] PROGMEM = "coal-5-jack";     // 5
-const char str_6[] PROGMEM = "coal-6-jack";     // 6
-const char str_7[] PROGMEM = "gas-1-jack";      // 7
-const char str_8[] PROGMEM = "gas-2-jack";      // 8
-const char str_9[] PROGMEM = "hydro-1-jack";    // 9
-const char str_10[] PROGMEM = "hydro-2-jack";   // 10
-const char str_11[] PROGMEM = "solar-1-jack";   // 11
-const char str_12[] PROGMEM = "solar-2-jack";   // 12
-const char str_13[] PROGMEM = "solar-3-jack";   // 13
-const char str_14[] PROGMEM = "wind-1-jack";    // 14
-const char str_15[] PROGMEM = "wind-2-jack";    // 15
-const char str_16[] PROGMEM = "wind-3-jack";    // 16
-const char str_17[] PROGMEM = "coal-1-switch";  // 17
-const char str_18[] PROGMEM = "coal-2-switch";  // 18
-const char str_19[] PROGMEM = "coal-3-switch";  // 19
-const char str_20[] PROGMEM = "coal-4-switch";  // 20
+const char str_1[] PROGMEM = "gas-1-jack";     // shift in board 1
+const char str_2[] PROGMEM = "gas-2-jack";     // 2
+const char str_3[] PROGMEM = "solar-1-jack";     // 3
+const char str_4[] PROGMEM = "solar-2-jack";     // 4
+const char str_5[] PROGMEM = "solar-3-jack";     // 5
+const char str_6[] PROGMEM = "wind-1-jack";     // 6
+const char str_7[] PROGMEM = "wind-2-jack";     // 5
+const char str_8[] PROGMEM = "wind-3-jack";     // 6
+const char str_9[] PROGMEM = "coal-1-switch";      // 7
+const char str_10[] PROGMEM = "coal-2-switch";      // 8
+//const char str_9[] PROGMEM = "hydro-1-jack";    // 9
+//const char str_10[] PROGMEM = "hydro-2-jack";   // 10
+const char str_11[] PROGMEM = "coal-3-switch";   // 11
+const char str_12[] PROGMEM = "coal-4-switch";   // 12
+const char str_13[] PROGMEM = "coal-1-jack";   // 13
+const char str_14[] PROGMEM = "coal-2-jack";    // 14
+const char str_15[] PROGMEM = "coal-3-jack";    // 15
+const char str_16[] PROGMEM = "coal-4-jack";    // 16
+//const char str_17[] PROGMEM = "coal-1-switch";  // 17
+//const char str_18[] PROGMEM = "coal-2-switch";  // 18
+//const char str_19[] PROGMEM = "coal-3-switch";  // 19
+//const char str_20[] PROGMEM = "coal-4-switch";  // 20
 
 // Table to refer to strings.
 const char *const string_table[] PROGMEM = {
     str_1,  str_2,  str_3,  str_4,  str_5,  str_6,  str_7,
     str_8,  str_9,  str_10, str_11, str_12, str_13, str_14,
-    str_15, str_16, str_17, str_18, str_19, str_20};
+    str_15, str_16};
 
 char buffer[15];
 
@@ -152,19 +154,19 @@ void updateJacksSwitches() {
   statesIn = shiftIn(shift_in_data_pin, shift_in_clock_pin);
   cableStates = cableStates << 8;
   cableStates = cableStates | statesIn;
-
-  statesIn = shiftIn(shift_in_data_pin, shift_in_clock_pin);
-  cableStates = cableStates << 8;
-  cableStates = cableStates | statesIn;
-
-  statesIn = shiftIn(shift_in_data_pin, shift_in_clock_pin);
-  cableStates = cableStates << 8;
-  cableStates = cableStates | statesIn;
+//
+//  statesIn = shiftIn(shift_in_data_pin, shift_in_clock_pin);
+//  cableStates = cableStates << 8;
+//  cableStates = cableStates | statesIn;
+//
+//  statesIn = shiftIn(shift_in_data_pin, shift_in_clock_pin);
+//  cableStates = cableStates << 8;
+//  cableStates = cableStates | statesIn;
 
   if (prevCableStates != cableStates)  // if the states changed...
   {
     long mask = 1;                // create a mask
-    for (int n = 0; n < 24; n++)  // iterate through each bit
+    for (int n = 0; n < 16; n++)  // iterate through each bit
     {
       // check if the bit changed since last state change.
       if ((mask & prevCableStates) != (mask & cableStates)) {
@@ -235,27 +237,27 @@ void onParse(char *message, char *value) {
     lightBarGraph(6, atoi(value));  // value of first pixel to be lit.
   else if (strcmp(message, "gas-2-light-bar") == 0)
     lightBarGraph(14, atoi(value));  // value of first pixel to be lit.
-  else if (strcmp(message, "gas-3-light-bar") == 0)
-    lightBarGraph(22, atoi(value));  // value of first pixel to be lit.
+//  else if (strcmp(message, "gas-3-light-bar") == 0)
+//    lightBarGraph(22, atoi(value));  // value of first pixel to be lit.
 
   else if (strcmp(message, "hydro-1-light-bar") == 0)
-    lightBarGraph(30, atoi(value));  // value of first pixel to be lit.
-  else if (strcmp(message, "hydro-2-light-bar") == 0)
-    lightBarGraph(38, atoi(value));  // value of first pixel to be lit.
+    lightBarGraph(22, atoi(value));  // value of first pixel to be lit.
+//  else if (strcmp(message, "hydro-2-light-bar") == 0)
+//    lightBarGraph(38, atoi(value));  // value of first pixel to be lit.
 
   else if (strcmp(message, "solar-1-light-bar") == 0)
-    lightBarGraph(46, atoi(value));  // value of first pixel to be lit.
+    lightBarGraph(30, atoi(value));  // value of first pixel to be lit.
   else if (strcmp(message, "solar-2-light-bar") == 0)
-    lightBarGraph(54, atoi(value));  // value of first pixel to be lit.
+    lightBarGraph(38, atoi(value));  // value of first pixel to be lit.
   else if (strcmp(message, "solar-3-light-bar") == 0)
-    lightBarGraph(62, atoi(value));  // value of first pixel to be lit.
+    lightBarGraph(46, atoi(value));  // value of first pixel to be lit.
 
   else if (strcmp(message, "wind-1-light-bar") == 0)
-    lightBarGraph(70, atoi(value));  // value of first pixel to be lit.
+    lightBarGraph(54, atoi(value));  // value of first pixel to be lit.
   else if (strcmp(message, "wind-2-light-bar") == 0)
-    lightBarGraph(78, atoi(value));  // value of first pixel to be lit.
+    lightBarGraph(62, atoi(value));  // value of first pixel to be lit.
   else if (strcmp(message, "wind-3-light-bar") == 0)
-    lightBarGraph(86, atoi(value));  // value of first pixel to be lit.
+    lightBarGraph(70, atoi(value));  // value of first pixel to be lit.
 
   else if (strcmp(message, "get-all-states") == 0)  // TODO
   {
