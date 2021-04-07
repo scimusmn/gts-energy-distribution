@@ -3,53 +3,36 @@ import React from 'react';
 import {
   Modal, ModalHeader, ModalBody, ModalFooter,
 } from 'reactstrap';
-import PropTypes from 'prop-types';
-import Forecast from '../Forecast';
 
-const ReadyScreen = ({ forecast }) => (
+const ReadyScreen = () => (
   <Modal isOpen size="xl">
-    <ModalHeader><h1>Ready?</h1></ModalHeader>
+    <ModalHeader><h1>Power the city!</h1></ModalHeader>
     <ModalBody>
-      <Forecast days={forecast} />
+      <h3>Can you power the city for 3 days?</h3>
       <br />
+      <h3>Select your power sources by plugging in the cables — you have up to 10 power lines.</h3>
       <br />
+      <h3>
+        As the city’s power demand changes, use the controls to match production to demand.
+        <br />
+        Some power sources respond more quickly than others,
+        and power from the wind and sun will change depending on the weather.
+      </h3>
       <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <h3>Select your power sources by plugging in their jacks.</h3>
+      <h3>
+        Beware! Disconnecting a power line might cause an outage.
+        Keep an eye on your demand and efficiency.
+      </h3>
       <br />
     </ModalBody>
     <ModalFooter>
       <h1>
-        Press
+        Ready to play? Press
         {' '}
-        <strong>Start</strong>
-        {' '}
-        button to begin.
+        <strong>START.</strong>
       </h1>
     </ModalFooter>
   </Modal>
 );
-
-ReadyScreen.defaultProps = {
-  forecast: [],
-};
-
-ReadyScreen.propTypes = {
-  forecast: PropTypes.instanceOf(Array),
-};
 
 export default ReadyScreen;

@@ -45,6 +45,9 @@ body {
   width: 50%;
 
   .message-container {
+    background-color: white;
+    border-radius: 21px;
+    margin: 30px 40px;
     opacity: 0.1;
     padding: 30px 40px;
     transition: opacity 3s;
@@ -87,16 +90,47 @@ body {
   width: 24%;
 }
 
+@keyframes fullBlink {
+  from,
+  to {
+    outline-color: transparent;
+  }
+
+  50% {
+    outline-color: red;
+  }
+}
+
+@keyframes fullMeterFrames {
+  0% {
+    outline-color: red;
+    outline-offset: 0;
+  }
+
+  50% {
+    outline-color: white;
+    outline-offset: - 1px;
+  }
+
+  100% {
+    outline-color: red;
+    outline-offset: 0;
+  }
+}
+
+.meter-container {
+  .full {
+    animation: fullMeterFrames 1.3s infinite;
+    outline: 3px solid;
+  }
+}
+
 .blackout {
   background-color: black;
   height: 100%;
   opacity: 0;
   width: 100%;
 }
-
-// .blackout.show {
-//   opacity: 0.8;
-// }
 
 .blackout.show {
   animation: blinkFrames 2.5s forwards;
@@ -165,5 +199,5 @@ body {
 
 // Animation helpers
 .tween-height {
-  transition: height 0.2s ease-in-out;
+  transition: height 0.1s ease-in-out;
 }
