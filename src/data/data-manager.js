@@ -8,6 +8,8 @@ import {
   ExtractFloat,
 } from '../utils';
 
+import Settings from './settings';
+
 import EnvironmentalJSON from './environmental-data.json';
 import MessageCenterJSON from './message-center.json';
 
@@ -158,8 +160,9 @@ const windSpeedToWindPotential = (windSpeed) => {
   } else if (speed > 28) {
     potential = 1.0;
   } else {
-    // TODO: map 8–28 range to 0–1 range
-    potential = 0.75; // temp
+    // Snap to 75% potential
+    // when not min or max wind
+    potential = 0.75;
   }
   return potential;
 };
@@ -174,29 +177,25 @@ const checkMessageCenterTriggers = (efficiency, polarity) => {
   let triggerType;
 
   // BLACKOUT_WARNING
-  if (polarity === 1 && efficiency < 0.33) triggerType = 'BLACKOUT_WARNING';
+  if (polarity === 1 && efficiency < Settings.BLACKOUT_THRESHOLD) triggerType = 'BLACKOUT_WARNING';
   // OVER_PRODUCTION
-  if (polarity === -1 && efficiency < 0.33) triggerType = 'OVER_PRODUCTION';
+  if (polarity === -1 && efficiency < Settings.OVER_PRODUCTION_THRESHOLD) triggerType = 'OVER_PRODUCTION';
   // AFFIRMATION
-  if (efficiency > 0.66) triggerType = 'AFFIRMATION';
+  if (efficiency > Settings.AFFIRMATION_THRESHOLD) triggerType = 'AFFIRMATION';
 
   if (triggerType === prevTriggerType) {
     triggerCounter += 1;
   } else {
     triggerCounter = 0;
   }
-  // Trigger a real blackout if X warnings have
-  // been displayed
-  if (triggerType === 'BLACKOUT_WARNING' && triggerCounter > 8) {
-    triggerCounter = 0;
-    return FishArray(SORTED_TRIGGER_MESSAGES.FEEDBACK_BLACKOUT);
-  }
+
   if (triggerType !== prevTriggerType || triggerCounter > 5) {
     triggerCounter = 0;
     prevTriggerType = triggerType;
     if (triggerType === 'BLACKOUT_WARNING') {
       blackoutWarnings += 1;
-      if (blackoutWarnings > 3) {
+      // Trigger "real" blackout afer X warnings
+      if (blackoutWarnings > Settings.WARNINGS_BEFORE_BLACKOUT) {
         blackoutWarnings = 0;
         return FishArray(SORTED_TRIGGER_MESSAGES.FEEDBACK_BLACKOUT);
       }

@@ -22,8 +22,8 @@ class Simulation extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      arduinoIsAwake: false,
       currentView: '',
-      forecast: [],
       messageCenter: {},
       production: 0,
       demand: 0,
@@ -49,6 +49,8 @@ class Simulation extends Component {
     this.liveData = {};
     this.sessionData = {};
     this.hourlyInterval = {};
+
+    this.interruptInterval = {};
     this.messageQueue = {};
   }
 
@@ -56,20 +58,28 @@ class Simulation extends Component {
     const { setOnDataCallback } = this.props;
     setOnDataCallback(this.onData);
 
-    // Wake up the Arduino
-    this.queueMessage('wake-arduino', '1');
-    this.releaseQueue();
+    const wakeInterval = setInterval(() => {
+      const { arduinoIsAwake } = this.state;
+      if (arduinoIsAwake) {
+        this.reset();
 
-    this.reset();
-    // This timed release of outgoing
-    // Arduino messages ensures
-    // the Arduino NeoPixel library
-    // has enough time to execute it's
-    // 'show' method that can corrupt
-    // incoming serial data - tn, 2021
-    this.interruptInterval = setInterval(() => {
-      this.releaseQueue();
-    }, 60);
+        // This timed release of outgoing
+        // Arduino messages ensures
+        // the Arduino NeoPixel library
+        // has enough time to execute it's
+        // 'show' method that can corrupt
+        // incoming serial data - tn, 2021
+        this.interruptInterval = setInterval(() => {
+          this.releaseQueue();
+        }, 60);
+        clearInterval(wakeInterval);
+      } else {
+        // Wake up the Arduino
+        this.queueMessage('wake-arduino', '1');
+        this.releaseQueue();
+        console.log('Arduino not yet awake...');
+      }
+    }, 1000);
   }
 
   componentWillUnmount() {
@@ -81,6 +91,12 @@ class Simulation extends Component {
 
     const message = Object.keys(data)[0];
     const value = Object.values(data)[0];
+
+    if (message === 'arduino-ready') {
+      console.log('Arduino is ready!');
+      this.setState({ arduinoIsAwake: true });
+      return;
+    }
 
     this.liveData[message] = value;
 
@@ -95,11 +111,9 @@ class Simulation extends Component {
       const panelId = message.substring(5, 6);
       const stateKey = `coal-${panelId}-state`;
 
-      console.log('++ Coal switch change', panelId);
-
       // Switch turned off. No delay necessary.
       if (value === 0) {
-        this.queueMessage(`{coal-${panelId}-light`, 'off');
+        this.queueMessage(`coal-${panelId}-light`, 'off');
         this.liveData[stateKey] = 'off';
         const wtKey = `coal-${panelId}-warming-ticks`;
         this.liveData[wtKey] = 0;
@@ -108,7 +122,7 @@ class Simulation extends Component {
 
       // Switch turned on. Go into warming mode.
       if (value === 1) {
-        this.queueMessage(`{coal-${panelId}-light`, 'warming');
+        this.queueMessage(`coal-${panelId}-light`, 'warming');
         this.liveData[stateKey] = 'warming';
         return;
       }
@@ -133,7 +147,7 @@ class Simulation extends Component {
       this.liveData[levelKey] = controlLevel;
 
       // Immediately echo back gas light bar message
-      this.queueMessage(`{gas-${panelId}-light-bar`, controlLevel);
+      this.queueMessage(`gas-${panelId}-light-bar`, controlLevel);
 
       return;
     }
@@ -141,7 +155,7 @@ class Simulation extends Component {
     // Immediately echo back hydro light bar messages
     if (message.startsWith('hydro-') && message.endsWith('-lever')) {
       const panelId = message.substring(6, 7);
-      this.queueMessage(`{hydro-${panelId}-light-bar`, value);
+      this.queueMessage(`hydro-${panelId}-light-bar`, value);
     }
   }
 
@@ -201,7 +215,7 @@ class Simulation extends Component {
         // After X ticks on warming, shift into 'on'
         const wtKey = `coal-${panelId}-warming-ticks`;
         const warmingTicks = this.liveData[wtKey] || 0;
-        if (warmingTicks > 6) {
+        if (warmingTicks > Settings.COAL_WARMING_DELAY) {
           this.liveData[stateKey] = 'on';
           outputLevel = 1.0;
           this.liveData[wtKey] = 0;
@@ -295,7 +309,7 @@ class Simulation extends Component {
     DataManager.selectNewForecast();
     this.setState({
       hourIndex: 0,
-      forecast: DataManager.getForecastSummary(),
+      // forecast: DataManager.getForecastSummary(),
       currentView: 'ready',
       blackout: false,
     });
@@ -382,7 +396,7 @@ class Simulation extends Component {
     // TODO: Replace with reqAnimationFrame HOC
     this.interpInterval = setInterval(() => {
       const { hourIndex } = this.state;
-      if (hourIndex <= 0) return;
+      if (hourIndex <= 0 || hourIndex >= totalHoursInSession) return;
 
       const { timestamps } = this.sessionData;
       const prevTimestamp = timestamps[timestamps.length - 1];
@@ -413,12 +427,13 @@ class Simulation extends Component {
         temp,
         wind,
       });
-    }, 156);
+    }, 150);
   }
 
   endSimulation() {
     // Stop all timers
     clearInterval(this.hourlyInterval);
+    clearInterval(this.interpInterval);
 
     // Calculate final scores and feedback
     const finalScore = AverageArray(this.sessionData.efficiency);
@@ -455,6 +470,9 @@ class Simulation extends Component {
         sendData(`{${key}:${value}}`);
       }
 
+      console.log('release size:', messageObjects.length);
+      console.log('releaseQueue:', this.messageQueue);
+
       // Clear the message queue so we don't
       // make uneccessary updates.
       this.messageQueue = {};
@@ -470,7 +488,6 @@ class Simulation extends Component {
       currentView,
       time,
       day,
-      forecast,
       messageCenter,
       production,
       demand,
@@ -559,7 +576,7 @@ class Simulation extends Component {
         </Container>
         <div className={`blackout ${blackout ? 'show' : ''}`} />
         {{
-          ready: <ReadyScreen key="ready" forecast={forecast} />,
+          ready: <ReadyScreen key="ready" />,
           score: <ScoreScreen key="score" feedbackMessage={finalFeedback} efficiencyScore={finalScore} chartData={energyData} customerFeedback={this.sessionData.feedback} />,
         }[currentView]}
       </div>
