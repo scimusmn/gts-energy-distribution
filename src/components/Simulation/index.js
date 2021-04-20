@@ -110,11 +110,13 @@ class Simulation extends Component {
     if (!boardEnabled) return;
 
     if (message.endsWith('-jack')) {
+      console.log('ondata jack', message, value);
       this.onJackChange(message, value);
       return;
     }
 
     if (message.startsWith('hydro-')) {
+      console.log('ondata hyrdo', message, value);
       this.onHydroChange(message, value);
     }
 
@@ -124,12 +126,13 @@ class Simulation extends Component {
     }
 
     if (message.startsWith('coal-')) {
+      console.log('ondata coal', message, value);
       this.onCoalChange(message, value);
     }
   }
 
   onJackChange(message, value) {
-    // Any time a jack is unplugged, zero the associated light bar
+    // Any time a jack is unplugged, zero associated light bar
     if (value === '1') {
       const panelId = message.split('-jack')[0];
       this.queueMessage(`${panelId}-light-bar`, 0);
@@ -153,9 +156,10 @@ class Simulation extends Component {
         }
         return;
       }
+      // Update hydro bar to show last value
       if (message.startsWith('hydro-')) {
-        const prevLightBar = this.liveData[`${panelId}-light-bar`];
-        this.queueMessage(`${panelId}-light-bar`, prevLightBar);
+        const prevLeverValue = this.liveData[`${panelId}-lever`];
+        this.onHydroChange(`${panelId}-lever`, prevLeverValue);
       }
     }
   }
@@ -342,9 +346,6 @@ class Simulation extends Component {
       total += value;
     });
     production.total = total;
-
-    // console.log('Production snapshot:');
-    // console.log(production);
 
     return production;
   }
@@ -567,15 +568,12 @@ class Simulation extends Component {
         sendData(`{${key}:${value}}`);
       }
 
-      console.log('release size:', messageObjects.length);
-      console.log('releaseQueue:', this.messageQueue);
-
       // Clear the message queue so we don't
       // make uneccessary updates.
       this.messageQueue = {};
 
       // After sending all queued messages (including light bar updates),
-      // publish them by following a the neopixel show command
+      // publish them by executing the neopixel show command
       sendData('{neopixels-show:1}');
     }
   }
