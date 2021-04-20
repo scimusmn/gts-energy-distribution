@@ -110,13 +110,11 @@ class Simulation extends Component {
     if (!boardEnabled) return;
 
     if (message.endsWith('-jack')) {
-      console.log('ondata jack', message, value);
       this.onJackChange(message, value);
       return;
     }
 
     if (message.startsWith('hydro-')) {
-      console.log('ondata hyrdo', message, value);
       this.onHydroChange(message, value);
     }
 
@@ -126,7 +124,6 @@ class Simulation extends Component {
     }
 
     if (message.startsWith('coal-')) {
-      console.log('ondata coal', message, value);
       this.onCoalChange(message, value);
     }
   }
