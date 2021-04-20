@@ -145,18 +145,14 @@ class Simulation extends Component {
     if (value === '0') {
       const panelId = message.split('-jack')[0];
       if (message.startsWith('coal-')) {
-        const prevState = this.liveData[`${panelId}-state`];
-        if (prevState === 'on' || prevState === 'warming') {
-          this.liveData[`${panelId}-state`] = 'warming';
-          this.liveData[`${panelId}-warming-ticks`] = 0;
-          this.queueMessage(`${panelId}-light`, 'warming');
-        }
+        const prevSwitchState = this.liveData[`${panelId}-switch`];
+        if (prevSwitchState) this.onCoalChange(`${panelId}-switch`, prevSwitchState);
         return;
       }
       // Update hydro bar to show last value
       if (message.startsWith('hydro-')) {
         const prevLeverValue = this.liveData[`${panelId}-lever`];
-        this.onHydroChange(`${panelId}-lever`, prevLeverValue);
+        if (prevLeverValue) this.onHydroChange(`${panelId}-lever`, prevLeverValue);
       }
     }
   }
