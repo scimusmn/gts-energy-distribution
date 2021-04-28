@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const DayCycle = ({ duration }) => (
+const DayCycle = ({ duration, wind }) => (
   <div className="day-cycle">
     <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
-      <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <linearGradient id="dayCycleColors" x1="0%" y1="0%" x2="0%" y2="100%">
         <stop stopColor="rgb(0,0,12)" offset="0%" id="zenith">
           <animate
             attributeName="stop-color"
@@ -28,15 +28,29 @@ const DayCycle = ({ duration }) => (
           />
         </stop>
       </linearGradient>
-      <rect id="sky" x="0" y="0" width="100%" height="100%" style={{ fill: 'url(#skyGradient)' }} />
+      <rect id="sky" x="0" y="0" width="100%" height="100%" style={{ fill: 'url(#dayCycleColors)' }} />
     </svg>
     <div className="sun" style={{ animationDuration: `${duration}s` }} />
-    {/* <div className="moon" style={{ animationDuration: `${duration}s` }} /> */}
+    <div className="cloud-cycle">
+      {/* These clouds display during little to no wind */}
+      <div className={`cloud still ${(wind <= 7) ? 'active' : ''}`} />
+      <div className={`cloud still ${(wind <= 7) ? 'active' : ''}`} />
+      <div className={`cloud still ${(wind <= 7) ? 'active' : ''}`} />
+      {/* These clouds display during medium wind */}
+      <div className={`cloud slow ${(wind > 7 && wind < 21) ? 'active' : ''}`} />
+      <div className={`cloud slow ${(wind > 7 && wind < 21) ? 'active' : ''}`} />
+      <div className={`cloud slow ${(wind > 7 && wind < 21) ? 'active' : ''}`} />
+      {/* These clouds display during strong wind */}
+      <div className={`cloud fast ${(wind >= 21) ? 'active' : ''}`} />
+      <div className={`cloud fast ${(wind >= 21) ? 'active' : ''}`} />
+      <div className={`cloud fast ${(wind >= 21) ? 'active' : ''}`} />
+    </div>
   </div>
 );
 
 DayCycle.propTypes = {
   duration: PropTypes.number.isRequired,
+  wind: PropTypes.number.isRequired,
 };
 
 export default DayCycle;

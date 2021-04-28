@@ -590,9 +590,14 @@ class Simulation extends Component {
       finalFeedback,
     } = this.state;
 
+    console.log('wind', wind);
+
     return (
       <div className="simulation">
-        <DayCycle duration={(Settings.SESSION_DURATION / Settings.DAYS_PER_SESSION) / 1000} />
+        <DayCycle
+          duration={(Settings.SESSION_DURATION / Settings.DAYS_PER_SESSION) / 1000}
+          wind={wind}
+        />
         <ArduinoEmulator onChange={this.onData} />
         <Container className="forecast window" style={{ display: 'none' }}>
           <EnergyChart
