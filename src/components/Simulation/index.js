@@ -6,6 +6,7 @@ import { Container, Row, Col } from 'reactstrap';
 import GaugeChart from 'react-gauge-chart';
 import withSerialCommunication from '../../Arduino/arduino-base/ReactSerial/SerialHOC';
 import ArduinoEmulator from '../ArduinoEmulator';
+import DayCycle from '../DayCycle';
 import DataManager from '../../data/data-manager';
 import Settings from '../../data/settings';
 import EnergyChart from '../EnergyChart';
@@ -591,7 +592,8 @@ class Simulation extends Component {
 
     return (
       <div className="simulation">
-        <ArduinoEmulator onChange={this.onData} />
+        <DayCycle duration={9} />
+        <ArduinoEmulator osnChange={this.onData} />
         <Container className="forecast window" style={{ display: 'none' }}>
           <EnergyChart
             chartData={energyData}
