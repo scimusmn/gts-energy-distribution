@@ -128,7 +128,10 @@ body {
 .blackout {
   background-color: black;
   height: 100%;
+  left: 0;
   opacity: 0;
+  position: absolute;
+  top: 0;
   width: 100%;
 }
 
@@ -243,22 +246,22 @@ body {
     width: 15vw;
   }
 
-  .moon {
-    animation: moontrack infinite backwards linear;
-    // Note: animation-duration is set in jsx
-    // background: #888;
-    // background: radial-gradient(ellipse at center, #333 0%, #888 60%, #aaa 100%);
-    background-image: url(../images/moon.png);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 90% 90%;
-    border-radius: 100%;
-    bottom: -7vw;
-    height: 15vw;
-    opacity: 0.8;
-    position: absolute;
-    right: 7vw;
-    transform-origin: -28vw 7vw;
-    width: 15vw;
-  }
+  // .moon {
+  //   animation: moontrack infinite backwards linear;
+  //   // Note: animation-duration is set in jsx
+  //   // background: #888;
+  //   // background: radial-gradient(ellipse at center, #333 0%, #888 60%, #aaa 100%);
+  //   background-image: url(../images/moon.png);
+  //   background-position: center;
+  //   background-repeat: no-repeat;
+  //   background-size: 90% 90%;
+  //   border-radius: 100%;
+  //   bottom: -7vw;
+  //   height: 15vw;
+  //   opacity: 0.8;
+  //   position: absolute;
+  //   right: 7vw;
+  //   transform-origin: -28vw 7vw;
+  //   width: 15vw;
+  // }
 }

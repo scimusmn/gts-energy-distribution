@@ -31,7 +31,7 @@ const DayCycle = ({ duration }) => (
       <rect id="sky" x="0" y="0" width="100%" height="100%" style={{ fill: 'url(#skyGradient)' }} />
     </svg>
     <div className="sun" style={{ animationDuration: `${duration}s` }} />
-    <div className="moon" style={{ animationDuration: `${duration}s` }} />
+    {/* <div className="moon" style={{ animationDuration: `${duration}s` }} /> */}
   </div>
 );
 

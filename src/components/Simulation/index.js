@@ -592,8 +592,8 @@ class Simulation extends Component {
 
     return (
       <div className="simulation">
-        <DayCycle duration={9} />
-        <ArduinoEmulator osnChange={this.onData} />
+        <DayCycle duration={(Settings.SESSION_DURATION / Settings.DAYS_PER_SESSION) / 1000} />
+        <ArduinoEmulator onChange={this.onData} />
         <Container className="forecast window" style={{ display: 'none' }}>
           <EnergyChart
             chartData={energyData}
