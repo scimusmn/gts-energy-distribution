@@ -62,10 +62,10 @@ class Simulation extends Component {
 
     const wakeInterval = setInterval(() => {
       const { arduinoIsAwake } = this.state;
-      if (arduinoIsAwake) {
+      if (!arduinoIsAwake) {
         this.reset();
 
-        // This timed release of outgoing
+        // Timed release of outgoing
         // Arduino messages ensures
         // the Arduino NeoPixel library
         // has enough time to execute it's
