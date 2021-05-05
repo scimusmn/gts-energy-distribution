@@ -128,7 +128,10 @@ body {
 .blackout {
   background-color: black;
   height: 100%;
+  left: 0;
   opacity: 0;
+  position: absolute;
+  top: 0;
   width: 100%;
 }
 
@@ -200,4 +203,129 @@ body {
 // Animation helpers
 .tween-height {
   transition: height 0.1s ease-in-out;
+}
+
+// Day Cycle
+.day-cycle {
+  background-color: #000;
+  background-image: url(../images/night-sky.jpg);
+  background-repeat: repeat;
+  height: 100%;
+  margin: 0;
+  min-height: 100vh;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+
+  @keyframes sunmotion {
+    from { transform: rotate(0.15turn); }
+    to { transform: rotate(-0.85turn); }
+  }
+
+  @keyframes sunpulse {
+    from { box-shadow: 0 0 100px #ff0, 0 0 100px #ff0; }
+    to { box-shadow: 0 0 50px #ff0, 0 0 75px #ff0; }
+  }
+
+  .sun {
+    animation: sunmotion infinite forwards linear, sunpulse 2s alternate infinite;
+    background: #ff0;
+    background: radial-gradient(ellipse at center, #f90 0%, #fc0 60%, #ff0 100%);
+    border-radius: 100%;
+    bottom: -7vw;
+    height: 15vw;
+    position: absolute;
+    right: 7vw;
+    transform-origin: -28vw 7vw;
+    width: 15vw;
+  }
+
+  .clouds {
+    height: 100%;
+    left: 0;
+    margin: 0;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    width: 100%;
+
+    @keyframes cloudfloat {
+      0% { left: -35%; }
+      100% { left: 100%; }
+    }
+
+    .cloud {
+      -webkit-animation: cloudfloat infinite linear;
+      animation: cloudfloat infinite linear;
+      background-image: url(../images/cloud1.png);
+      background-repeat: no-repeat;
+      background-size: contain;
+      left: -50%;
+      opacity: 0;
+      position: absolute;
+      transition: opacity 2s;
+    }
+
+    .cloud.show {
+      opacity: 1;
+    }
+
+    .cloud:nth-child(2n) {
+      background-image: url(../images/cloud2.png) !important;
+    }
+
+    .cloud:nth-child(5n) {
+      animation-delay: 0s;
+      height: 300px;
+      top: 100px;
+      width: 300px;
+    }
+
+    .cloud:nth-child(5n+1) {
+      animation-delay: -10s;
+      height: 400px;
+      top: 300px;
+      width: 400px;
+    }
+
+    .cloud:nth-child(5n+2) {
+      animation-delay: -50s;
+      height: 600px;
+      top: 70px;
+      width: 600px;
+    }
+
+    .cloud:nth-child(5n+3) {
+      animation-delay: -111s;
+      height: 650px;
+      top: 100px;
+      width: 650px;
+    }
+
+    .cloud:nth-child(5n+4) {
+      animation-delay: -222s;
+      height: 450px;
+      top: -20px;
+      width: 450px;
+    }
+
+    .cloud:nth-child(5n+5) {
+      animation-delay: -333s;
+      height: 440px;
+      top: 10px;
+      width: 440px;
+    }
+
+    .cloud.still {
+      animation-duration: 150s;
+    }
+
+    .cloud.slow {
+      animation-duration: 26s;
+    }
+
+    .cloud.fast {
+      animation-duration: 10s;
+    }
+  }
 }

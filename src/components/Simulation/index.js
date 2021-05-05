@@ -6,6 +6,7 @@ import { Container, Row, Col } from 'reactstrap';
 import GaugeChart from 'react-gauge-chart';
 import withSerialCommunication from '../../Arduino/arduino-base/ReactSerial/SerialHOC';
 import ArduinoEmulator from '../ArduinoEmulator';
+import DayCycle from '../DayCycle';
 import DataManager from '../../data/data-manager';
 import Settings from '../../data/settings';
 import EnergyChart from '../EnergyChart';
@@ -64,7 +65,7 @@ class Simulation extends Component {
       if (arduinoIsAwake) {
         this.reset();
 
-        // This timed release of outgoing
+        // Timed release of outgoing
         // Arduino messages ensures
         // the Arduino NeoPixel library
         // has enough time to execute it's
@@ -589,8 +590,14 @@ class Simulation extends Component {
       finalFeedback,
     } = this.state;
 
+    console.log('wind', wind);
+
     return (
       <div className="simulation">
+        <DayCycle
+          duration={(Settings.SESSION_DURATION / Settings.DAYS_PER_SESSION) / 1000}
+          wind={wind}
+        />
         <ArduinoEmulator onChange={this.onData} />
         <Container className="forecast window" style={{ display: 'none' }}>
           <EnergyChart
