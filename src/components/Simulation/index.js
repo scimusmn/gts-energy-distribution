@@ -40,6 +40,7 @@ class Simulation extends Component {
       blackout: false,
       finalFeedback: null,
       boardEnabled: true,
+      inSession: false,
     };
 
     this.onData = this.onData.bind(this);
@@ -62,7 +63,7 @@ class Simulation extends Component {
 
     const wakeInterval = setInterval(() => {
       const { arduinoIsAwake } = this.state;
-      if (arduinoIsAwake) {
+      if (!arduinoIsAwake) {
         this.reset();
 
         // Timed release of outgoing
@@ -418,7 +419,7 @@ class Simulation extends Component {
     // Pre-populate chart with demand.
     this.sessionData.energy.demand = DataManager.getCurrentForecastField('Demand');
     this.sessionData.energy.timeLabels = DataManager.getCurrentForecastField('Time');
-    this.setState({ energyData: this.sessionData.energy });
+    this.setState({ energyData: this.sessionData.energy, inSession: true });
 
     this.hourlyInterval = setInterval(() => {
       const { hourIndex } = this.state;
@@ -536,6 +537,7 @@ class Simulation extends Component {
         finalScore,
         finalFeedback: sessionFeedback.Body,
         currentView: 'score',
+        inSession: false,
       },
     );
 
@@ -588,15 +590,16 @@ class Simulation extends Component {
       condition,
       blackout,
       finalFeedback,
+      inSession,
     } = this.state;
-
-    console.log('wind', wind);
 
     return (
       <div className="simulation">
         <DayCycle
           duration={(Settings.SESSION_DURATION / Settings.DAYS_PER_SESSION) / 1000}
+          animOffset={-29}
           wind={wind}
+          paused={!inSession}
         />
         <ArduinoEmulator onChange={this.onData} />
         <Container className="forecast window" style={{ display: 'none' }}>

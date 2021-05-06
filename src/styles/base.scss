@@ -233,6 +233,7 @@ body {
     background: radial-gradient(ellipse at center, #f90 0%, #fc0 60%, #ff0 100%);
     border-radius: 100%;
     bottom: -7vw;
+    display: none;
     height: 15vw;
     position: absolute;
     right: 7vw;
@@ -241,6 +242,7 @@ body {
   }
 
   .clouds {
+    display: none;
     height: 100%;
     left: 0;
     margin: 0;
@@ -328,4 +330,8 @@ body {
       animation-duration: 10s;
     }
   }
+}
+
+.day-cycle.paused .sun {
+  animation-play-state: paused;
 }
