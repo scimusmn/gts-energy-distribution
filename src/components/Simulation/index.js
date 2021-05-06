@@ -63,7 +63,7 @@ class Simulation extends Component {
 
     const wakeInterval = setInterval(() => {
       const { arduinoIsAwake } = this.state;
-      if (!arduinoIsAwake) {
+      if (arduinoIsAwake) {
         this.reset();
 
         // Timed release of outgoing
