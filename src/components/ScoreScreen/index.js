@@ -12,11 +12,16 @@ import FeedbackIcon from '../MessageCenter/feedback-icon';
 import Settings from '../../data/settings';
 
 const ScoreScreen = ({
-  feedbackMessage, efficiencyScore, chartData, customerFeedback,
+  currentView, feedbackMessage, efficiencyScore, chartData, customerFeedback,
 }) => (
   <Modal isOpen size="xl" className="score-screen">
     <ModalHeader><h1>{feedbackMessage}</h1></ModalHeader>
     <ModalBody>
+      {{
+        score1: <div>yo score 1</div>,
+        score2: <div>yo 2</div>,
+        score3: <div>yoyo hello score 3</div>,
+      }[currentView]}
       <Container fluid className="modal-screen container-fluid">
         <Row>
           <Col>
@@ -124,6 +129,7 @@ ScoreScreen.defaultProps = {
 };
 
 ScoreScreen.propTypes = {
+  currentView: PropTypes.string.isRequired,
   feedbackMessage: PropTypes.string,
   efficiencyScore: PropTypes.number,
   chartData: PropTypes.instanceOf(Object),

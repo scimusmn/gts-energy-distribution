@@ -25,6 +25,7 @@ class Simulation extends Component {
     this.state = {
       arduinoIsAwake: false,
       currentView: '',
+      currentSlide: 1,
       messageCenter: {},
       production: 0,
       demand: 0,
@@ -63,7 +64,7 @@ class Simulation extends Component {
 
     const wakeInterval = setInterval(() => {
       const { arduinoIsAwake } = this.state;
-      if (arduinoIsAwake) {
+      if (!arduinoIsAwake) {
         this.reset();
 
         // Timed release of outgoing
@@ -220,11 +221,21 @@ class Simulation extends Component {
     const { currentView } = this.state;
 
     if (currentView === 'ready') {
-      this.queueMessage('start-button-light', '0');
-      this.setState({ currentView: '' });
-      this.startSimulation();
+      const { currentSlide } = this.state;
+      if (currentSlide >= 3) {
+        this.queueMessage('start-button-light', '0');
+        this.setState({ currentView: '' });
+        this.startSimulation();
+      } else {
+        this.setState({ currentSlide: currentSlide + 1 });
+      }
     } else if (currentView === 'score') {
-      this.reset();
+      const { currentSlide } = this.state;
+      if (currentSlide >= 3) {
+        this.reset();
+      } else {
+        this.setState({ currentSlide: currentSlide + 1 });
+      }
     }
   }
 
@@ -399,6 +410,7 @@ class Simulation extends Component {
       hourIndex: 0,
       // forecast: DataManager.getForecastSummary(),
       currentView: 'ready',
+      currentSlide: 1,
       blackout: false,
     });
 
@@ -536,6 +548,7 @@ class Simulation extends Component {
       {
         finalScore,
         finalFeedback: sessionFeedback.Body,
+        currentSlide: 1,
         currentView: 'score',
         inSession: false,
       },
@@ -577,6 +590,7 @@ class Simulation extends Component {
   render() {
     const {
       currentView,
+      currentSlide,
       time,
       day,
       messageCenter,
@@ -592,6 +606,8 @@ class Simulation extends Component {
       finalFeedback,
       inSession,
     } = this.state;
+
+    console.log('ss', currentSlide, currentView);
 
     return (
       <div className="simulation">
@@ -674,8 +690,15 @@ class Simulation extends Component {
         </Container>
         <div className={`blackout ${blackout ? 'show' : ''}`} />
         {{
-          ready: <ReadyScreen key="ready" />,
-          score: <ScoreScreen key="score" feedbackMessage={finalFeedback} efficiencyScore={finalScore} chartData={energyData} customerFeedback={this.sessionData.feedback} />,
+          ready: <ReadyScreen key="ready" currentView={`${currentView}${currentSlide}`} />,
+          score: <ScoreScreen
+            key="score"
+            currentView={`${currentView}${currentSlide}`}
+            feedbackMessage={finalFeedback}
+            efficiencyScore={finalScore}
+            chartData={energyData}
+            customerFeedback={this.sessionData.feedback}
+          />,
         }[currentView]}
       </div>
     );
