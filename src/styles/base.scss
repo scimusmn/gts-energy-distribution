@@ -1,3 +1,5 @@
+@import 'fonts.scss';
+
 html,
 body {
   height: 100%;
@@ -6,6 +8,7 @@ body {
 
 body {
   font-family: $smm-default-font;
+  font-family: 'National', sans-serif;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   //font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
