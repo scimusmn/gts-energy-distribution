@@ -10,7 +10,6 @@ class EnergyChart extends Component {
     super(props);
 
     this.state = {
-
     };
 
     this.chartRef = React.createRef();
@@ -72,13 +71,6 @@ class EnergyChart extends Component {
     const { chartData } = this.props;
     const { datasets } = this.chartRef.current.chartInstance.config.data;
 
-    // Uncomment for stacked mode
-    // datasets[0].data = chartData.coal;
-    // datasets[1].data = chartData.gas;
-    // datasets[2].data = chartData.hydro;
-    // datasets[3].data = chartData.solar;
-    // datasets[4].data = chartData.wind;
-
     // Show total production
     datasets[0].data = chartData.total;
 
@@ -100,62 +92,6 @@ class EnergyChart extends Component {
         demandData.push(demand[i]);
       }
     }
-
-    // const datasets = [
-    //   {
-    //     label: 'Coal',
-    //     data: [],
-    //     fill: true,
-    //     borderWidth: 0,
-    //     backgroundColor: ChartColors[0],
-    //     borderColor: 'rgba(0,0,0,0)',
-    //     yAxisID: 'production',
-    //   },
-    //   {
-    //     label: 'Gas',
-    //     data: [],
-    //     fill: true,
-    //     borderWidth: 0,
-    //     backgroundColor: ChartColors[1],
-    //     borderColor: 'rgba(0,0,0,0)',
-    //     yAxisID: 'production',
-    //   },
-    //   {
-    //     label: 'Hydro',
-    //     data: [],
-    //     fill: true,
-    //     borderWidth: 0,
-    //     backgroundColor: ChartColors[2],
-    //     borderColor: 'rgba(0,0,0,0)',
-    //     yAxisID: 'production',
-    //   },
-    //   {
-    //     label: 'Solar',
-    //     data: [],
-    //     fill: true,
-    //     borderWidth: 0,
-    //     backgroundColor: ChartColors[3],
-    //     borderColor: 'rgba(0,0,0,0)',
-    //     yAxisID: 'production',
-    //   },
-    //   {
-    //     label: 'Wind',
-    //     data: [],
-    //     fill: true,
-    //     borderWidth: 0,
-    //     backgroundColor: ChartColors[4],
-    //     borderColor: 'rgba(0,0,0,0)',
-    //     yAxisID: 'production',
-    //   },
-    //   {
-    //     label: 'Demand',
-    //     data: demandData,
-    //     fill: false,
-    //     backgroundColor: 'rgba(0,0,0,0.7)',
-    //     borderColor: 'rgba(0,0,0,0.7)',
-    //     borderDash: [10, 5],
-    //   },
-    // ];
 
     const datasets = [
       {

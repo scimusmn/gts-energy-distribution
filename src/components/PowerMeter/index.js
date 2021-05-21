@@ -8,13 +8,12 @@ const PowerMeter = ({
 }) => (
   <>
     <Col>
-      <h2>{label}</h2>
+      <h3>{label}</h3>
       <div className="meter-container">
         <div
           className={`${(level >= maxlevel) ? 'full' : ''}`}
           style={{
             backgroundColor: 'rgba(0, 0, 0, 0.1)',
-            border: '1px solid gray',
             height: `${barheight}px`,
             transform: 'rotate(180deg)',
           }}
@@ -27,11 +26,6 @@ const PowerMeter = ({
             }}
           />
         </div>
-        <h3>
-          {Math.round(level)}
-          /
-          {maxlevel}
-        </h3>
       </div>
     </Col>
   </>

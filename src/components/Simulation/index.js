@@ -9,12 +9,10 @@ import ArduinoEmulator from '../ArduinoEmulator';
 import DayCycle from '../DayCycle';
 import DataManager from '../../data/data-manager';
 import Settings from '../../data/settings';
-import EnergyChart from '../EnergyChart';
 import PowerMeter from '../PowerMeter';
 import MessageCenter from '../MessageCenter';
 import ScoreScreen from '../ScoreScreen';
 import ReadyScreen from '../ReadyScreen';
-import ConditionIcon from '../Forecast/condition-icon';
 import {
   AverageArray, Map, Clamp, SecsToTimeString,
 } from '../../utils';
@@ -30,14 +28,12 @@ class Simulation extends Component {
       production: 0,
       demand: 0,
       efficiency: 0,
-      day: '',
       time: 0,
       hourIndex: 0,
       energyData: {},
       finalScore: 0,
       wind: 0,
-      temp: 0,
-      condition: '',
+      solarAvailability: 0,
       blackout: false,
       finalFeedback: null,
       boardEnabled: true,
@@ -64,7 +60,7 @@ class Simulation extends Component {
 
     const wakeInterval = setInterval(() => {
       const { arduinoIsAwake } = this.state;
-      if (!arduinoIsAwake) {
+      if (arduinoIsAwake) {
         this.reset();
 
         // Timed release of outgoing
@@ -222,7 +218,7 @@ class Simulation extends Component {
 
     if (currentView === 'ready') {
       const { currentSlide } = this.state;
-      if (currentSlide >= 3) {
+      if (currentSlide >= 4) {
         this.queueMessage('start-button-light', '0');
         this.setState({ currentView: '' });
         this.startSimulation();
@@ -485,12 +481,9 @@ class Simulation extends Component {
           efficiency,
           messageCenter,
           time: DataManager.getFieldAtHour(hourIndex, 'TimeNum'),
-          day: DataManager.getFieldAtHour(hourIndex, 'Day'),
           hourIndex: hourIndex + 1,
           energyData: this.sessionData.energy,
           wind: DataManager.getFieldAtHour(hourIndex, 'WindSpeedNum'),
-          temp: DataManager.getFieldAtHour(hourIndex, 'TemperatureNum'),
-          condition: DataManager.getFieldAtHour(hourIndex, 'Condition'),
         });
       }
     }, hourInterval);
@@ -511,14 +504,12 @@ class Simulation extends Component {
       // Production
       const productionSnapshot = this.getCurrentProduction(hourProgress);
       const production = productionSnapshot.total;
-      // TODO: Update live chart here.
 
       // Efficiency
       const difference = demand - production;
       const efficiency = Simulation.calculateEfficiency(difference);
 
       const time = DataManager.interpolate(hourIndex, hourProgress, 'TimeNum');
-      const temp = Math.round(DataManager.interpolate(hourIndex, hourProgress, 'TemperatureNum'));
       const wind = Math.round(DataManager.interpolate(hourIndex, hourProgress, 'WindSpeedNum'));
 
       this.setState({
@@ -526,8 +517,8 @@ class Simulation extends Component {
         demand,
         production,
         efficiency,
-        temp,
         wind,
+        solarAvailability: DataManager.getSolarAvailability(hourIndex, hourProgress),
       });
     }, 150);
   }
@@ -592,7 +583,6 @@ class Simulation extends Component {
       currentView,
       currentSlide,
       time,
-      day,
       messageCenter,
       production,
       demand,
@@ -600,14 +590,13 @@ class Simulation extends Component {
       energyData,
       finalScore,
       wind,
-      temp,
-      condition,
+      solarAvailability,
       blackout,
       finalFeedback,
       inSession,
     } = this.state;
 
-    console.log('ss', currentSlide, currentView);
+    console.log(solarAvailability);
 
     return (
       <div className="simulation">
@@ -617,55 +606,39 @@ class Simulation extends Component {
           wind={wind}
           paused={!inSession}
         />
+        <div className="background-city" />
         <ArduinoEmulator onChange={this.onData} />
-        <Container className="forecast window" style={{ display: 'none' }}>
-          <EnergyChart
-            chartData={energyData}
-            yAxisMax={Settings.MAX_EXPECTED_DEMAND}
-            isLive
-          />
-        </Container>
-        <MessageCenter time={time} message={messageCenter} />
-        <Container className="current-conditions window">
+        <MessageCenter message={messageCenter} />
+        <Container className={`current-conditions pane window solar ${solarAvailability > 0 ? '' : 'disable'}`}>
           <Row>
-            <Col>
-              <h2>Current conditions</h2>
-            </Col>
-            <Col className="text-center text-md-right">
-              <h2>
-                {day}
-                {' '}
-                |
-                {' '}
-                <strong>{SecsToTimeString(time)}</strong>
-              </h2>
-            </Col>
+            <div className="condition-icon" />
           </Row>
-          <hr />
           <Row>
-            <Col>
-              <p>Condition</p>
-              <h2>
-                {condition}
-              </h2>
-            </Col>
-            <Col className="text-left text-md-left">
-              <ConditionIcon condition={condition} pixelSize={128} />
-            </Col>
-            <Col>
-              <p>Temp</p>
-              <h2>{`${temp} F`}</h2>
-            </Col>
-            <Col>
-              <p>Wind</p>
-              <h2>{`${wind} MPH`}</h2>
-            </Col>
+            <h2 className="highlight">{SecsToTimeString(time)}</h2>
+            <h3 className="info-bubble">
+              Solar panel arrays turn sunlight into electricity!
+            </h3>
           </Row>
         </Container>
-        <Container className="power-levels window">
+        <Container className={`current-conditions pane window wind ${wind < 8 ? 'disable' : ''}`}>
           <Row>
-            <PowerMeter label="Production" color="green" level={production} maxlevel={Settings.MAX_EXPECTED_DEMAND} barheight={500} />
-            <PowerMeter label="Demand" color="orange" level={demand} maxlevel={Settings.MAX_EXPECTED_DEMAND} barheight={500} />
+            <div className="condition-icon" />
+          </Row>
+          <Row>
+            <h2 className="highlight">{`${wind} MPH`}</h2>
+            <h3 className="info-bubble">
+              Power when the wind blows at least
+              {' '}
+              <strong>8mph.</strong>
+              {' '}
+              Utililize this when you can!
+            </h3>
+          </Row>
+        </Container>
+        <Container className="power-levels window pane">
+          <Row>
+            <PowerMeter label="Production" color="#43B94F" level={production} maxlevel={Settings.MAX_EXPECTED_DEMAND} barheight={590} />
+            <PowerMeter label="Demand" color="#FB3D08" level={demand} maxlevel={Settings.MAX_EXPECTED_DEMAND} barheight={590} />
           </Row>
           <br />
           <Row>
@@ -673,18 +646,13 @@ class Simulation extends Component {
               <GaugeChart
                 id="gauge-efficiency"
                 percent={efficiency}
-                colors={['#EA4228', '#F5CD19', '#5BE12C']}
+                colors={['#F9000F', '#FFD02A', '#34BF3E']}
                 animDelay={0}
                 hideText
               />
               <h3>
-                Efficiency
-                {' '}
+                How are you doing?
               </h3>
-              <h1>
-                {Math.ceil(efficiency * 100)}
-                %
-              </h1>
             </Col>
           </Row>
         </Container>

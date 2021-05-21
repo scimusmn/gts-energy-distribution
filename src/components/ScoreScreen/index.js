@@ -1,8 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import {
-  Modal, ModalHeader, ModalBody, ModalFooter, Container, Row, Col,
+  Modal, ModalBody, Col,
 } from 'reactstrap';
+import { StaticImage } from 'gatsby-plugin-image';
 import PropTypes from 'prop-types';
 import { Doughnut } from 'react-chartjs-2';
 import EnergyChart from '../EnergyChart';
@@ -14,68 +15,75 @@ import Settings from '../../data/settings';
 const ScoreScreen = ({
   currentView, feedbackMessage, efficiencyScore, chartData, customerFeedback,
 }) => (
-  <Modal isOpen size="xl" className="score-screen">
-    <ModalHeader><h1>{feedbackMessage}</h1></ModalHeader>
+  <Modal isOpen size="xl" className="score-screen pane">
     <ModalBody>
       {{
-        score1: <div>yo score 1</div>,
-        score2: <div>yo 2</div>,
-        score3: <div>yoyo hello score 3</div>,
-      }[currentView]}
-      <Container fluid className="modal-screen container-fluid">
-        <Row>
-          <Col>
-            <h4>Efficiency score</h4>
-            <h1 className="billboard-score">
-              {Math.ceil(efficiencyScore * 100)}
-              %
-            </h1>
-          </Col>
-          <Col>
-            <h4>Production breakdown</h4>
+        score1: (
+          <div>
+            {feedbackMessage.includes('blackout')
+              ? <h1>Blackout.</h1>
+              : <h1>Congratulations!</h1>}
+            <h2>{feedbackMessage}</h2>
+            <br />
+            <Col>
+              <h4>Customer Approval</h4>
+              <div className="customer-approval">
+                {customerFeedback.map((feedback) => (
+                  <FeedbackIcon
+                    key={NewKey()}
+                    mood={feedback.Mood}
+                  />
+                ))}
+              </div>
+              <h1 className="billboard-score">
+                {Math.ceil(efficiencyScore * 100)}
+                %
+              </h1>
+            </Col>
+            <br />
+            <h3>Continue?</h3>
+            <h4>PRESS START.</h4>
+            <br />
+          </div>),
+        score2: (
+          <div>
+            <br />
+            <h2>Production Breakdown</h2>
             <Doughnut
               data={ScoreScreen.collatePieData(chartData)}
               options={ScoreScreen.PieOptions}
             />
-          </Col>
-        </Row>
-        <br />
-        <br />
-        <Row>
-          <Col>
-            <h4>Customer approval</h4>
-            <div className="customer-approval">
-              {customerFeedback.map((feedback) => (
-                <FeedbackIcon
-                  key={NewKey()}
-                  mood={feedback.Mood}
-                />
-              ))}
-            </div>
-          </Col>
-          <Col>
-            <h4>Demand</h4>
+            <br />
+            <br />
+            <h2>Demand</h2>
             <EnergyChart
               chartData={chartData}
               isLive={false}
               yAxisMax={Settings.MAX_EXPECTED_DEMAND}
             />
-          </Col>
-        </Row>
-      </Container>
+            <br />
+            <br />
+            <h3>Continue?</h3>
+            <h4>PRESS START.</h4>
+            <br />
+          </div>),
+        score3: (
+          <div>
+            <br />
+            <StaticImage src="../../images/powerplant.png" alt="" />
+            <br />
+            <h2>
+              Do you think you can beat your score?
+            </h2>
+            <br />
+            <br />
+            <h3>Continue?</h3>
+            <h4>PRESS START.</h4>
+            <br />
+          </div>),
+      }[currentView]}
     </ModalBody>
-    <ModalFooter>
-      <h2>
-        Press
-        {' '}
-        <strong>Start</strong>
-        {' '}
-        button to try again!
-      </h2>
-    </ModalFooter>
   </Modal>
-
-
 );
 
 ScoreScreen.PieOptions = {
