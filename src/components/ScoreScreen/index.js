@@ -25,8 +25,10 @@ const ScoreScreen = ({
               : <h1>Congratulations!</h1>}
             <h2>{feedbackMessage}</h2>
             <br />
+            <br />
             <Col>
-              <h4>Customer Approval</h4>
+              <h3>Customer Approval</h3>
+              <br />
               <div className="customer-approval">
                 {customerFeedback.map((feedback) => (
                   <FeedbackIcon
@@ -35,11 +37,12 @@ const ScoreScreen = ({
                   />
                 ))}
               </div>
-              <h1 className="billboard-score">
+              <h1 className="billboard-score" style={{ display: 'none' }}>
                 {Math.ceil(efficiencyScore * 100)}
                 %
               </h1>
             </Col>
+            <br />
             <br />
             <h3>Continue?</h3>
             <h4>PRESS START.</h4>
