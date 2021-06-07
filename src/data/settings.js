@@ -2,7 +2,7 @@ const Settings = {
 
   // Wait on Arduino confirmation to start. This should be
   // only ever be false during development.
-  REQUIRE_ARDUINO_CONNECTION: false,
+  REQUIRE_ARDUINO_CONNECTION: true,
 
   // Total session duration in milliseconds
   SESSION_DURATION: 90 * 1000,
@@ -61,6 +61,10 @@ const Settings = {
   // Interval of minutes the live clock should snap to.
   // Set to 1 if you want every minute displayed.
   CLOCK_INTERVAL_MINUTES: 30,
+
+  // Seconds of no user input required to
+  // reload application and show attract screen
+  INACTIVITY_TIMEOUT_SECS: 60,
 };
 
 export default Settings;

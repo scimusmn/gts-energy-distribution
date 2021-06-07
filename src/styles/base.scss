@@ -48,6 +48,55 @@ h4 {
   font-size: 1.4em;
 }
 
+.attract {
+  background-color: $black;
+  height: 100vh;
+  outline: 0;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+
+  .bubble-container {
+    height: 100vh;
+    width: 400px;
+
+    .bubble {
+      height: 400px;
+      padding: 30px;
+      width: 400px;
+    }
+
+    .icon {
+      background-image: url(../images/powerplant.png);
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: contain;
+      height: 70%;
+    }
+  }
+
+  .x-bounce {
+    animation: bubble-x 7s linear infinite alternate;
+  }
+
+  .y-bounce {
+    animation: bubble-y 9s linear infinite alternate;
+  }
+
+  @keyframes bubble-x {
+    100% {
+      transform: translateX(calc(100vw - 400px));
+    }
+  }
+
+  @keyframes bubble-y {
+    100% {
+      transform: translateY(calc(100vh - 400px));
+    }
+  }
+}
+
 .simulation {
   height: 1080px;
   width: 1920px;

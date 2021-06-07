@@ -11,6 +11,7 @@ import DataManager from '../../data/data-manager';
 import Settings from '../../data/settings';
 import PowerMeter from '../PowerMeter';
 import MessageCenter from '../MessageCenter';
+import AttractScreen from '../AttractScreen';
 import ScoreScreen from '../ScoreScreen';
 import ReadyScreen from '../ReadyScreen';
 import {
@@ -22,7 +23,7 @@ class Simulation extends Component {
     super(props);
     this.state = {
       arduinoIsAwake: false,
-      currentView: '',
+      currentView: 'ready',
       currentSlide: 1,
       messageCenter: {},
       production: 0,
@@ -38,6 +39,7 @@ class Simulation extends Component {
       finalFeedback: null,
       boardEnabled: true,
       inSession: false,
+      attractMode: true,
     };
 
     this.onData = this.onData.bind(this);
@@ -45,6 +47,7 @@ class Simulation extends Component {
     this.queueMessage = this.queueMessage.bind(this);
     this.releaseQueue = this.releaseQueue.bind(this);
     this.getCurrentProduction = this.getCurrentProduction.bind(this);
+    this.onActivity = this.onActivity.bind(this);
 
     this.liveData = {};
     this.sessionData = {};
@@ -52,6 +55,8 @@ class Simulation extends Component {
 
     this.interruptInterval = {};
     this.messageQueue = {};
+
+    this.inactivityTimeout = {};
   }
 
   componentDidMount() {
@@ -87,7 +92,7 @@ class Simulation extends Component {
   }
 
   onData(data) {
-    // console.log('onData:', data);
+    console.log('onData:', data);
 
     const message = Object.keys(data)[0];
     const value = Object.values(data)[0];
@@ -213,8 +218,29 @@ class Simulation extends Component {
     }
   }
 
+  onActivity() {
+    clearTimeout(this.inactivityTimeout);
+    this.inactivityTimeout = setTimeout(() => {
+      const { currentView } = this.state;
+      if (currentView !== '') {
+        window.location.reload();
+      } else {
+        this.onActivity();
+      }
+    }, Settings.INACTIVITY_TIMEOUT_SECS * 1000);
+  }
+
   onStartButton() {
-    const { currentView } = this.state;
+    const { currentView, attractMode } = this.state;
+
+    // Reset inactivity timer
+    this.onActivity();
+
+    if (attractMode) {
+      this.reset();
+      this.setState({ attractMode: false });
+      return;
+    }
 
     if (currentView === 'ready') {
       const { currentSlide } = this.state;
@@ -546,6 +572,9 @@ class Simulation extends Component {
       },
     );
 
+    // Reset inactivity timer
+    this.onActivity();
+
     // Flash start button
     this.queueMessage('start-button-light', '1');
   }
@@ -595,7 +624,17 @@ class Simulation extends Component {
       blackout,
       finalFeedback,
       inSession,
+      attractMode,
     } = this.state;
+
+    if (attractMode === true) {
+      return (
+        <>
+          <ArduinoEmulator onChange={this.onData} />
+          <AttractScreen />
+        </>
+      );
+    }
 
     return (
       <div className="simulation">

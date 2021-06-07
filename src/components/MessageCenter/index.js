@@ -14,7 +14,7 @@ function MessageCenter({ message }) {
 
   return (
     <Container className="message-center pane window">
-      <Row center>
+      <Row>
         <h2>Message Center</h2>
       </Row>
       <Row>
