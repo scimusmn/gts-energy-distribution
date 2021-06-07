@@ -21,7 +21,7 @@ const ReadyScreen = ({ currentView }) => (
             <br />
             <br />
             <h3>Continue?</h3>
-            <h4>PRESS START.</h4>
+            <h4>PRESS OK.</h4>
             <br />
           </div>),
         ready2: (
@@ -33,7 +33,7 @@ const ReadyScreen = ({ currentView }) => (
             <br />
             <br />
             <h3>Continue?</h3>
-            <h4>PRESS START.</h4>
+            <h4>PRESS OK.</h4>
             <br />
           </div>),
         ready3: (
@@ -53,7 +53,7 @@ const ReadyScreen = ({ currentView }) => (
             <br />
             <br />
             <h3>Continue?</h3>
-            <h4>PRESS START.</h4>
+            <h4>PRESS OK.</h4>
             <br />
           </div>),
         ready4: (
@@ -61,7 +61,7 @@ const ReadyScreen = ({ currentView }) => (
             <br />
             <br />
             <h3>Ready to play?</h3>
-            <h4>PRESS START.</h4>
+            <h4>PRESS OK.</h4>
             <br />
             <br />
           </div>),

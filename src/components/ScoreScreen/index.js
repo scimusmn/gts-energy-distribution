@@ -45,7 +45,7 @@ const ScoreScreen = ({
             <br />
             <br />
             <h3>Continue?</h3>
-            <h4>PRESS START.</h4>
+            <h4>PRESS OK.</h4>
             <br />
           </div>),
         score2: (
@@ -67,7 +67,7 @@ const ScoreScreen = ({
             <br />
             <br />
             <h3>Continue?</h3>
-            <h4>PRESS START.</h4>
+            <h4>PRESS OK.</h4>
             <br />
           </div>),
         score3: (
@@ -81,7 +81,7 @@ const ScoreScreen = ({
             <br />
             <br />
             <h3>Continue?</h3>
-            <h4>PRESS START.</h4>
+            <h4>PRESS OK.</h4>
             <br />
           </div>),
       }[currentView]}
