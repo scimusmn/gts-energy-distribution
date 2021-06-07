@@ -16,7 +16,8 @@ import MessageCenterJSON from './message-center.json';
 // Creative numerical Time values from Time strings
 EnvironmentalJSON.forEach((row) => {
   const [hrMin, amPm] = row.Time.split(' ');
-  const [hours, minutes] = hrMin.split(':');
+  let [hours, minutes] = hrMin.split(':'); // eslint-disable-line prefer-const
+  if (hours === '12') hours = '0'; // eslint-disable-line no-param-reassign
   let timeNum = parseFloat((minutes * 60)) + parseFloat((hours * 3600));
   if (amPm === 'PM') timeNum += (12 * 3600);
   row.TimeNum = timeNum; // eslint-disable-line no-param-reassign
@@ -256,6 +257,19 @@ const interpolate = (hourIndex, hourProgress, field) => {
   return interpolatedVal;
 };
 
+// This time interpolation is slightly different in that it
+// helps wrap around from PM to AM without going "backwards"
+const timeInterpolate = (hourIndex, hourProgress, field) => {
+  let nextVal = parseFloat(getFieldAtHour(hourIndex, field));
+  const prevVal = parseFloat(getFieldAtHour(hourIndex - 1, field));
+
+  if (nextVal === 0) {
+    nextVal = 86400;
+  }
+  const interpolatedVal = Map(hourProgress, 0, 1, prevVal, nextVal);
+  return interpolatedVal;
+};
+
 const getSolarAvailability = (hourIndex, hourProgress) => {
   const nexConditionPotential = conditionToSolarPotential(getFieldAtHour(hourIndex, 'Condition'));
   const nextTimeOfDayPotential = timeOfDayToSolarPotential(getFieldAtHour(hourIndex, 'Time'));
@@ -296,6 +310,7 @@ const DataManager = {
   getTime,
   getFieldAtHour,
   interpolate,
+  timeInterpolate,
   getCurrentForecastField,
   getSolarAvailability,
   getWindAvailability,

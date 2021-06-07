@@ -49,16 +49,28 @@ export const CollateByProperty = (array, property) => array.reduce((acc, cur) =>
 // Finds and return first number found in string
 export const ExtractFloat = (string) => parseFloat(string.match(/\d+/)[0]);
 
-export const SecsToTimeString = (secs) => {
-  let amPm = 'AM';
-  if (secs > (12 * 3600)) {
-    amPm = 'PM';
-    secs -= (12 * 3600); // eslint-disable-line no-param-reassign
-  }
+const formatAMPMString = (date) => {
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  hours %= 12;
+  hours = hours || 12; // the hour '0' should be '12'
+  minutes = minutes < 10 ? `0${minutes}` : minutes;
+  const strTime = `${hours}:${minutes} ${ampm}`;
+  return strTime;
+};
 
-  const timeString = new Date(secs * 1000).toISOString().substr(11, 5);
+export const NearestTimeInterval = (secs, intervalMins) => {
+  intervalMins = intervalMins || 1; // eslint-disable-line no-param-reassign
 
-  return `${timeString} ${amPm}`;
+  const timeToReturn = new Date(1970, 0, 1); // Epoch
+  timeToReturn.setSeconds(secs);
+
+  timeToReturn.setMilliseconds(Math.round(timeToReturn.getMilliseconds() / 1000) * 1000);
+  timeToReturn.setSeconds(Math.round(timeToReturn.getSeconds() / 60) * 60);
+  timeToReturn.setMinutes(Math.round(timeToReturn.getMinutes() / intervalMins) * intervalMins);
+
+  return formatAMPMString(timeToReturn);
 };
 
 export default {
@@ -70,5 +82,5 @@ export default {
   SumArray,
   CollateByProperty,
   ExtractFloat,
-  SecsToTimeString,
+  NearestTimeInterval,
 };

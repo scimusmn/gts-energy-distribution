@@ -1,6 +1,11 @@
 const Settings = {
+
+  // Wait on Arduino confirmation to start. This should be
+  // only ever be false during development.
+  REQUIRE_ARDUINO_CONNECTION: false,
+
   // Total session duration in milliseconds
-  SESSION_DURATION: 110 * 1000,
+  SESSION_DURATION: 90 * 1000,
 
   // Days contained within a session
   // (3 days max with current data)
@@ -52,6 +57,10 @@ const Settings = {
   // Number of sim-hours that need to
   // pass before triggering 'on' state.
   COAL_WARMING_DELAY: 6,
+
+  // Interval of minutes the live clock should snap to.
+  // Set to 1 if you want every minute displayed.
+  CLOCK_INTERVAL_MINUTES: 30,
 };
 
 export default Settings;

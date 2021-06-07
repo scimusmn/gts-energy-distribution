@@ -14,7 +14,7 @@ import MessageCenter from '../MessageCenter';
 import ScoreScreen from '../ScoreScreen';
 import ReadyScreen from '../ReadyScreen';
 import {
-  AverageArray, Map, Clamp, SecsToTimeString,
+  AverageArray, Map, Clamp, NearestTimeInterval,
 } from '../../utils';
 
 class Simulation extends Component {
@@ -60,7 +60,7 @@ class Simulation extends Component {
 
     const wakeInterval = setInterval(() => {
       const { arduinoIsAwake } = this.state;
-      if (arduinoIsAwake) {
+      if (arduinoIsAwake || Settings.REQUIRE_ARDUINO_CONNECTION === false) {
         this.reset();
 
         // Timed release of outgoing
@@ -87,7 +87,7 @@ class Simulation extends Component {
   }
 
   onData(data) {
-    console.log('onData:', data);
+    // console.log('onData:', data);
 
     const message = Object.keys(data)[0];
     const value = Object.values(data)[0];
@@ -509,8 +509,9 @@ class Simulation extends Component {
       const difference = demand - production;
       const efficiency = Simulation.calculateEfficiency(difference);
 
-      const time = DataManager.interpolate(hourIndex, hourProgress, 'TimeNum');
       const wind = Math.round(DataManager.interpolate(hourIndex, hourProgress, 'WindSpeedNum'));
+
+      const time = DataManager.timeInterpolate(hourIndex, hourProgress, 'TimeNum');
 
       this.setState({
         time,
@@ -564,7 +565,7 @@ class Simulation extends Component {
       // Send all queued messages
       for (let i = 0; i < messageObjects.length; i += 1) {
         const [key, value] = messageObjects[i];
-        console.log(`sendData: {${key}:${value}}`); // TEMP: Remove for production.
+        // console.log(`sendData: {${key}:${value}}`); // TEMP: Remove for production.
         sendData(`{${key}:${value}}`);
       }
 
@@ -596,8 +597,6 @@ class Simulation extends Component {
       inSession,
     } = this.state;
 
-    console.log(solarAvailability);
-
     return (
       <div className="simulation">
         <DayCycle
@@ -614,7 +613,7 @@ class Simulation extends Component {
             <div className="condition-icon" />
           </Row>
           <Row>
-            <h2 className="highlight">{SecsToTimeString(time)}</h2>
+            <h2 className="highlight">{NearestTimeInterval(time, Settings.CLOCK_INTERVAL_MINUTES)}</h2>
             <h3 className="info-bubble">
               Solar panel arrays turn sunlight into electricity!
             </h3>
