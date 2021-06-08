@@ -64,7 +64,7 @@ const Settings = {
 
   // Seconds of no user input required to
   // reload application and show attract screen
-  INACTIVITY_TIMEOUT_SECS: 60,
+  INACTIVITY_TIMEOUT_SECS: 75,
 };
 
 export default Settings;

@@ -297,12 +297,12 @@ class Simulation extends Component {
       let outputLevel = 0;
       if (coalState === 'on') {
         outputLevel = 1.0;
-      } else if (coalState === 'warming') {
+      } else if (coalState === 'warming' && hourProgress === 1) {
         // Tick up warming counter.
         // After X ticks on warming, shift into 'on'
         const wtKey = `${panelId}-warming-ticks`;
         const warmingTicks = this.liveData[wtKey] || 0;
-        if (warmingTicks > Settings.COAL_WARMING_DELAY) {
+        if (warmingTicks >= Settings.COAL_WARMING_DELAY) {
           this.liveData[stateKey] = 'on';
           outputLevel = 1.0;
           this.liveData[wtKey] = 0;
@@ -637,7 +637,7 @@ class Simulation extends Component {
     }
 
     return (
-      <div className="simulation">
+      <div className={`simulation ${!inSession ? 'inactive' : ''}`}>
         <DayCycle
           duration={(Settings.SESSION_DURATION / Settings.DAYS_PER_SESSION) / 1000}
           animOffset={-29}

@@ -107,7 +107,6 @@ h4 {
   background-size: contain;
   height: 100% !important;
   left: 0;
-  // mix-blend-mode: overlay;
   position: absolute;
   top: 0;
   width: 100% !important;
@@ -304,6 +303,10 @@ h4 {
   position: absolute;
   top: 0;
   width: 100%;
+}
+
+.inactive .blackout {
+  opacity: 1;
 }
 
 .blackout.show {
