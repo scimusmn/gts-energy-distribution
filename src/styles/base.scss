@@ -110,6 +110,36 @@ h4 {
   position: absolute;
   top: 0;
   width: 100% !important;
+
+  .coal-sprite {
+    left: 400px;
+    position: absolute;
+    top: 300px;
+  }
+
+  .gas-sprite {
+    left: 400px;
+    position: absolute;
+    top: 700px;
+  }
+
+  .hydro-sprite {
+    left: 900px;
+    position: absolute;
+    top: 700px;
+  }
+
+  .solar-sprite {
+    left: 600px;
+    position: absolute;
+    top: 600px;
+  }
+
+  .wind-sprite {
+    left: -50px;
+    position: absolute;
+    top: 50px;
+  }
 }
 
 .pane {

@@ -642,9 +642,9 @@ class Simulation extends Component {
           duration={(Settings.SESSION_DURATION / Settings.DAYS_PER_SESSION) / 1000}
           animOffset={-29}
           wind={wind}
+          solarAvailability={solarAvailability}
           paused={!inSession}
         />
-        <div className="background-city" />
         <ArduinoEmulator onChange={this.onData} />
         <MessageCenter message={messageCenter} />
         <Container className={`current-conditions pane window solar ${solarAvailability > 0 ? '' : 'disable'}`}>
