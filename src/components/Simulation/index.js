@@ -514,7 +514,8 @@ class Simulation extends Component {
       }
     }, hourInterval);
 
-    // TODO: Replace with reqAnimationFrame HOC
+    // This interval triggers the updates in between simulation hours,
+    // which interpolate the data in between hourly data.
     this.interpInterval = setInterval(() => {
       const { hourIndex } = this.state;
       if (hourIndex <= 0 || hourIndex >= totalHoursInSession) return;
@@ -594,7 +595,6 @@ class Simulation extends Component {
       // Send all queued messages
       for (let i = 0; i < messageObjects.length; i += 1) {
         const [key, value] = messageObjects[i];
-        // console.log(`sendData: {${key}:${value}}`); // TEMP: Remove for production.
         sendData(`{${key}:${value}}`);
       }
 
@@ -636,64 +636,71 @@ class Simulation extends Component {
       );
     }
 
+    // console.log('time', time);
+    // console.log('->', NearestTimeInterval(time, Settings.CLOCK_INTERVAL_MINUTES));
+
     return (
       <div className={`simulation ${!inSession ? 'inactive' : ''}`}>
         <DayCycle
           duration={(Settings.SESSION_DURATION / Settings.DAYS_PER_SESSION) / 1000}
-          animOffset={-29}
+          animOffset={-0.75}
           wind={wind}
           solarAvailability={solarAvailability}
+          energyData={energyData}
           paused={!inSession}
+          night={time < 30000 || time > 73000} // 8pm - 8am
         />
         <ArduinoEmulator onChange={this.onData} />
-        <MessageCenter message={messageCenter} />
-        <Container className={`current-conditions pane window solar ${solarAvailability > 0 ? '' : 'disable'}`}>
-          <Row>
-            <div className="condition-icon" />
-          </Row>
-          <Row>
-            <h2 className="highlight">{NearestTimeInterval(time, Settings.CLOCK_INTERVAL_MINUTES)}</h2>
-            <h3 className="info-bubble">
-              Solar panel arrays turn sunlight into electricity!
-            </h3>
-          </Row>
-        </Container>
-        <Container className={`current-conditions pane window wind ${wind < 8 ? 'disable' : ''}`}>
-          <Row>
-            <div className="condition-icon" />
-          </Row>
-          <Row>
-            <h2 className="highlight">{`${wind} MPH`}</h2>
-            <h3 className="info-bubble">
-              Power when the wind blows at least
-              {' '}
-              <strong>8mph.</strong>
-              {' '}
-              Utililize this when you can!
-            </h3>
-          </Row>
-        </Container>
-        <Container className="power-levels window pane">
-          <Row>
-            <PowerMeter label="Production" color="#43B94F" level={production} maxlevel={Settings.MAX_EXPECTED_DEMAND} barheight={590} />
-            <PowerMeter label="Demand" color="#FB3D08" level={demand} maxlevel={Settings.MAX_EXPECTED_DEMAND} barheight={590} />
-          </Row>
-          <br />
-          <Row>
-            <Col style={{ textAlign: 'center' }}>
-              <GaugeChart
-                id="gauge-efficiency"
-                percent={efficiency}
-                colors={['#F9000F', '#FFD02A', '#34BF3E']}
-                animDelay={0}
-                hideText
-              />
-              <h3>
-                How are you doing?
+        <div className="simulation-hud">
+          <MessageCenter message={messageCenter} />
+          <Container className={`current-conditions pane window solar ${solarAvailability > 0 ? '' : 'disable'}`}>
+            <Row>
+              <div className="condition-icon" />
+            </Row>
+            <Row>
+              <h2 className="highlight">{NearestTimeInterval(time, Settings.CLOCK_INTERVAL_MINUTES)}</h2>
+              <h3 className="info-bubble">
+                Solar panel arrays turn sunlight into electricity!
               </h3>
-            </Col>
-          </Row>
-        </Container>
+            </Row>
+          </Container>
+          <Container className={`current-conditions pane window wind ${wind < 8 ? 'disable' : ''}`}>
+            <Row>
+              <div className="condition-icon" />
+            </Row>
+            <Row>
+              <h2 className="highlight">{`${wind} MPH`}</h2>
+              <h3 className="info-bubble">
+                Power when the wind blows at least
+                {' '}
+                <strong>8mph.</strong>
+                {' '}
+                Utililize this when you can!
+              </h3>
+            </Row>
+          </Container>
+          <Container className="power-levels window pane">
+            <Row>
+              <PowerMeter label="Production" color="#43B94F" level={production} maxlevel={Settings.MAX_EXPECTED_DEMAND} barheight={590} />
+              <PowerMeter label="Demand" color="#FB3D08" level={demand} maxlevel={Settings.MAX_EXPECTED_DEMAND} barheight={590} />
+            </Row>
+            <br />
+            <Row>
+              <Col style={{ textAlign: 'center' }}>
+                <GaugeChart
+                  id="gauge-efficiency"
+                  percent={efficiency}
+                  colors={['#F9000F', '#FFD02A', '#34BF3E']}
+                  animDelay={0}
+                  hideText
+                />
+                <h3>
+                  How are you doing?
+                </h3>
+              </Col>
+            </Row>
+          </Container>
+        </div>
         <div className={`blackout ${blackout ? 'show' : ''}`} />
         {{
           ready: <ReadyScreen key="ready" currentView={`${currentView}${currentSlide}`} />,

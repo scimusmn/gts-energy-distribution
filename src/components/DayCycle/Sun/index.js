@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 function Sun({ duration, animOffset, paused }) {
   const sunRef = useRef();
+  const moonRef = useRef();
 
   useEffect(() => {
     if (!paused) {
@@ -17,14 +18,24 @@ function Sun({ duration, animOffset, paused }) {
     <>
       {!paused
       && (
-      <div
-        className="sun"
-        ref={sunRef}
-        style={{
-          animationDuration: `${duration}s`,
-          animationDelay: `${animOffset}s`,
-        }}
-      />
+        <>
+          <div
+            className="sun"
+            ref={sunRef}
+            style={{
+              animationDuration: `${duration}s`,
+              animationDelay: `${animOffset * duration}s`,
+            }}
+          />
+          <div
+            className="moon"
+            ref={moonRef}
+            style={{
+              animationDuration: `${duration}s`,
+              animationDelay: `${animOffset * duration}s`,
+            }}
+          />
+        </>
       )}
     </>
   );
