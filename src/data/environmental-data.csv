@@ -47,27 +47,51 @@ Set,Day,Time,Temperature,WindSpeed,Condition,Demand
 1,Thursday,9:00 PM,78 F,5 mph,Mostly Cloudy,182
 1,Thursday,10:00 PM,76 F,5 mph,Fair,169
 1,Thursday,11:00 PM,74 F,5 mph,Fair,152
-1,Friday,12:00 AM,72 F,5 mph,Fair,134
-1,Friday,1:00 AM,72 F,0 mph,Fair,127
-1,Friday,2:00 AM,70 F,7 mph,Fair,123
-1,Friday,3:00 AM,69 F,6 mph,Fair,119
-1,Friday,4:00 AM,69 F,5 mph,Mostly Cloudy,117
-1,Friday,5:00 AM,70 F,3 mph,Mostly Cloudy,118
-1,Friday,6:00 AM,68 F,0 mph,Partly Cloudy,123
-1,Friday,7:00 AM,70 F,0 mph,Mostly Cloudy,134
-1,Friday,8:00 AM,72 F,3 mph,Fair,147
-1,Friday,9:00 AM,75 F,6 mph,Fair,164
-1,Friday,10:00 AM,78 F,10 mph,Mostly Cloudy,177
-1,Friday,11:00 AM,79 F,0 mph,Fair,190
-1,Friday,12:00 PM,85 F,5 mph,Fair,203
-1,Friday,1:00 PM,90 F,8 mph,Fair,213
-1,Friday,2:00 PM,92 F,3 mph,Fair,219
-1,Friday,3:00 PM,94 F,6 mph,Fair,218
-1,Friday,4:00 PM,93 F,6 mph,Fair,221
-1,Friday,5:00 PM,94 F,7 mph,Fair,220
-1,Friday,6:00 PM,92 F,10 mph,Fair,216
-1,Friday,7:00 PM,89 F,9 mph,Fair,206
-1,Friday,8:00 PM,83 F,0 mph,Fair,194
-1,Friday,9:00 PM,74 F,5 mph,Fair,182
-1,Friday,10:00 PM,73 F,0 mph,Fair,169
-1,Friday,11:00 PM,70 F,0 mph,Fair,152
+2,Wednesday,12:00 AM,51 F,5 mph,Fair,125
+2,Wednesday,1:00 AM,51 F,7 mph,Fair,134
+2,Wednesday,2:00 AM,49 F,7 mph,Fair,109
+2,Wednesday,3:00 AM,49 F,7 mph,Fair,80
+2,Wednesday,4:00 AM,51 F,10 mph,Fair,78
+2,Wednesday,5:00 AM,51 F,10 mph,Fair,89
+2,Wednesday,6:00 AM,52 F,12 mph,Fair,79
+2,Wednesday,7:00 AM,57 F,16 mph,Fair,93
+2,Wednesday,8:00 AM,61 F,15 mph,Partly Cloudy,110
+2,Wednesday,9:00 AM,66 F,16 mph,Fair,128
+2,Wednesday,10:00 AM,69 F,22 mph,Cloudy,118
+2,Wednesday,11:00 AM,72 F,23 mph,Partly Cloudy ,97
+2,Wednesday,12:00 PM,73 F,22 mph,Fair,85
+2,Wednesday,1:00 PM,78 F,26 mph,Fair,79
+2,Wednesday,2:00 PM,79 F,24 mph,Fair,98
+2,Wednesday,3:00 PM,82 F,23 mph,Fair,89
+2,Wednesday,4:00 PM,82 F,28 mph,Fair,85
+2,Wednesday,5:00 PM,83 F,26 mph,Fair,64
+2,Wednesday,6:00 PM,81 F,23 mph,Fair,68
+2,Wednesday,7:00 PM,79 F,20 mph,Fair,77
+2,Wednesday,8:00 PM,75 F,16 mph,Fair,90
+2,Wednesday,9:00 PM,72 F,9 mph,Fair,55
+2,Wednesday,10:00 PM,69 F,5 mph,Fair,43
+2,Wednesday,11:00 PM,69 F,5 mph,Mostly Cloudy,37
+2,Thursday,12:00 AM,69 F,17 mph,Mostly Cloudy,125
+2,Thursday,1:00 AM,67 F,3 mph,Fair,134
+2,Thursday,2:00 AM,68 F,3 mph,Fair,109
+2,Thursday,3:00 AM,61 F,5 mph,Fair,80
+2,Thursday,4:00 AM,61 F,5 mph,Fair,78
+2,Thursday,5:00 AM,59 F,0 mph,Fair,89
+2,Thursday,6:00 AM,61 F,0 mph,Fair,79
+2,Thursday,7:00 AM,69 F,7 mph,Fair,93
+2,Thursday,8:00 AM,73 F,14 mph,Fair,110
+2,Thursday,9:00 AM,78 F,14 mph,Fair,128
+2,Thursday,10:00 AM,82 F,15 mph,Fair,118
+2,Thursday,11:00 AM,83 F,16 mph,Fair,97
+2,Thursday,12:00 PM,86 F,14 mph,Fair,85
+2,Thursday,1:00 PM,87 F,14 mph,Haze,79
+2,Thursday,2:00 PM,87 F,16 mph,Fair,98
+2,Thursday,3:00 PM,87 F,12 mph,Fair,89
+2,Thursday,4:00 PM,89 F,12 mph,Fair,85
+2,Thursday,5:00 PM,89 F,9 mph,Fair,64
+2,Thursday,6:00 PM,90 F,14 mph,Fair,68
+2,Thursday,7:00 PM,89 F,10 mph,Fair,77
+2,Thursday,8:00 PM,87 F,8 mph,Fair,90
+2,Thursday,9:00 PM,84 F,10 mph,Fair,55
+2,Thursday,10:00 PM,80 F,5 mph,Fair,43
+2,Thursday,11:00 PM,76 F,0 mph,Fair,37
