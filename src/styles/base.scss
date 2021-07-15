@@ -103,11 +103,6 @@ h4 {
 }
 
 .simulation-hud {
-  opacity: 0;
-  transition: opacity 0.8s;
-}
-
-.simulation-hud.show {
   opacity: 1;
 }
 
@@ -245,6 +240,21 @@ h4 {
   }
 }
 
+.feedback-icon {
+  background-image: url(../images/upset.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.feedback-icon.angry {
+  background-image: url(../images/angry.png);
+}
+
+.feedback-icon.happy {
+  background-image: url(../images/happy.png);
+}
+
 .message-center {
   height: 43%;
   left: 6.25%;
@@ -260,6 +270,8 @@ h4 {
 
   .feedback-icon {
     font-size: 12em;
+    height: 70px;
+    width: 70px;
   }
 }
 
@@ -325,7 +337,7 @@ h4 {
 
 .power-levels {
   height: 89%;
-  left: 37%;
+  left: 37.1%;
   top: 23%;
   transform: scale(0.65);
   width: 25%;
@@ -405,10 +417,24 @@ h4 {
 .customer-approval {
   background-color: white;
   border: none;
+  height: 300px;
   width: 85%;
 
   .feedback-icon {
     font-size: 2.5em;
+    height: 70px;
+    left: -35px;
+    position: absolute;
+    width: 70px;
+  }
+}
+
+.how-you-did {
+  .feedback-icon {
+    height: 140px;
+    left: 170px;
+    position: absolute;
+    width: 140px;
   }
 }
 
@@ -420,6 +446,10 @@ h4 {
   .energy-chart {
     width: 640px;
   }
+}
+
+.score-screen.pane.failed {
+  border-color: #fc3a43 !important;
 }
 
 .emulator {
@@ -474,8 +504,8 @@ h4 {
   }
 
   @keyframes sunpulse {
-    // from { box-shadow: 0 0 100px #ff0, 0 0 100px #ff0; }
-    // to { box-shadow: 0 0 50px #ff0, 0 0 75px #ff0; }
+    from { box-shadow: 0 0 100px #ff0, 0 0 100px #ff0; }
+    to { box-shadow: 0 0 50px #ff0, 0 0 75px #ff0; }
   }
 
   @keyframes moonmotion {
@@ -484,15 +514,15 @@ h4 {
   }
 
   @keyframes moonpulse {
-    // from { box-shadow: 0 0 100px #eff, 0 0 100px #eee; }
-    // to { box-shadow: 0 0 50px #eee, 0 0 75px #cee; }
+    from { box-shadow: 0 0 100px #eff, 0 0 100px #eee; }
+    to { box-shadow: 0 0 50px #eee, 0 0 75px #cee; }
   }
 
   .sun {
     animation: sunmotion infinite forwards linear, sunpulse 2s alternate infinite;
     background: #ff0;
     background: radial-gradient(ellipse at center, #f90 0%, #fc0 60%, #ff0 100%);
-    background-image: url(../images/sun-day.png);
+    // background-image: url(../images/sun-day.png);
     background-position: center;
     background-repeat: no-repeat;
     border-radius: 100%;
@@ -507,8 +537,8 @@ h4 {
 
   .moon {
     animation: moonmotion infinite forwards linear, moonpulse 2s alternate infinite;
-    // background-image: url(../images/moon.png);
-    background-image: url(../images/moon-night.png);
+    background-image: url(../images/moon.png);
+    // background-image: url(../images/moon-night.png);
     background-position: center;
     background-repeat: no-repeat;
     background-size: fill;

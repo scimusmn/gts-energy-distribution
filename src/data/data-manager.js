@@ -70,6 +70,9 @@ const conditionToSolarPotential = (condition) => {
     case 'Partly Cloudy':
       potential = 0.75;
       break;
+    case 'Haze':
+      potential = 0.75;
+      break;
     case 'Mostly Cloudy':
       potential = 0.5;
       break;

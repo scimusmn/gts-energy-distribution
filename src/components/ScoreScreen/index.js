@@ -1,47 +1,90 @@
 /* eslint-disable react/jsx-props-no-spreading */
+/* eslint no-param-reassign: 0 */
+
 import React from 'react';
 import {
-  Modal, ModalBody, Col,
+  Modal, ModalBody, Col, Row,
 } from 'reactstrap';
 import { StaticImage } from 'gatsby-plugin-image';
 import PropTypes from 'prop-types';
 import { Doughnut } from 'react-chartjs-2';
 import EnergyChart from '../EnergyChart';
 import ChartColors from '../EnergyChart/chart-colors';
-import { NewKey, SumArray } from '../../utils';
+import { SumArray } from '../../utils';
 import FeedbackIcon from '../MessageCenter/feedback-icon';
 import Settings from '../../data/settings';
 
 const ScoreScreen = ({
   currentView, feedbackMessage, efficiencyScore, chartData, customerFeedback,
 }) => (
-  <Modal isOpen size="xl" className="score-screen pane">
+  <Modal isOpen size="xl" className={`score-screen pane ${feedbackMessage.includes('blackout') ? 'failed' : ''}`}>
     <ModalBody>
       {{
         score1: (
           <div>
             {feedbackMessage.includes('blackout')
-              ? <h1>Blackout.</h1>
+              ? <h1>GAME OVER!</h1>
               : <h1>Congratulations!</h1>}
             <h2>{feedbackMessage}</h2>
             <br />
             <br />
-            <Col>
-              <h3>Customer Approval</h3>
-              <br />
-              <div className="customer-approval">
-                {customerFeedback.map((feedback) => (
-                  <FeedbackIcon
-                    key={NewKey()}
-                    mood={feedback.Mood}
-                  />
-                ))}
-              </div>
-              <h1 className="billboard-score" style={{ display: 'none' }}>
-                {Math.ceil(efficiencyScore * 100)}
-                %
-              </h1>
-            </Col>
+            <Row>
+              <Col>
+                <h2>Customer Approval</h2>
+                <br />
+                <Row className="customer-approval">
+                  <Col>
+                    <h2>
+                      <FeedbackIcon mood="angry" />
+                      {' '}
+                      X
+                      {' '}
+                      {customerFeedback.filter((obj) => obj.Mood === 'angry').length}
+                    </h2>
+                  </Col>
+                  <Col>
+                    <h2>
+                      <div><FeedbackIcon mood="neutral" /></div>
+                      {' '}
+                      X
+                      {' '}
+                      {customerFeedback.filter((obj) => obj.Mood === 'neutral').length}
+                    </h2>
+                  </Col>
+                  <Col>
+                    <h2>
+                      <div><FeedbackIcon mood="happy" /></div>
+                      {' '}
+                      X
+                      {' '}
+                      {customerFeedback.filter((obj) => obj.Mood === 'happy').length}
+                    </h2>
+                  </Col>
+                </Row>
+              </Col>
+              <Col className="how-you-did">
+                <h2>How you did</h2>
+                <br />
+                <Row>
+                  <Col>
+                    <FeedbackIcon mood={customerFeedback.reduce((totals, feedback, index) => {
+                      totals[feedback.Mood] = (totals[feedback.Mood] || 0) + 1;
+                      if (index === customerFeedback.length - 1) {
+                        // Return mood label of highest count
+                        return Object.keys(totals)
+                          .reduce((a, b) => (totals[a] > totals[b] ? a : b));
+                      }
+                      return totals;
+                    }, {})}
+                    />
+                    <h4 style={{ display: 'none' }}>
+                      {Math.ceil(efficiencyScore * 100)}
+                      %
+                    </h4>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
             <br />
             <br />
             <h3>Continue?</h3>

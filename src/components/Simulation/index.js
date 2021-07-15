@@ -674,7 +674,7 @@ class Simulation extends Component {
           night={time < 30000 || time > 73000} // 8pm - 8am
         />
         <ArduinoEmulator onChange={this.onData} />
-        <div className={`simulation-hud ${time <= 0 ? '' : 'show'}`}>
+        <div className="simulation-hud">
           <MessageCenter message={messageCenter} />
           <Container className={`current-conditions pane window solar ${solarAvailability > 0 ? '' : 'disable'}`}>
             <Row>
