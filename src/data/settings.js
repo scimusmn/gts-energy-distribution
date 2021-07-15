@@ -5,11 +5,11 @@ const Settings = {
   REQUIRE_ARDUINO_CONNECTION: true,
 
   // Total session duration in milliseconds
-  SESSION_DURATION: 90 * 1000,
+  SESSION_DURATION: 140 * 1000,
 
   // Days contained within a session
   // (3 days max with current data)
-  DAYS_PER_SESSION: 3,
+  DAYS_PER_SESSION: 2,
 
   // Amplifies efficiency difficulty
   // (higher = more difficult)
@@ -64,7 +64,7 @@ const Settings = {
 
   // Seconds of no user input required to
   // reload application and show attract screen
-  INACTIVITY_TIMEOUT_SECS: 75,
+  INACTIVITY_TIMEOUT_SECS: 90,
 };
 
 export default Settings;

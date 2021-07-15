@@ -2,14 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 function FeedbackIcon({ mood }) {
-  let icon = '🙂';
+  // let icon = '🙂';
+  let icon = ' ';
   if (mood === 'angry') {
-    icon = '😠';
+    // icon = '😠';
+    icon = ' ';
   } else if (mood === 'happy') {
-    icon = '😍';
+    // icon = '😍';
+    icon = ' ';
   }
 
-  return <span role="img" className="feedback-icon" aria-label={mood}>{icon}</span>;
+  return <span role="img" className={`feedback-icon ${mood}`} aria-label={mood}>{icon}</span>;
 }
 
 FeedbackIcon.defaultProps = { mood: 'neutral' };

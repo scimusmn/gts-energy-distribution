@@ -38,7 +38,7 @@ class EnergyChart extends Component {
               ctx.moveTo(lineX, topY);
               ctx.lineTo(lineX, bottomY);
               ctx.lineWidth = 2;
-              ctx.strokeStyle = '#e23fa9';
+              ctx.strokeStyle = '#e2  fa9';
               ctx.stroke();
               ctx.restore();
             }

@@ -40,6 +40,8 @@ class Simulation extends Component {
       boardEnabled: true,
       inSession: false,
       attractMode: true,
+      hourInterval: 0,
+      totalHoursInSession: 0,
     };
 
     this.onData = this.onData.bind(this);
@@ -212,6 +214,7 @@ class Simulation extends Component {
 
       // Switch has turned on. Go into warming mode.
       if (value === '1') {
+        this.liveData[`${panelId}-warming-ticks`] = 0;
         this.liveData[stateKey] = 'warming';
         if (isPluggedIn) this.queueMessage(`${panelId}-light`, 'warming');
       }
@@ -405,6 +408,13 @@ class Simulation extends Component {
     }
   }
 
+  maximizeWarmingTicks() {
+    this.liveData['coal-1-warming-ticks'] = Settings.COAL_WARMING_DELAY;
+    this.liveData['coal-2-warming-ticks'] = Settings.COAL_WARMING_DELAY;
+    this.liveData['coal-3-warming-ticks'] = Settings.COAL_WARMING_DELAY;
+    this.liveData['coal-4-warming-ticks'] = Settings.COAL_WARMING_DELAY;
+  }
+
   reset() {
     clearInterval(this.hourlyInterval);
 
@@ -430,8 +440,8 @@ class Simulation extends Component {
     DataManager.selectNewForecast();
     this.setState({
       hourIndex: 0,
-      // forecast: DataManager.getForecastSummary(),
       currentView: 'ready',
+      time: DataManager.getFieldAtHour(0, 'TimeNum'),
       currentSlide: 1,
       blackout: false,
     });
@@ -446,6 +456,9 @@ class Simulation extends Component {
     // Get all starting states from Arduino
     this.queueMessage('get-all-states', '1');
 
+    // Allow player to start with running coal power
+    this.maximizeWarmingTicks();
+
     const dayInterval = Settings.SESSION_DURATION / Settings.DAYS_PER_SESSION;
     const hourInterval = Math.ceil(dayInterval / 24);
     const totalHoursInSession = 24 * Settings.DAYS_PER_SESSION;
@@ -453,101 +466,112 @@ class Simulation extends Component {
     // Pre-populate chart with demand.
     this.sessionData.energy.demand = DataManager.getCurrentForecastField('Demand');
     this.sessionData.energy.timeLabels = DataManager.getCurrentForecastField('Time');
-    this.setState({ energyData: this.sessionData.energy, inSession: true });
+    this.setState({
+      energyData: this.sessionData.energy, inSession: true, hourInterval, totalHoursInSession,
+    });
 
     this.hourlyInterval = setInterval(() => {
-      const { hourIndex } = this.state;
-
-      this.sessionData.timestamps.push(Date.now());
-
-      if (hourIndex >= totalHoursInSession) {
-        this.endSimulation();
-      } else {
-        const productionSnapshot = this.getCurrentProduction(1.0);
-        const production = productionSnapshot.total;
-
-        // Add live production snapshot to production history
-        Object.entries(productionSnapshot).forEach((entry) => {
-          const [key, value] = entry;
-          this.sessionData.energy[key].push(value);
-        });
-
-        const demand = DataManager.getDemand(hourIndex);
-
-        // Calculate efficiency score
-        const difference = demand - production;
-        const efficiency = Simulation.calculateEfficiency(difference);
-        this.sessionData.efficiency.push(efficiency);
-
-        // Check for Message Center triggers
-        const polarity = Math.sign(difference);
-        const triggeredMessage = DataManager.checkMessageCenterTriggers(efficiency, polarity);
-
-        let { messageCenter } = this.state;
-        // Remember all triggered message centers for score screen
-        if (triggeredMessage) {
-          this.sessionData.feedback.push(triggeredMessage);
-          if (triggeredMessage.Trigger === 'FEEDBACK_BLACKOUT') {
-            this.setState({
-              blackout: true,
-              finalFeedback: triggeredMessage.Body,
-            });
-            clearInterval(this.hourlyInterval);
-            setTimeout(() => {
-              this.endSimulation();
-            }, 2750);
-          } else {
-            messageCenter = triggeredMessage;
-          }
-        }
-
-        this.setState({
-          production,
-          demand,
-          efficiency,
-          messageCenter,
-          time: DataManager.getFieldAtHour(hourIndex, 'TimeNum'),
-          hourIndex: hourIndex + 1,
-          energyData: this.sessionData.energy,
-          wind: DataManager.getFieldAtHour(hourIndex, 'WindSpeedNum'),
-        });
-      }
+      this.processSimulationHour();
     }, hourInterval);
 
-    // TODO: Replace with reqAnimationFrame HOC
+    // This interval triggers the updates in between simulation hours,
+    // interpolating between the previous and upcoming hourly data points
     this.interpInterval = setInterval(() => {
-      const { hourIndex } = this.state;
-      if (hourIndex <= 0 || hourIndex >= totalHoursInSession) return;
+      this.interpolateSimulationState();
+    }, 150);
+  }
 
-      const { timestamps } = this.sessionData;
-      const prevTimestamp = timestamps[timestamps.length - 1];
-      const nowTimestamp = Date.now();
-      const hourProgress = (nowTimestamp - prevTimestamp) / hourInterval;
+  processSimulationHour() {
+    const { hourIndex, totalHoursInSession } = this.state;
 
-      // Demand
-      const demand = DataManager.interpolate(hourIndex, hourProgress, 'Demand');
+    this.sessionData.timestamps.push(Date.now());
 
-      // Production
-      const productionSnapshot = this.getCurrentProduction(hourProgress);
+    if (hourIndex >= totalHoursInSession) {
+      this.endSimulation();
+    } else {
+      const productionSnapshot = this.getCurrentProduction(1.0);
       const production = productionSnapshot.total;
 
-      // Efficiency
+      // Add live production snapshot to production history
+      Object.entries(productionSnapshot).forEach((entry) => {
+        const [key, value] = entry;
+        this.sessionData.energy[key].push(value);
+      });
+
+      const demand = DataManager.getDemand(hourIndex);
+
+      // Calculate efficiency score
       const difference = demand - production;
       const efficiency = Simulation.calculateEfficiency(difference);
+      this.sessionData.efficiency.push(efficiency);
 
-      const wind = Math.round(DataManager.interpolate(hourIndex, hourProgress, 'WindSpeedNum'));
+      // Check for Message Center triggers
+      const polarity = Math.sign(difference);
+      const triggeredMessage = DataManager.checkMessageCenterTriggers(efficiency, polarity);
 
-      const time = DataManager.timeInterpolate(hourIndex, hourProgress, 'TimeNum');
+      let { messageCenter } = this.state;
+      // Remember all triggered message centers for score screen
+      if (triggeredMessage) {
+        this.sessionData.feedback.push(triggeredMessage);
+        if (triggeredMessage.Trigger === 'FEEDBACK_BLACKOUT') {
+          this.setState({
+            blackout: true,
+            finalFeedback: triggeredMessage.Body,
+          });
+          clearInterval(this.hourlyInterval);
+          setTimeout(() => {
+            this.endSimulation();
+          }, 2750);
+        } else {
+          messageCenter = triggeredMessage;
+        }
+      }
 
       this.setState({
-        time,
-        demand,
         production,
+        demand,
         efficiency,
-        wind,
-        solarAvailability: DataManager.getSolarAvailability(hourIndex, hourProgress),
+        messageCenter,
+        time: DataManager.getFieldAtHour(hourIndex, 'TimeNum'),
+        hourIndex: hourIndex + 1,
+        energyData: this.sessionData.energy,
+        wind: DataManager.getFieldAtHour(hourIndex, 'WindSpeedNum'),
       });
-    }, 150);
+    }
+  }
+
+  interpolateSimulationState() {
+    const { hourIndex, hourInterval, totalHoursInSession } = this.state;
+    if (hourIndex <= 0 || hourIndex >= totalHoursInSession) return;
+
+    const { timestamps } = this.sessionData;
+    const prevTimestamp = timestamps[timestamps.length - 1];
+    const nowTimestamp = Date.now();
+    const hourProgress = (nowTimestamp - prevTimestamp) / hourInterval;
+
+    // Demand
+    const demand = DataManager.interpolate(hourIndex, hourProgress, 'Demand');
+
+    // Production
+    const productionSnapshot = this.getCurrentProduction(hourProgress);
+    const production = productionSnapshot.total;
+
+    // Efficiency
+    const difference = demand - production;
+    const efficiency = Simulation.calculateEfficiency(difference);
+
+    const wind = Math.round(DataManager.interpolate(hourIndex, hourProgress, 'WindSpeedNum'));
+
+    const time = DataManager.timeInterpolate(hourIndex, hourProgress, 'TimeNum');
+
+    this.setState({
+      time,
+      demand,
+      production,
+      efficiency,
+      wind,
+      solarAvailability: DataManager.getSolarAvailability(hourIndex, hourProgress),
+    });
   }
 
   endSimulation() {
@@ -594,7 +618,6 @@ class Simulation extends Component {
       // Send all queued messages
       for (let i = 0; i < messageObjects.length; i += 1) {
         const [key, value] = messageObjects[i];
-        // console.log(`sendData: {${key}:${value}}`); // TEMP: Remove for production.
         sendData(`{${key}:${value}}`);
       }
 
@@ -636,64 +659,71 @@ class Simulation extends Component {
       );
     }
 
+    // console.log('time', time);
+    // console.log('->', NearestTimeInterval(time, Settings.CLOCK_INTERVAL_MINUTES));
+
     return (
       <div className={`simulation ${!inSession ? 'inactive' : ''}`}>
         <DayCycle
           duration={(Settings.SESSION_DURATION / Settings.DAYS_PER_SESSION) / 1000}
-          animOffset={-29}
+          animOffset={-0.75}
           wind={wind}
+          solarAvailability={solarAvailability}
+          energyData={energyData}
           paused={!inSession}
+          night={time < 30000 || time > 73000} // 8pm - 8am
         />
-        <div className="background-city" />
         <ArduinoEmulator onChange={this.onData} />
-        <MessageCenter message={messageCenter} />
-        <Container className={`current-conditions pane window solar ${solarAvailability > 0 ? '' : 'disable'}`}>
-          <Row>
-            <div className="condition-icon" />
-          </Row>
-          <Row>
-            <h2 className="highlight">{NearestTimeInterval(time, Settings.CLOCK_INTERVAL_MINUTES)}</h2>
-            <h3 className="info-bubble">
-              Solar panel arrays turn sunlight into electricity!
-            </h3>
-          </Row>
-        </Container>
-        <Container className={`current-conditions pane window wind ${wind < 8 ? 'disable' : ''}`}>
-          <Row>
-            <div className="condition-icon" />
-          </Row>
-          <Row>
-            <h2 className="highlight">{`${wind} MPH`}</h2>
-            <h3 className="info-bubble">
-              Power when the wind blows at least
-              {' '}
-              <strong>8mph.</strong>
-              {' '}
-              Utililize this when you can!
-            </h3>
-          </Row>
-        </Container>
-        <Container className="power-levels window pane">
-          <Row>
-            <PowerMeter label="Production" color="#43B94F" level={production} maxlevel={Settings.MAX_EXPECTED_DEMAND} barheight={590} />
-            <PowerMeter label="Demand" color="#FB3D08" level={demand} maxlevel={Settings.MAX_EXPECTED_DEMAND} barheight={590} />
-          </Row>
-          <br />
-          <Row>
-            <Col style={{ textAlign: 'center' }}>
-              <GaugeChart
-                id="gauge-efficiency"
-                percent={efficiency}
-                colors={['#F9000F', '#FFD02A', '#34BF3E']}
-                animDelay={0}
-                hideText
-              />
-              <h3>
-                How are you doing?
+        <div className="simulation-hud">
+          <MessageCenter message={messageCenter} />
+          <Container className={`current-conditions pane window solar ${solarAvailability > 0 ? '' : 'disable'}`}>
+            <Row>
+              <div className="condition-icon" />
+            </Row>
+            <Row>
+              <h2 className="highlight">{NearestTimeInterval(time, Settings.CLOCK_INTERVAL_MINUTES)}</h2>
+              <h3 className="info-bubble">
+                Solar panel arrays turn sunlight into electricity!
               </h3>
-            </Col>
-          </Row>
-        </Container>
+            </Row>
+          </Container>
+          <Container className={`current-conditions pane window wind ${wind < 8 ? 'disable' : ''}`}>
+            <Row>
+              <div className="condition-icon" />
+            </Row>
+            <Row>
+              <h2 className="highlight">{`${wind} MPH`}</h2>
+              <h3 className="info-bubble">
+                Power when the wind blows at least
+                {' '}
+                <strong>8mph.</strong>
+                {' '}
+                Utililize this when you can!
+              </h3>
+            </Row>
+          </Container>
+          <Container className="power-levels window pane">
+            <Row>
+              <PowerMeter label="Production" color="#43B94F" level={production} maxlevel={Settings.MAX_EXPECTED_DEMAND} barheight={590} />
+              <PowerMeter label="Demand" color="#FB3D08" level={demand} maxlevel={Settings.MAX_EXPECTED_DEMAND} barheight={590} />
+            </Row>
+            <br />
+            <Row>
+              <Col style={{ textAlign: 'center' }}>
+                <GaugeChart
+                  id="gauge-efficiency"
+                  percent={efficiency}
+                  colors={['#F9000F', '#FFD02A', '#34BF3E']}
+                  animDelay={0}
+                  hideText
+                />
+                <h3>
+                  How are you doing?
+                </h3>
+              </Col>
+            </Row>
+          </Container>
+        </div>
         <div className={`blackout ${blackout ? 'show' : ''}`} />
         {{
           ready: <ReadyScreen key="ready" currentView={`${currentView}${currentSlide}`} />,
