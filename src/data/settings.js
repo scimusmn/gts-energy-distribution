@@ -5,7 +5,7 @@ const Settings = {
   REQUIRE_ARDUINO_CONNECTION: true,
 
   // Total session duration in milliseconds
-  SESSION_DURATION: 140 * 1000,
+  SESSION_DURATION: 40 * 1000, // 140 * 1000,
 
   // Days contained within a session
   // (3 days max with current data)

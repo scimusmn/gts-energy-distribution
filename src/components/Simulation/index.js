@@ -408,14 +408,17 @@ class Simulation extends Component {
   }
 
   maximizeWarmingTicks() {
-    this.liveData['coal-1-state'] = 'warming';
-    this.liveData['coal-1-warming-ticks'] = Settings.COAL_WARMING_DELAY;
-    this.liveData['coal-2-state'] = 'warming';
-    this.liveData['coal-2-warming-ticks'] = Settings.COAL_WARMING_DELAY;
-    this.liveData['coal-3-state'] = 'warming';
-    this.liveData['coal-3-warming-ticks'] = Settings.COAL_WARMING_DELAY;
-    this.liveData['coal-4-state'] = 'warming';
-    this.liveData['coal-4-warming-ticks'] = Settings.COAL_WARMING_DELAY;
+    for (let j = 0; j < 5; j += 1) {
+      const panelId = `coal-${j + 1}`;
+      const isPluggedIn = (this.liveData[`${panelId}-jack`] === '0');
+      const isSwitchedOn = (this.liveData[`${panelId}-switch`] === '1');
+
+      if (isPluggedIn && isSwitchedOn) {
+        this.liveData[`${panelId}-state`] = 'on';
+        this.liveData[`${panelId}-warming-ticks`] = 0;
+        this.queueMessage(`${panelId}-light`, 'on');
+      }
+    }
   }
 
   reset() {
@@ -447,6 +450,8 @@ class Simulation extends Component {
       time: DataManager.getFieldAtHour(0, 'TimeNum'),
       currentSlide: 1,
       blackout: false,
+      production: 0,
+      demand: 0,
     });
 
     this.enableControlBoard();
@@ -682,7 +687,7 @@ class Simulation extends Component {
           night={time < 30000 || time > 73000} // 8pm - 8am
         />
         <ArduinoEmulator onChange={this.onData} />
-        <div className="simulation-hud">
+        <div className={`simulation-hud ${time <= 0 ? '' : 'show'}`}>
           <MessageCenter message={messageCenter} />
           <Container className={`current-conditions pane window solar ${solarAvailability > 0 ? '' : 'disable'}`}>
             <Row>
@@ -691,7 +696,7 @@ class Simulation extends Component {
             <Row>
               <h2 className="highlight">{NearestTimeInterval(time, Settings.CLOCK_INTERVAL_MINUTES)}</h2>
               <h3 className="info-bubble">
-                Solar panel arrays turn sunlight into electricity!
+                Solar power is not available at night time.
               </h3>
             </Row>
           </Container>

@@ -102,10 +102,6 @@ h4 {
   width: 1920px;
 }
 
-.simulation-hud {
-  opacity: 1;
-}
-
 .background-city {
   .backdrop {
     background-size: contain;
@@ -204,6 +200,24 @@ h4 {
   span {
     margin: auto;
     text-align: center;
+  }
+}
+
+.simulation-hud {
+  opacity: 0;
+  transition: opacity 0.6s ease-in;
+
+  .pane {
+    margin-top: 100px;
+    transition: margin-top 0.5s ease-out;
+  }
+}
+
+.simulation-hud.show {
+  opacity: 1;
+
+  .pane {
+    margin-top: 0;
   }
 }
 

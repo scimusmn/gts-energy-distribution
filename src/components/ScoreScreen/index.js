@@ -109,8 +109,11 @@ const ScoreScreen = ({
             />
             <br />
             <br />
-            <h3>Continue?</h3>
-            <h4>PRESS OK.</h4>
+            <h3>
+              <strong>Press OK</strong>
+              <br />
+              to continue
+            </h3>
             <br />
           </div>),
         score3: (
@@ -119,12 +122,15 @@ const ScoreScreen = ({
             <StaticImage src="../../images/powerplant.png" alt="" />
             <br />
             <h2>
-              Do you think you can beat your score?
+              Do you think you can do better?
             </h2>
             <br />
             <br />
-            <h3>Continue?</h3>
-            <h4>PRESS OK.</h4>
+            <h3>
+              <strong>Press OK</strong>
+              <br />
+              to start over
+            </h3>
             <br />
           </div>),
       }[currentView]}

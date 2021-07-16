@@ -20,8 +20,11 @@ const ReadyScreen = ({ currentView }) => (
             </h2>
             <br />
             <br />
-            <h3>Continue?</h3>
-            <h4>PRESS OK.</h4>
+            <h3>
+              <strong>Press OK</strong>
+              <br />
+              to continue
+            </h3>
             <br />
           </div>),
         ready2: (
@@ -32,8 +35,11 @@ const ReadyScreen = ({ currentView }) => (
             <h2 className="highlight">You can choose up to 10.</h2>
             <br />
             <br />
-            <h3>Continue?</h3>
-            <h4>PRESS OK.</h4>
+            <h3>
+              <strong>Press OK</strong>
+              <br />
+              to continue
+            </h3>
             <br />
           </div>),
         ready3: (
@@ -52,16 +58,22 @@ const ReadyScreen = ({ currentView }) => (
             </h2>
             <br />
             <br />
-            <h3>Continue?</h3>
-            <h4>PRESS OK.</h4>
+            <h3>
+              <strong>Press OK</strong>
+              <br />
+              to continue
+            </h3>
             <br />
           </div>),
         ready4: (
           <div>
             <br />
             <br />
-            <h3>Ready to play?</h3>
-            <h4>PRESS OK.</h4>
+            <h3>
+              <strong>Press OK</strong>
+              <br />
+              to begin
+            </h3>
             <br />
             <br />
           </div>),
