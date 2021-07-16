@@ -44,11 +44,11 @@ const Settings = {
   // Efficiency below this percentage, while under-producing,
   // will trigger a blackout warning
   // (lower = harder to trigger)
-  BLACKOUT_THRESHOLD: 0.33,
+  BLACKOUT_THRESHOLD: 0.4,
 
   // How many blackout warnings to display
   // before "real" blackout (higher = less difficult)
-  WARNINGS_BEFORE_BLACKOUT: 3,
+  WARNINGS_BEFORE_BLACKOUT: 2,
 
   // The amount incremented/decremented
   // with each arrow button press.
@@ -56,7 +56,7 @@ const Settings = {
 
   // Number of sim-hours that need to
   // pass before triggering 'on' state.
-  COAL_WARMING_DELAY: 6,
+  COAL_WARMING_DELAY: 4,
 
   // Interval of minutes the live clock should snap to.
   // Set to 1 if you want every minute displayed.

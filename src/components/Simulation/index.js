@@ -84,7 +84,6 @@ class Simulation extends Component {
         // Wake up the Arduino
         this.queueMessage('wake-arduino', '1');
         this.releaseQueue();
-        console.log('Arduino not yet awake...');
       }
     }, 1000);
   }
@@ -94,7 +93,7 @@ class Simulation extends Component {
   }
 
   onData(data) {
-    console.log('onData:', data);
+    // console.log('onData:', data);
 
     const message = Object.keys(data)[0];
     const value = Object.values(data)[0];
@@ -409,9 +408,13 @@ class Simulation extends Component {
   }
 
   maximizeWarmingTicks() {
+    this.liveData['coal-1-state'] = 'warming';
     this.liveData['coal-1-warming-ticks'] = Settings.COAL_WARMING_DELAY;
+    this.liveData['coal-2-state'] = 'warming';
     this.liveData['coal-2-warming-ticks'] = Settings.COAL_WARMING_DELAY;
+    this.liveData['coal-3-state'] = 'warming';
     this.liveData['coal-3-warming-ticks'] = Settings.COAL_WARMING_DELAY;
+    this.liveData['coal-4-state'] = 'warming';
     this.liveData['coal-4-warming-ticks'] = Settings.COAL_WARMING_DELAY;
   }
 
@@ -485,6 +488,9 @@ class Simulation extends Component {
     const { hourIndex, totalHoursInSession } = this.state;
 
     this.sessionData.timestamps.push(Date.now());
+
+    console.log('hour live data');
+    console.log(this.liveData);
 
     if (hourIndex >= totalHoursInSession) {
       this.endSimulation();
