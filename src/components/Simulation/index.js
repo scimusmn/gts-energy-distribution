@@ -460,7 +460,9 @@ class Simulation extends Component {
     this.queueMessage('get-all-states', '1');
 
     // Allow player to start with running coal power
-    this.maximizeWarmingTicks();
+    setTimeout(() => {
+      this.maximizeWarmingTicks();
+    }, 750);
 
     const dayInterval = Settings.SESSION_DURATION / Settings.DAYS_PER_SESSION;
     const hourInterval = Math.ceil(dayInterval / 24);
