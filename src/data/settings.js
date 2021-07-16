@@ -44,11 +44,11 @@ const Settings = {
   // Efficiency below this percentage, while under-producing,
   // will trigger a blackout warning
   // (lower = harder to trigger)
-  BLACKOUT_THRESHOLD: 0.4,
+  BLACKOUT_THRESHOLD: 0.5,
 
   // How many blackout warnings to display
   // before "real" blackout (higher = less difficult)
-  WARNINGS_BEFORE_BLACKOUT: 2,
+  WARNINGS_BEFORE_BLACKOUT: 1,
 
   // The amount incremented/decremented
   // with each arrow button press.
