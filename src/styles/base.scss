@@ -126,6 +126,16 @@ h4 {
     opacity: 1;
   }
 
+  .backdrop.night-lights {
+    background-image: url(../images/cityscape-night-lights.png);
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+
+  .backdrop.night-lights.show {
+    opacity: 1;
+  }
+
   .coal-sprite-1 {
     left: 20px;
     position: absolute;
@@ -219,6 +229,28 @@ h4 {
   .pane {
     margin-top: 0;
   }
+}
+
+.ready-prompt {
+  color: white;
+  font-size: 6.4em;
+  height: 100%;
+  opacity: 0;
+  position: absolute;
+  text-align: center;
+  text-shadow: 0 10px 13px -7px #000, 5px 5px 15px 5px rgba(0, 0, 0, 0);
+  top: 115px;
+  width: 100%;
+}
+
+.ready-prompt.show {
+  opacity: 1;
+}
+
+// Centers modals vertically
+.modal {
+  align-items: center;
+  display: flex !important;
 }
 
 .modal-backdrop.show {
@@ -349,6 +381,12 @@ h4 {
   }
 }
 
+.current-conditions.disable.solar {
+  .condition-icon {
+    background-image: url(../images/moon-icon-sized.png);
+  }
+}
+
 .power-levels {
   height: 89%;
   left: 37.1%;
@@ -365,6 +403,90 @@ h4 {
     border: 12px solid;
     border-color: white;
     box-shadow: 0 3px 4px 2px rgba(43, 43, 43, 0.3);
+  }
+
+  .meter-diff {
+    left: 204px;
+    position: absolute;
+    top: 64px;
+    width: 23px;
+
+    .bar {
+      position: absolute;
+      width: 100%;
+
+      .inner {
+        height: 100%;
+        opacity: 0.8;
+        width: 3px;
+      }
+
+      ::before {
+        border-bottom: 5px solid;
+        bottom: 0;
+        content: '';
+        position: absolute;
+        width: 50%;
+      }
+
+      ::after {
+        border-bottom: 5px solid;
+        content: '';
+        position: absolute;
+        right: 50%;
+        top: 0;
+        width: 50%;
+      }
+    }
+
+    .bar.flip {
+      ::before {
+        right: 50%;
+      }
+
+      ::after {
+        right: 0%;
+      }
+    }
+  }
+
+  .meter-diff.happy {
+    .bar {
+      ::after,
+      ::before {
+        border-color: #34bf3e !important;
+      }
+
+      .inner {
+        background-color: #34bf3e;
+      }
+    }
+  }
+
+  .meter-diff.neutral {
+    .bar {
+      ::after,
+      ::before {
+        border-color: #ffd02a !important;
+      }
+
+      .inner {
+        background-color: #ffd02a;
+      }
+    }
+  }
+
+  .meter-diff.warning {
+    .bar {
+      ::after,
+      ::before {
+        border-color: #f9000f !important;
+      }
+
+      .inner {
+        background-color: #f9000f;
+      }
+    }
   }
 }
 
@@ -497,7 +619,7 @@ h4 {
 
 // Animation helpers
 .tween-height {
-  transition: height 0.1s ease-in-out;
+  transition: height 0.1s ease-in-out, top 0.1s ease-in-out;
 }
 
 // Day Cycle

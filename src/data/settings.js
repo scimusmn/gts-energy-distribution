@@ -5,7 +5,7 @@ const Settings = {
   REQUIRE_ARDUINO_CONNECTION: true,
 
   // Total session duration in milliseconds
-  SESSION_DURATION: 40 * 1000, // 140 * 1000,
+  SESSION_DURATION: 115 * 1000, // 115 * 1000,
 
   // Days contained within a session
   // (3 days max with current data)
@@ -13,7 +13,7 @@ const Settings = {
 
   // Amplifies efficiency difficulty
   // (higher = more difficult)
-  EFFICIENCY_SCORE_MULTIPLIER: 1.5,
+  EFFICIENCY_SCORE_MULTIPLIER: 3.0,
 
   SCORE_PERFORMANCE_GOOD: 90, // Not currently being used
   SCORE_PERFORMANCE_MEDIUM: 75, // Not currently being used
@@ -56,7 +56,7 @@ const Settings = {
 
   // Number of sim-hours that need to
   // pass before triggering 'on' state.
-  COAL_WARMING_DELAY: 4,
+  COAL_WARMING_DELAY: 3,
 
   // Interval of minutes the live clock should snap to.
   // Set to 1 if you want every minute displayed.

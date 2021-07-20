@@ -13,6 +13,7 @@ const DayCycle = ({
   energyData,
   paused,
   night,
+  lights,
 }) => {
   let gasProd = 0;
   let coalProd = 0;
@@ -35,6 +36,7 @@ const DayCycle = ({
         coal={coalProd > 0}
         hydro={hydroProd > 0}
         night={night}
+        lights={lights}
       />
     </div>
   );
@@ -48,6 +50,7 @@ DayCycle.propTypes = {
   energyData: PropTypes.objectOf(PropTypes.array).isRequired,
   paused: PropTypes.bool.isRequired,
   night: PropTypes.bool.isRequired,
+  lights: PropTypes.bool.isRequired,
 };
 
 export default DayCycle;

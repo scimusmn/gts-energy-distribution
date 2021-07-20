@@ -10,7 +10,7 @@ import windImg from '../../../images/animations/wind.png';
 import solarImg from '../../../images/animations/solar.png';
 
 const Cityscape = ({
-  wind, solar, coal, gas, hydro, night,
+  wind, solar, coal, gas, hydro, night, lights,
 }) => {
   const spriteEffect = (ref, active) => {
     if (ref.current) {
@@ -44,6 +44,7 @@ const Cityscape = ({
     <div className="background-city">
       <div className="backdrop day" />
       <div className={`backdrop night ${night ? 'show' : ''}`} />
+      <div className={`backdrop night-lights ${lights ? 'show' : ''}`} />
       <Spritesheet
         ref={coalRef1}
         className="coal-sprite-1"
@@ -143,6 +144,7 @@ Cityscape.propTypes = {
   gas: PropTypes.bool.isRequired,
   hydro: PropTypes.bool.isRequired,
   night: PropTypes.bool.isRequired,
+  lights: PropTypes.bool.isRequired,
 };
 
 export default Cityscape;

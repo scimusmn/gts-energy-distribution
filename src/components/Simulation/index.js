@@ -10,6 +10,7 @@ import DayCycle from '../DayCycle';
 import DataManager from '../../data/data-manager';
 import Settings from '../../data/settings';
 import PowerMeter from '../PowerMeter';
+import MeterDiff from '../MeterDiff';
 import MessageCenter from '../MessageCenter';
 import AttractScreen from '../AttractScreen';
 import ScoreScreen from '../ScoreScreen';
@@ -685,8 +686,12 @@ class Simulation extends Component {
           energyData={energyData}
           paused={!inSession}
           night={time < 30000 || time > 73000} // 8pm - 8am
+          lights={time < 9000 || time > 81000}
         />
         <ArduinoEmulator onChange={this.onData} />
+        <h1 className={`ready-prompt ${time <= 0 ? 'show' : ''}`}>
+          READY?
+        </h1>
         <div className={`simulation-hud ${time <= 0 ? '' : 'show'}`}>
           <MessageCenter message={messageCenter} />
           <Container className={`current-conditions pane window solar ${solarAvailability > 0 ? '' : 'disable'}`}>
@@ -717,6 +722,13 @@ class Simulation extends Component {
           </Container>
           <Container className="power-levels window pane">
             <Row>
+              <MeterDiff
+                level1={production}
+                level2={demand}
+                maxlevel={Settings.MAX_EXPECTED_DEMAND}
+                barheight={590}
+                efficiency={efficiency}
+              />
               <PowerMeter label="Production" color="#43B94F" level={production} maxlevel={Settings.MAX_EXPECTED_DEMAND} barheight={590} />
               <PowerMeter label="Demand" color="#FB3D08" level={demand} maxlevel={Settings.MAX_EXPECTED_DEMAND} barheight={590} />
             </Row>
