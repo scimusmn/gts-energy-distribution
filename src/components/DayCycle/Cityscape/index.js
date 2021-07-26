@@ -1,4 +1,6 @@
 /* stylelint function-name-case: 0 */
+/* eslint no-param-reassign: 0 */
+
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Spritesheet from 'react-responsive-spritesheet';
@@ -18,6 +20,10 @@ const Cityscape = ({
         ref.current.play();
       } else {
         ref.current.pause();
+        ref.current.frame = 0;
+        if (ref.current.spriteElMove) {
+          ref.current.goToAndPause(0);
+        }
       }
     }
   };

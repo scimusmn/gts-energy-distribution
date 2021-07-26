@@ -673,9 +673,6 @@ class Simulation extends Component {
       );
     }
 
-    // console.log('time', time);
-    // console.log('->', NearestTimeInterval(time, Settings.CLOCK_INTERVAL_MINUTES));
-
     return (
       <div className={`simulation ${!inSession ? 'inactive' : ''}`}>
         <DayCycle
