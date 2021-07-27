@@ -141,7 +141,11 @@ const ScoreScreen = ({
 ScoreScreen.PieOptions = {
   legend: {
     display: true,
-    position: 'left',
+    position: 'right',
+    labels: {
+      fontSize: 28,
+      fontFamily: 'National',
+    },
   },
   elements: {
     arc: {
@@ -151,7 +155,7 @@ ScoreScreen.PieOptions = {
 };
 
 ScoreScreen.collatePieData = (energyData) => {
-  const labels = ['Coal', 'Natural Gas', 'Hydro', 'Solar', 'Wind'];
+  const labels = ['Coal', 'Natural gas', 'Hydro', 'Solar', 'Wind'];
 
   const {
     coal, gas, hydro, solar, wind,

@@ -122,6 +122,15 @@ class EnergyChart extends Component {
       animation: {
         duration: (!isLive ? 750 : 0),
       },
+      legend: {
+        display: true,
+        position: 'left',
+        fill: false,
+        labels: {
+          fontSize: 28,
+          fontFamily: 'National',
+        },
+      },
       maintainAspectRatio: true,
       elements: {
         point: {

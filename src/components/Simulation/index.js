@@ -687,7 +687,7 @@ class Simulation extends Component {
         />
         <ArduinoEmulator onChange={this.onData} />
         <h1 className={`ready-prompt ${time <= 0 ? 'show' : ''}`}>
-          READY?
+          POWER THE CITY
         </h1>
         <div className={`simulation-hud ${time <= 0 ? '' : 'show'}`}>
           <MessageCenter message={messageCenter} />
