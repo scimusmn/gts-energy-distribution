@@ -15,7 +15,12 @@ function MessageCenter({ message }) {
   return (
     <Container className="message-center pane window">
       <Row>
-        <h2>Message Center</h2>
+        <h2>
+          <span className="pane-chevron" />
+          <span className="pane-chevron-title">
+            Message Center
+          </span>
+        </h2>
       </Row>
       <Row>
         <FeedbackIcon mood={message.Mood} />
