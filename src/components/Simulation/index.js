@@ -697,9 +697,6 @@ class Simulation extends Component {
             </Row>
             <Row>
               <h2 className="highlight">{NearestTimeInterval(time, Settings.CLOCK_INTERVAL_MINUTES)}</h2>
-              <h3 className="info-bubble">
-                Solar power is not available at night time.
-              </h3>
             </Row>
           </Container>
           <Container className={`current-conditions pane window wind ${wind < 8 ? 'disable' : ''}`}>
@@ -708,13 +705,6 @@ class Simulation extends Component {
             </Row>
             <Row>
               <h2 className="highlight">{`${wind} MPH`}</h2>
-              <h3 className="info-bubble">
-                Power when the wind blows at least
-                {' '}
-                <strong>8mph.</strong>
-                {' '}
-                Utililize this when you can!
-              </h3>
             </Row>
           </Container>
           <Container className="power-levels window pane">

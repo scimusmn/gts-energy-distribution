@@ -353,6 +353,14 @@ h4 {
   transition: border-color 750ms, opacity 750ms;
   width: 20%;
 
+  h2 {
+    color: $gray;
+    font-size: 3.6em;
+    font-style: normal;
+    font-weight: 999;
+    text-align: center;
+  }
+
   .info-bubble {
     background-color: rgba(55, 55, 55, 0.5);
     border-radius: 15px;
@@ -367,6 +375,7 @@ h4 {
     background-repeat: no-repeat;
     background-size: fill;
     height: 200px;
+    margin-top: 30px;
     width: 200px;
   }
 }
