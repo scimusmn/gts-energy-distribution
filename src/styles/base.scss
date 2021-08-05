@@ -249,13 +249,13 @@ h4 {
 
 .ready-prompt {
   color: white;
-  font-size: 6.4em;
+  font-size: 11em;
   height: 100%;
   opacity: 0;
   position: absolute;
   text-align: center;
-  text-shadow: 0 10px 13px -7px $pane-gold, 5px 5px 15px 5px $pane-gold;
-  top: 115px;
+  text-shadow: 3px 3px 40px rgba(0, 0, 0, 0.8);
+  top: 460px;
   width: 100%;
 }
 
@@ -440,10 +440,10 @@ h4 {
   }
 
   .meter-diff {
-    left: 204px;
+    left: 206px;
     position: absolute;
-    top: 64px;
-    width: 23px;
+    top: 71px;
+    width: 33px;
 
     .bar {
       position: absolute;

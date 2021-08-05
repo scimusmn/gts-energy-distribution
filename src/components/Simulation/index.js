@@ -497,9 +497,6 @@ class Simulation extends Component {
 
     this.sessionData.timestamps.push(Date.now());
 
-    console.log('hour live data');
-    console.log(this.liveData);
-
     if (hourIndex >= totalHoursInSession) {
       this.endSimulation();
     } else {
@@ -686,8 +683,8 @@ class Simulation extends Component {
           lights={time < 9000 || time > 81000}
         />
         <ArduinoEmulator onChange={this.onData} />
-        <h1 className={`ready-prompt ${time <= 0 ? 'show' : ''}`}>
-          POWER THE CITY
+        <h1 className={`ready-prompt ${(time <= 0 && demand <= 0) ? 'show' : ''}`}>
+          READY?
         </h1>
         <div className={`simulation-hud ${time <= 0 ? '' : 'show'}`}>
           <MessageCenter message={messageCenter} />
@@ -722,6 +719,7 @@ class Simulation extends Component {
             <br />
             <Row>
               <Col style={{ textAlign: 'center' }}>
+                <br />
                 <GaugeChart
                   id="gauge-efficiency"
                   percent={efficiency}
