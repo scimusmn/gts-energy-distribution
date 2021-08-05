@@ -41,6 +41,10 @@ h3 {
   font-size: 1.7em;
   font-weight: 700;
   letter-spacing: 0.07em;
+
+  strong {
+    color: $black;
+  }
 }
 
 h4 {
@@ -249,7 +253,7 @@ h4 {
 
 .ready-prompt {
   color: white;
-  font-size: 11em;
+  font-size: 9em;
   height: 100%;
   opacity: 0;
   position: absolute;
@@ -267,6 +271,11 @@ h4 {
 .modal {
   align-items: center;
   display: flex !important;
+}
+
+.modal-body {
+  padding-left: 100px;
+  padding-right: 100px;
 }
 
 .modal-backdrop.show {
@@ -762,22 +771,22 @@ h4 {
     }
 
     .cloud:nth-child(7n+1) {
-      animation-delay: -20s;
+      animation-delay: -50s;
       top: 134px;
     }
 
     .cloud:nth-child(7n+2) {
-      animation-delay: -41s;
+      animation-delay: -31s;
       top: 70px;
     }
 
     .cloud:nth-child(7n+3) {
-      animation-delay: -60s;
+      animation-delay: -80s;
       top: 1230px;
     }
 
     .cloud:nth-child(7n+4) {
-      animation-delay: -79s;
+      animation-delay: -119s;
       top: 10px;
     }
 
@@ -787,7 +796,7 @@ h4 {
     }
 
     .cloud:nth-child(7n+6) {
-      animation-delay: -119s;
+      animation-delay: -109s;
       top: 166px;
     }
 

@@ -12,7 +12,7 @@ const ReadyScreen = ({ currentView }) => (
       {{
         ready1: (
           <div>
-            <h1>ENERGY MANAGEMENT</h1>
+            <h1>POWER YOUR CITY!</h1>
             <h2>
               Can you power the city
               <br />
