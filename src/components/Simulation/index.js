@@ -684,9 +684,9 @@ class Simulation extends Component {
         />
         <ArduinoEmulator onChange={this.onData} />
         <h1 className={`ready-prompt ${(time <= 0 && demand <= 0) ? 'show' : ''}`}>
-          POWER YOUR CITY!
+          POWER YOUR CITY
         </h1>
-        <div className={`simulation-hud ${time <= 0 ? '' : 'show'}`}>
+        <div className={`simulation-hud ${(time <= 0 && demand <= 0) ? '' : 'show'}`}>
           <MessageCenter message={messageCenter} />
           <Container className={`current-conditions pane window solar ${solarAvailability > 0 ? '' : 'disable'}`}>
             <Row>

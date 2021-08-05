@@ -133,7 +133,7 @@ h4 {
   .backdrop.night-lights {
     background-image: url(../images/cityscape-night-lights.png);
     opacity: 0;
-    transition: opacity 0.5s;
+    transition: opacity 0.1s;
   }
 
   .backdrop.night-lights.show {

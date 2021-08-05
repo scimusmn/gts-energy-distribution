@@ -87,8 +87,11 @@ const ScoreScreen = ({
             </Row>
             <br />
             <br />
-            <h3>Continue?</h3>
-            <h4>PRESS OK.</h4>
+            <h3>
+              <strong>Press OK</strong>
+              <br />
+              to continue
+            </h3>
             <br />
           </div>),
         score2: (

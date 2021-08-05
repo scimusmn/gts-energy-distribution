@@ -1,17 +1,57 @@
 Mood,Trigger,Body
 happy,AFFIRMATION,Customers are happy. Keep up the good work!
+happy,AFFIRMATION,Customers are satisfied. Great work!
 happy,AFFIRMATION,This city's power has never been managed better. Amazing job!
-happy,AFFIRMATION,"Customers are so happy with your energy managment, they're going throw you a party!"
-neutral,OVER_PRODUCTION,Customers are experiencing power glitches — you're overproducing! Adjust your energy sources.
-neutral,OVER_PRODUCTION,Customers are reporting blown fuses. Fix the issue!
-neutral,OVER_PRODUCTION,A customer called and reported their TV blew up — you're overproducing! Adjust your energy sources.
+happy,AFFIRMATION,Keep up the good work!
+happy,AFFIRMATION,Nice job!
+happy,AFFIRMATION,Things are running smoothly. Keep it up!
+happy,AFFIRMATION,Things are running smoothly. Well done!
+happy,AFFIRMATION,Things are running smoothly!
+happy,AFFIRMATION,Your energy management is seamless!
+happy,AFFIRMATION,Well done!
+happy,AFFIRMATION,No complaints here — keep it up!
+happy,AFFIRMATION,Great power management. Keep it going!
+happy,AFFIRMATION,Fantastic work!
+happy,AFFIRMATION,You're an energy management star!
+happy,AFFIRMATION,Wonderful! Keep up the good work!
+happy,AFFIRMATION,No reported outages — keep the great work going!
+happy,AFFIRMATION,"Customers are so happy with your energy managment, they're going to throw you a party!"
+angry,OVER_PRODUCTION,Overproduction can lead to higher energy prices for your customers.
+angry,OVER_PRODUCTION,WARNING: Overproduction could cause harmful power surges!
+angry,OVER_PRODUCTION,Customers are experiencing power glitches — you're overproducing! Adjust your energy sources.
+angry,OVER_PRODUCTION,Customers are reporting equipment failure. Check your energy sources.
+angry,OVER_PRODUCTION,Customers are reporting blown lightbulbs. Adjust your output!
+angry,OVER_PRODUCTION,Customers are reporting blown fuses. Fix the issue!
+angry,OVER_PRODUCTION,Keep an eye on your energy sources!
+angry,OVER_PRODUCTION,You're overproducing! Manage your energy sources.
+angry,OVER_PRODUCTION,Producing too much power can cause damage tp your power system. Keep an eye on your production.
+angry,OVER_PRODUCTION,Producing too much power can cause damage tp your power system.
+angry,OVER_PRODUCTION,A customer called and reported their TV blew up — you're overproducing! Adjust your energy sources.
 angry,BLACKOUT_WARNING,You're underproducing! Be careful not to cause a blackout!
 angry,BLACKOUT_WARNING,People are starting to lose power left and right — don't cause a blackout!
 angry,BLACKOUT_WARNING,#@!?*!!! Warning: on the verge of causing a blackout!
+angry,BLACKOUT_WARNING,You're at risk of a blackout! Bring more power online!
+angry,BLACKOUT_WARNING,You're underproducing! Manage your energy sources.
+angry,BLACKOUT_WARNING,Customers' AC units are fizzling out — you're underproducing! Adjust your energy sources.
+angry,BLACKOUT_WARNING,Customers are angry! Adjust your power sources.
+angry,BLACKOUT_WARNING,WARNING: A blackout is imminent. Check your power sources!
+angry,BLACKOUT_WARNING,Neighborhoods are reporting power outages! Check your power sources!
+angry,BLACKOUT_WARNING,Your inbox is flooded with angry customer emails! 
+angry,BLACKOUT_WARNING,The local pharmacy's fridge is on the fritz due to power underproduction! Fix the problem!
+angry,BLACKOUT_WARNING,The local butcher called—their power is out and meat is going bad! Fix your power sources!
+angry,BLACKOUT_WARNING,Customers with electric heat sources are reporting outages! Fix the problem!
 angry,BLACKOUT_WARNING,Customers are losing their internet due to power underproduction! Fix it!
 ,,
 ,,
-neutral,FEEDBACK_DIVERSIFY_FOSSILS,"You powered the city, but you used primarily fossil fuels. Do you think diversifying your energy sources would produce a different or better outcome?"
-neutral,FEEDBACK_DIVERSIFY_RENEWABLES,"You powered the city, but you used primarily renewable energy. Do you think diversifying your energy sources would produce a different or better outcome?"
-angry,FEEDBACK_BLACKOUT,Game over! You were unable to power the city due to a blackout. What could you do differently to succesfully power the city? Better luck next time!
+,,
+,,
+neutral,FEEDBACK_DIVERSIFY_FOSSILS,You powered the city using primarily fossil fuels. How might adding renewables change your results?
+neutral,FEEDBACK_DIVERSIFY_FOSSILS,You powered the city using primarily fossil fuels. Do you think diversifying your energy sources would produce a different or better outcome?
+neutral,FEEDBACK_DIVERSIFY_RENEWABLES,You powered the city using primarily renewable energy. How might diversifying your energy sources affect your performance?
+neutral,FEEDBACK_DIVERSIFY_RENEWABLES,You powered the city using primarily renewable energy. Do you think diversifying your energy sources would produce a different or better outcome?
+angry,FEEDBACK_BLACKOUT,Game over! You did not provide enough power and left your customers in the dark. What could you change to succesfully power the city? Better luck next time!
+angry,FEEDBACK_BLACKOUT,Game over! You failed to provide enough power for your customers. Can you think of things you could do differently to power the city?
+angry,FEEDBACK_BLACKOUT,Game over! You were unable to provide enough power and caused a blackout. What could you do differently to succesfully power the city? Better luck next time!
+happy,FEEDBACK_SUCCESS,Congratulations! You successfully powered the city and the citizens are happy. Do you think you can beat your score? 
+happy,FEEDBACK_SUCCESS,Nice work! You provided enough power to keep your customers satisfied. Would you like to try again?
 happy,FEEDBACK_SUCCESS,Congratulations! You successfully powered the city and the citizens are happy. Do you think you can beat your score? 
