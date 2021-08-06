@@ -1,22 +1,21 @@
 /* eslint no-console: 0 */
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Container, Row, Col } from 'reactstrap';
-import GaugeChart from 'react-gauge-chart';
 import withSerialCommunication from '../../Arduino/arduino-base/ReactSerial/SerialHOC';
+import Settings from '../../data/settings';
 import ArduinoEmulator from '../ArduinoEmulator';
 import DayCycle from '../DayCycle';
-import DataManager from '../../data/data-manager';
-import Settings from '../../data/settings';
-import PowerMeter from '../PowerMeter';
-import MeterDiff from '../MeterDiff';
 import MessageCenter from '../MessageCenter';
+import PowerLevels from '../PowerLevels';
+import SolarConditions from '../SolarConditions';
+import WindConditions from '../WindConditions';
+import DataManager from '../../data/data-manager';
 import AttractScreen from '../AttractScreen';
 import ScoreScreen from '../ScoreScreen';
 import ReadyScreen from '../ReadyScreen';
+import ReadyPrompt from '../ReadyPrompt';
 import {
-  AverageArray, Map, Clamp, NearestTimeInterval,
+  AverageArray, Map, Clamp,
 } from '../../utils';
 
 class Simulation extends Component {
@@ -669,7 +668,6 @@ class Simulation extends Component {
         </>
       );
     }
-
     return (
       <div className={`simulation ${!inSession ? 'inactive' : ''}`}>
         <DayCycle
@@ -683,58 +681,12 @@ class Simulation extends Component {
           lights={time < 9000 || time > 81000}
         />
         <ArduinoEmulator onChange={this.onData} />
-        <h1 className={`ready-prompt ${(time <= 0 && demand <= 0) ? 'show' : ''}`}>
-          Ready?
-          <br />
-          POWER YOUR CITY
-        </h1>
+        <ReadyPrompt show={(time <= 0 && demand <= 0)} />
         <div className={`simulation-hud ${(time <= 0 && demand <= 0) ? '' : 'show'}`}>
           <MessageCenter message={messageCenter} />
-          <Container className={`current-conditions pane window solar ${solarAvailability > 0 ? '' : 'disable'}`}>
-            <Row>
-              <div className="condition-icon" />
-            </Row>
-            <Row>
-              <h2 className="highlight">{NearestTimeInterval(time, Settings.CLOCK_INTERVAL_MINUTES)}</h2>
-            </Row>
-          </Container>
-          <Container className={`current-conditions pane window wind ${wind < 8 ? 'disable' : ''}`}>
-            <Row>
-              <div className="condition-icon" />
-            </Row>
-            <Row>
-              <h2 className="highlight">{`${wind} MPH`}</h2>
-            </Row>
-          </Container>
-          <Container className="power-levels window pane">
-            <Row>
-              <MeterDiff
-                level1={production}
-                level2={demand}
-                maxlevel={Settings.MAX_EXPECTED_DEMAND}
-                barheight={590}
-                efficiency={efficiency}
-              />
-              <PowerMeter label="Production" color="#43B94F" level={production} maxlevel={Settings.MAX_EXPECTED_DEMAND} barheight={590} />
-              <PowerMeter label="Demand" color="#FB3D08" level={demand} maxlevel={Settings.MAX_EXPECTED_DEMAND} barheight={590} />
-            </Row>
-            <br />
-            <Row>
-              <Col style={{ textAlign: 'center' }}>
-                <br />
-                <GaugeChart
-                  id="gauge-efficiency"
-                  percent={efficiency}
-                  colors={['#F9000F', '#FFD02A', '#34BF3E']}
-                  animDelay={0}
-                  hideText
-                />
-                <h3>
-                  How are you doing?
-                </h3>
-              </Col>
-            </Row>
-          </Container>
+          <PowerLevels production={production} demand={demand} efficiency={efficiency} />
+          <SolarConditions time={time} solarAvailability={solarAvailability} />
+          <WindConditions wind={wind} />
         </div>
         <div className={`blackout ${blackout ? 'show' : ''}`} />
         {{
