@@ -1,62 +1,17 @@
 /* eslint no-console: 0 */
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
-import { Line, Chart } from 'react-chartjs-2';
-import withAnimationFrame from '../AnimationFrameHOC';
-// import ChartColors from './chart-colors';
+import { Line } from 'react-chartjs-2';
 
 class EnergyChart extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-    };
-
     this.chartRef = React.createRef();
-    this.onAnimationFrame = this.onAnimationFrame.bind(this);
-
-    this.latestData = {};
-
-    const { isLive } = props;
-
-    if (isLive) {
-      Chart.pluginService.register({
-        afterDraw(chart) {
-          // Draw vertical line at most recent production data point.
-          /* eslint no-underscore-dangle: 0 */
-          const metadata = chart.data.datasets[0]._meta['0'];
-          if (metadata) {
-            const { data } = metadata;
-            if (data.length > 0) {
-              const topY = chart.scales['y-axis-0'].top;
-              const bottomY = chart.scales['y-axis-0'].bottom;
-              const lineX = data[data.length - 1]._model.x;
-
-              const { ctx } = chart;
-              ctx.save();
-              ctx.beginPath();
-              ctx.moveTo(lineX, topY);
-              ctx.lineTo(lineX, bottomY);
-              ctx.lineWidth = 2;
-              ctx.strokeStyle = '#e2  fa9';
-              ctx.stroke();
-              ctx.restore();
-            }
-          }
-        },
-      });
-    }
   }
 
   componentDidMount() {
-    const { isLive, setAnimationFrameCallback } = this.props;
-    if (isLive) {
-      // HOC function
-      setAnimationFrameCallback(this.onAnimationFrame);
-    } else {
-      // Only update/render once
-      this.updateChartData();
-    }
+    this.updateChartData();
   }
 
   shouldComponentUpdate() {
@@ -81,7 +36,7 @@ class EnergyChart extends Component {
 
   render() {
     const {
-      chartData, isLive, yAxisMin, yAxisMax,
+      chartData, yAxisMin, yAxisMax,
     } = this.props;
     const { demand, timeLabels } = chartData;
 
@@ -120,7 +75,7 @@ class EnergyChart extends Component {
 
     const options = {
       animation: {
-        duration: (!isLive ? 750 : 0),
+        duration: 750,
       },
       legend: {
         display: true,
@@ -175,17 +130,14 @@ class EnergyChart extends Component {
 
 EnergyChart.defaultProps = {
   chartData: {},
-  isLive: true,
   yAxisMin: 0,
   yAxisMax: 500,
 };
 
 EnergyChart.propTypes = {
   chartData: propTypes.instanceOf(Object),
-  isLive: propTypes.bool,
   yAxisMin: propTypes.number,
   yAxisMax: propTypes.number,
-  setAnimationFrameCallback: propTypes.instanceOf(Function).isRequired,
 };
 
-export default withAnimationFrame(EnergyChart);
+export default EnergyChart;

@@ -70,18 +70,15 @@ class Simulation extends Component {
       if (arduinoIsAwake || !Settings.REQUIRE_ARDUINO_CONNECTION) {
         this.reset();
 
-        // Timed release of outgoing
-        // Arduino messages ensures
-        // the Arduino NeoPixel library
-        // has enough time to execute it's
-        // 'show' method that can corrupt
-        // incoming serial data - tn, 2021
+        // Timed release of outgoing Arduino
+        // messages. This ensures compatability
+        // with Arduino NeoPixel library. -tnordberg, 2021
         this.interruptInterval = setInterval(() => {
           this.releaseQueue();
         }, 60);
         clearInterval(wakeInterval);
       } else {
-        // Wake up the Arduino
+        // Wake up Arduino
         this.queueMessage('wake-arduino', '1');
         this.releaseQueue();
       }
@@ -93,8 +90,6 @@ class Simulation extends Component {
   }
 
   onData(data) {
-    // console.log('onData:', data);
-
     const message = Object.keys(data)[0];
     const value = Object.values(data)[0];
 
@@ -111,6 +106,7 @@ class Simulation extends Component {
       return;
     }
 
+    // We can exit here when board isn't enabled.
     const { boardEnabled } = this.state;
     if (!boardEnabled) return;
 
@@ -134,19 +130,19 @@ class Simulation extends Component {
   }
 
   onJackChange(message, value) {
-    // Any time a jack is unplugged, zero associated light bar
+    // When jack is unplugged, zero-out associated light bar
     if (value === '1') {
       const panelId = message.split('-jack')[0];
       this.queueMessage(`${panelId}-light-bar`, 0);
 
-      // Certain energy types resest when unplugged
+      // Certain energy types reset when unplugged
       if (message.startsWith('gas-')) this.liveData[`${panelId}-level`] = 0;
       if (message.startsWith('coal-')) this.queueMessage(`${panelId}-light`, 'off');
 
       return;
     }
 
-    // Certain energy types must be updated when plugged in
+    // Coal and hydro must be immediately updated when plugged in
     if (value === '0') {
       const panelId = message.split('-jack')[0];
       if (message.startsWith('coal-')) {
@@ -163,7 +159,7 @@ class Simulation extends Component {
   }
 
   onHydroChange(message, value) {
-    // Echo back hydro light bar messages
+    // Immediately echo back hydro light bar messages to Arduino
     if (message.endsWith('-lever')) {
       const panelId = message.split('-lever')[0];
       const isPluggedIn = (this.liveData[`${panelId}-jack`] === '0');
@@ -182,8 +178,8 @@ class Simulation extends Component {
         let currentLevel = this.liveData[levelKey];
         if (!currentLevel) currentLevel = 0.0;
 
-        // Increment if up was pressed,
-        // decrement if down was pressed
+        // Increment when up arrow is pressed,
+        // decrement when down arrow is pressed.
         let adjustment = Settings.GAS_ARROW_POWER;
         if (message.endsWith('-down')) adjustment *= -1;
         let controlLevel = currentLevel + adjustment;
@@ -191,7 +187,7 @@ class Simulation extends Component {
         controlLevel = Clamp(controlLevel, 0, 100);
         this.liveData[levelKey] = controlLevel;
 
-        // Immediately echo back gas light bar message
+        // Immediately echo gas light bar value back to Arduino
         this.queueMessage(`${panelId}-light-bar`, controlLevel);
       }
     }
@@ -264,7 +260,7 @@ class Simulation extends Component {
   }
 
   getCurrentProduction(hourProgress) {
-    // Get ACTIVE panels (by checking jack state)
+    // Get all ACTIVE panels (via jack state)
     const entries = Object.entries(this.liveData);
     const activePanels = {
       coal: [], gas: [], hydro: [], solar: [], wind: [],
@@ -283,7 +279,7 @@ class Simulation extends Component {
       }
     }
 
-    // Gather environmental variables that affect
+    // Gather environmental variables affecting
     // production/energy availability
     const { hourIndex } = this.state;
 

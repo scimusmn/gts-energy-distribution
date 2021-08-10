@@ -107,7 +107,6 @@ const ScoreScreen = ({
             <h2>Demand</h2>
             <EnergyChart
               chartData={chartData}
-              isLive={false}
               yAxisMax={Settings.MAX_EXPECTED_DEMAND}
             />
             <br />
