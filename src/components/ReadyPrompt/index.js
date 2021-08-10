@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const ReadyPrompt = ({ show }) => (
   <h1 className={`ready-prompt ${show ? 'show' : ''}`}>
     <br />
-    Get ready to power your city!
+    Get ready!
   </h1>
 );
 

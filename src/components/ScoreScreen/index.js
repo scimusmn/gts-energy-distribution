@@ -7,22 +7,23 @@ import {
 } from 'reactstrap';
 import { StaticImage } from 'gatsby-plugin-image';
 import PropTypes from 'prop-types';
-import { Doughnut } from 'react-chartjs-2';
 import EnergyChart from '../EnergyChart';
-import ChartColors from '../EnergyChart/chart-colors';
-import { SumArray } from '../../utils';
 import FeedbackIcon from '../MessageCenter/feedback-icon';
 import Settings from '../../data/settings';
+import ContinuePrompt from './continue-prompt';
+import FeedbackCounter from './feedback-counter';
+import ProductionPie from './production-pie';
 
 const ScoreScreen = ({
   currentView, feedbackMessage, efficiencyScore, chartData, customerFeedback,
 }) => (
-  <Modal isOpen size="xl" className={`score-screen pane ${feedbackMessage.includes('blackout') ? 'failed' : ''}`}>
+  <Modal isOpen size="xl" className={`score-screen pane ${ScoreScreen.failMode(feedbackMessage) ? 'failed' : ''}`}>
     <ModalBody>
       {{
+        // First slide
         score1: (
           <div>
-            {feedbackMessage.includes('blackout')
+            {ScoreScreen.failMode(feedbackMessage)
               ? <h1>GAME OVER!</h1>
               : <h1>Congratulations!</h1>}
             <h2>{feedbackMessage}</h2>
@@ -34,31 +35,13 @@ const ScoreScreen = ({
                 <br />
                 <Row className="customer-approval">
                   <Col>
-                    <h2>
-                      <FeedbackIcon mood="angry" />
-                      {' '}
-                      X
-                      {' '}
-                      {customerFeedback.filter((obj) => obj.Mood === 'angry').length}
-                    </h2>
+                    <FeedbackCounter mood="angry" customerFeedback={customerFeedback} />
                   </Col>
                   <Col>
-                    <h2>
-                      <div><FeedbackIcon mood="neutral" /></div>
-                      {' '}
-                      X
-                      {' '}
-                      {customerFeedback.filter((obj) => obj.Mood === 'neutral').length}
-                    </h2>
+                    <FeedbackCounter mood="neutral" customerFeedback={customerFeedback} />
                   </Col>
                   <Col>
-                    <h2>
-                      <div><FeedbackIcon mood="happy" /></div>
-                      {' '}
-                      X
-                      {' '}
-                      {customerFeedback.filter((obj) => obj.Mood === 'happy').length}
-                    </h2>
+                    <FeedbackCounter mood="happy" customerFeedback={customerFeedback} />
                   </Col>
                 </Row>
               </Col>
@@ -87,21 +70,15 @@ const ScoreScreen = ({
             </Row>
             <br />
             <br />
-            <h3>
-              <strong>Press OK</strong>
-              <br />
-              to continue
-            </h3>
+            <ContinuePrompt />
             <br />
           </div>),
+        // Second slide
         score2: (
           <div>
             <br />
             <h2>Production Breakdown</h2>
-            <Doughnut
-              data={ScoreScreen.collatePieData(chartData)}
-              options={ScoreScreen.PieOptions}
-            />
+            <ProductionPie data={chartData} />
             <br />
             <br />
             <h2>Demand</h2>
@@ -111,13 +88,10 @@ const ScoreScreen = ({
             />
             <br />
             <br />
-            <h3>
-              <strong>Press OK</strong>
-              <br />
-              to continue
-            </h3>
+            <ContinuePrompt />
             <br />
           </div>),
+        // Third slide
         score3: (
           <div>
             <br />
@@ -128,11 +102,7 @@ const ScoreScreen = ({
             </h2>
             <br />
             <br />
-            <h3>
-              <strong>Press OK</strong>
-              <br />
-              to start over
-            </h3>
+            <ContinuePrompt />
             <br />
           </div>),
       }[currentView]}
@@ -140,51 +110,12 @@ const ScoreScreen = ({
   </Modal>
 );
 
-ScoreScreen.PieOptions = {
-  legend: {
-    display: true,
-    position: 'right',
-    labels: {
-      fontSize: 28,
-      fontFamily: 'National',
-    },
-  },
-  elements: {
-    arc: {
-      borderWidth: 0,
-    },
-  },
-};
-
-ScoreScreen.collatePieData = (energyData) => {
-  const labels = ['Coal', 'Natural gas', 'Hydro', 'Solar', 'Wind'];
-
-  const {
-    coal, gas, hydro, solar, wind,
-  } = energyData;
-
-  const energySums = [
-    SumArray(coal),
-    SumArray(gas),
-    SumArray(hydro),
-    SumArray(solar),
-    SumArray(wind),
-  ];
-
-  const pieData = {
-    maintainAspectRatio: false,
-    responsive: false,
-    labels,
-    datasets: [
-      {
-        data: energySums,
-        backgroundColor: ChartColors,
-        hoverBackgroundColor: ChartColors,
-      },
-    ],
-  };
-
-  return pieData;
+ScoreScreen.failMode = (feedbackMessage) => {
+  if (feedbackMessage.includes('blackout')
+    || feedbackMessage.includes('Game over')) {
+    return true;
+  }
+  return false;
 };
 
 ScoreScreen.defaultProps = {
