@@ -7,11 +7,9 @@ const AttractScreen = () => (
         <div className="icon" />
         <br />
         <h3>
-          Press the
-          {' '}
-          <strong>OK</strong>
-          {' '}
-          button to&nbsp;begin.
+          <strong>Press OK</strong>
+          <br />
+          to begin
         </h3>
       </div>
     </div>
