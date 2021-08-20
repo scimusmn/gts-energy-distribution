@@ -242,7 +242,7 @@ class Simulation extends Component {
 
     if (currentView === 'ready') {
       const { currentSlide } = this.state;
-      if (currentSlide >= 4) {
+      if (currentSlide >= 5) {
         this.queueMessage('start-button-light', '0');
         this.setState({ currentView: '' });
         this.startSimulation();
@@ -251,7 +251,7 @@ class Simulation extends Component {
       }
     } else if (currentView === 'score') {
       const { currentSlide } = this.state;
-      if (currentSlide >= 3) {
+      if (currentSlide >= 4) {
         this.reset();
       } else {
         this.setState({ currentSlide: currentSlide + 1 });

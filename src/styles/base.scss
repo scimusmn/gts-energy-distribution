@@ -283,7 +283,7 @@ h4 {
 }
 
 .modal-backdrop::before {
-  background-image: url(../images/cityscape.png);
+  background-image: url(../images/cityscape2.png);
   background-size: contain;
   bottom: 0;
   content: "";
@@ -820,4 +820,26 @@ h4 {
 
 .day-cycle.paused .sun {
   animation-play-state: paused;
+}
+
+.title {
+  padding: 100px 0 20px 0;
+}
+
+.icon-box {
+  h3 {
+    color: black;
+    margin: 25px 0;
+  }
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.caret {
+  color: $pane-gold;
+  font-size: 80px;
+  padding: 0 5px;
+  position: relative;
+  top: 8px;
 }
