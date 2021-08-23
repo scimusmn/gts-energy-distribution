@@ -12,6 +12,9 @@ const SolarConditions = ({ time, solarAvailability }) => (
     <Row>
       <h2 className="highlight">{NearestTimeInterval(time, Settings.CLOCK_INTERVAL_MINUTES)}</h2>
     </Row>
+    <Row>
+      <h3 className="highlight">Solar</h3>
+    </Row>
   </Container>
 );
 

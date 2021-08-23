@@ -25,10 +25,12 @@ function MessageCenter({ message }) {
       <Row>
         <FeedbackIcon mood={message.Mood} />
       </Row>
-      <Row className={`message-container ${messageClass}`}>
-        <h3 className="message-body">
-          {message.Body}
-        </h3>
+      <Row>
+        <div className={`message-container ${messageClass}`}>
+          <h3>
+            {message.Body}
+          </h3>
+        </div>
       </Row>
     </Container>
   );

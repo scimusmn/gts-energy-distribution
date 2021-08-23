@@ -351,6 +351,7 @@ h4 {
 
   h3 {
     margin: 36px;
+    text-align: center;
   }
 }
 
@@ -383,7 +384,7 @@ h4 {
     background-repeat: no-repeat;
     background-size: fill;
     height: 200px;
-    margin-top: 30px;
+    margin-top: 15px;
     width: 200px;
   }
 }
@@ -425,7 +426,7 @@ h4 {
 
 .current-conditions.disable.solar {
   .condition-icon {
-    background-image: url(../images/moon-icon-sized.png);
+    background-image: url(../images/moon-icon2.png);
   }
 }
 

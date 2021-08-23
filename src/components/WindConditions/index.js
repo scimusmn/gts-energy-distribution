@@ -10,6 +10,9 @@ const WindConditions = ({ wind }) => (
     <Row>
       <h2 className="highlight">{`${wind} MPH`}</h2>
     </Row>
+    <Row>
+      <h3 className="highlight">Wind</h3>
+    </Row>
   </Container>
 );
 
