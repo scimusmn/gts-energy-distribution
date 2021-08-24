@@ -6,15 +6,15 @@ import FeedbackIcon from '../MessageCenter/feedback-icon';
 const FeedbackCounter = ({
   customerFeedback, mood,
 }) => (
-  <h2>
+  <div>
     <FeedbackIcon mood={mood} />
-    {' '}
-    X
-    {' '}
-    {/* Count messages matching moood triggered during simulation */}
-    {customerFeedback.filter((obj) => obj.Mood === mood).length}
-  </h2>
-
+    <h2 style={{ fontSize: '30px', top: '15px', position: 'relative' }}>
+      x
+      {' '}
+      {/* Count messages matching moood triggered during simulation */}
+      {customerFeedback.filter((obj) => obj.Mood === mood).length }
+    </h2>
+  </div>
 );
 
 FeedbackCounter.defaultProps = {

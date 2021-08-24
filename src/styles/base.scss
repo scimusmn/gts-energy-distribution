@@ -594,21 +594,27 @@ h4 {
 }
 
 .customer-approval {
-  background-color: white;
-  border: none;
-  height: 300px;
-  width: 85%;
+  border: 3px solid gray;
+  border-radius: 20px;
+  height: 250px;
+  margin-right: 15px !important;
+  // width: 50px;
 
   .feedback-icon {
     font-size: 2.5em;
     height: 70px;
-    left: -35px;
+    left: -85px;
     position: absolute;
     width: 70px;
   }
 }
 
 .how-you-did {
+  border: 3px solid gray;
+  border-radius: 20px;
+  height: 250px;
+  margin-left: 15px !important;
+
   .feedback-icon {
     height: 140px;
     left: 170px;
@@ -618,6 +624,10 @@ h4 {
 }
 
 .score-screen {
+  h1 {
+    font-style: normal;
+  }
+
   .billboard-score {
     font-size: 7em;
   }
@@ -843,4 +853,12 @@ h4 {
   padding: 0 5px;
   position: relative;
   top: 8px;
+}
+
+.caret-sm {
+  color: $pane-gold;
+  font-size: 60px;
+  padding: 0 5px;
+  position: relative;
+  top: 5px;
 }

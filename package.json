@@ -7,6 +7,7 @@
   "dependencies": {
     "bootstrap": "^4.4.1",
     "chart.js": "^2.9.4",
+    "csvtojson": "^2.0.10",
     "dotenv": "^8.2.0",
     "gatsby": "^2.25.3",
     "gatsby-image": "^2.2.39",

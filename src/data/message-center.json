@@ -56,10 +56,10 @@
 {"Mood":"neutral","Trigger":"FEEDBACK_DIVERSIFY_FOSSILS","Body":"You powered the city using primarily fossil fuels. Do you think diversifying your energy sources would produce a different or better outcome?"},
 {"Mood":"neutral","Trigger":"FEEDBACK_DIVERSIFY_RENEWABLES","Body":"You powered the city using primarily renewable energy. How might diversifying your energy sources affect your performance?"},
 {"Mood":"neutral","Trigger":"FEEDBACK_DIVERSIFY_RENEWABLES","Body":"You powered the city using primarily renewable energy. Do you think diversifying your energy sources would produce a different or better outcome?"},
-{"Mood":"angry","Trigger":"FEEDBACK_BLACKOUT","Body":"Game over! You did not provide enough power and left your customers in the dark. What could you change to succesfully power the city? Better luck next time!"},
-{"Mood":"angry","Trigger":"FEEDBACK_BLACKOUT","Body":"Game over! You failed to provide enough power for your customers. Can you think of things you could do differently to power the city?"},
-{"Mood":"angry","Trigger":"FEEDBACK_BLACKOUT","Body":"Game over! You were unable to provide enough power and caused a blackout. What could you do differently to succesfully power the city? Better luck next time!"},
-{"Mood":"happy","Trigger":"FEEDBACK_SUCCESS","Body":"Congratulations! You successfully powered the city and the citizens are happy. Do you think you can beat your score?"},
+{"Mood":"angry","Trigger":"FEEDBACK_BLACKOUT","Body":"You did not provide enough power and left your customers in the dark. What could you change to succesfully power the city? Better luck next time!"},
+{"Mood":"angry","Trigger":"FEEDBACK_BLACKOUT","Body":"You failed to provide enough power for your customers. Can you think of things you could do differently to power the city?"},
+{"Mood":"angry","Trigger":"FEEDBACK_BLACKOUT","Body":"You were unable to provide enough power and caused a blackout. What could you do differently to succesfully power the city? Better luck next time!"},
+{"Mood":"happy","Trigger":"FEEDBACK_SUCCESS","Body":"You successfully powered the city and the citizens are happy. Do you think you can beat your score?"},
 {"Mood":"happy","Trigger":"FEEDBACK_SUCCESS","Body":"Nice work! You provided enough power to keep your customers satisfied. Would you like to try again?"},
-{"Mood":"happy","Trigger":"FEEDBACK_SUCCESS","Body":"Congratulations! You successfully powered the city and the citizens are happy. Do you think you can beat your score?"}
+{"Mood":"happy","Trigger":"FEEDBACK_SUCCESS","Body":"You successfully powered the city and the citizens are happy. Do you think you can beat your score?"}
 ]

@@ -6,6 +6,7 @@ const Settings = {
 
   // Total session duration in milliseconds
   SESSION_DURATION: 115 * 1000, // 115 * 1000,
+  // SESSION_DURATION: 10 * 1000 * 60, // 115 * 1000,
 
   // Days contained within a session
   // (3 days max with current data)

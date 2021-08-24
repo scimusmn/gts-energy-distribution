@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint no-param-reassign: 0 */
-
 import React from 'react';
 import {
   Modal, ModalBody, Col, Row,
@@ -18,54 +17,58 @@ const ScoreScreen = ({
   currentView, feedbackMessage, efficiencyScore, chartData, customerFeedback,
 }) => (
   <Modal isOpen size="xl" className={`score-screen pane ${ScoreScreen.failMode(feedbackMessage) ? 'failed' : ''}`}>
-    <ModalBody>
+    <ModalBody style={{ padding: 50 }}>
       {{
         // First slide
         score1: (
           <div>
             {ScoreScreen.failMode(feedbackMessage)
-              ? <h1>GAME OVER!</h1>
+              ? <h1 style={{ color: '#fc3a43' }}>GAME OVER!</h1>
               : <h1>Congratulations!</h1>}
             <h2>{feedbackMessage}</h2>
             <br />
             <br />
             <Row>
-              <Col>
-                <h2>Customer Approval</h2>
-                <br />
-                <Row className="customer-approval">
-                  <Col>
+              <Col className="customer-approval">
+                <h3>
+                  <span className="caret-sm" style={ScoreScreen.failMode(feedbackMessage) ? { color: '#fc3a43' } : { color: '#fcc523' }}>&gt;&gt;</span>
+                  Customer Approval
+                  <span className="caret-sm" style={ScoreScreen.failMode(feedbackMessage) ? { color: '#fc3a43' } : { color: '#fcc523' }}>&lt;&lt;</span>
+                </h3>
+                <div style={{ display: 'flex', marginTop: '30px' }}>
+                  <div style={{ position: 'relative', left: '35px' }}>
                     <FeedbackCounter mood="angry" customerFeedback={customerFeedback} />
-                  </Col>
-                  <Col>
+                  </div>
+                  <div style={{ position: 'relative', left: '35px' }}>
                     <FeedbackCounter mood="neutral" customerFeedback={customerFeedback} />
-                  </Col>
-                  <Col>
+                  </div>
+                  <div style={{ position: 'relative', left: '35px' }}>
                     <FeedbackCounter mood="happy" customerFeedback={customerFeedback} />
-                  </Col>
-                </Row>
+                  </div>
+                </div>
               </Col>
               <Col className="how-you-did">
-                <h2>How you did</h2>
-                <br />
-                <Row>
-                  <Col>
-                    <FeedbackIcon mood={customerFeedback.reduce((totals, feedback, index) => {
-                      totals[feedback.Mood] = (totals[feedback.Mood] || 0) + 1;
-                      if (index === customerFeedback.length - 1) {
-                        // Return mood label of highest count
-                        return Object.keys(totals)
-                          .reduce((a, b) => (totals[a] > totals[b] ? a : b));
-                      }
-                      return totals;
-                    }, {})}
-                    />
-                    <h4 style={{ display: 'none' }}>
-                      {Math.ceil(efficiencyScore * 100)}
-                      %
-                    </h4>
-                  </Col>
-                </Row>
+                <h3>
+                  <span className="caret-sm" style={ScoreScreen.failMode(feedbackMessage) ? { color: '#fc3a43' } : { color: '#fcc523' }}>&gt;&gt;</span>
+                  How you did
+                  <span className="caret-sm" style={ScoreScreen.failMode(feedbackMessage) ? { color: '#fc3a43' } : { color: '#fcc523' }}>&lt;&lt;</span>
+                </h3>
+                <div>
+                  <FeedbackIcon mood={customerFeedback.reduce((totals, feedback, index) => {
+                    totals[feedback.Mood] = (totals[feedback.Mood] || 0) + 1;
+                    if (index === customerFeedback.length - 1) {
+                      // Return mood label of highest count
+                      return Object.keys(totals)
+                        .reduce((a, b) => (totals[a] > totals[b] ? a : b));
+                    }
+                    return totals;
+                  }, {})}
+                  />
+                  <h4 style={{ display: 'none' }}>
+                    {Math.ceil(efficiencyScore * 100)}
+                    %
+                  </h4>
+                </div>
               </Col>
             </Row>
             <br />
@@ -76,20 +79,12 @@ const ScoreScreen = ({
         // Second slide
         score2: (
           <div>
-            <br />
-            <h2>Production Breakdown</h2>
             <ProductionPie data={chartData} />
-            <br />
-            <br />
-            <h2>Demand</h2>
             <EnergyChart
               chartData={chartData}
               yAxisMax={Settings.MAX_EXPECTED_DEMAND}
             />
-            <br />
-            <br />
             <ContinuePrompt />
-            <br />
           </div>),
         // Third slide
         score3: (
@@ -112,7 +107,8 @@ const ScoreScreen = ({
 
 ScoreScreen.failMode = (feedbackMessage) => {
   if (feedbackMessage.includes('blackout')
-    || feedbackMessage.includes('Game over')) {
+    || feedbackMessage.includes('failed')
+    || feedbackMessage.includes('did not provide')) {
     return true;
   }
   return false;

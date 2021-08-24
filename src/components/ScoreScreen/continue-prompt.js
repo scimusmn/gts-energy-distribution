@@ -5,7 +5,7 @@ const ContinuePrompt = () => (
   <h3>
     <strong>Press OK</strong>
     <br />
-    to start over
+    to continue
   </h3>
 );
 
