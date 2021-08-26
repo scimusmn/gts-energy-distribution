@@ -27,7 +27,7 @@ function MessageCenter({ message }) {
       </Row>
       <Row>
         <div className={`message-container ${messageClass}`}>
-          <h3>
+          <h3 style={{ padding: '0 25px' }}>
             {message.Body}
           </h3>
         </div>

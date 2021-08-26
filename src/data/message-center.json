@@ -17,7 +17,7 @@
 {"Mood":"happy","Trigger":"AFFIRMATION","Body":"Wonderful! Keep up the good work!"},
 {"Mood":"happy","Trigger":"AFFIRMATION","Body":"No reported outages — keep the great work going!"}
 ,
-{"Mood":"happy","Trigger":"AFFIRMATION","Body":"Customers are so happy with your energy managment, they're going to throw you a party!"},
+{"Mood":"happy","Trigger":"AFFIRMATION","Body":"Customers are so happy with your energy managment, they're going to throw you\u00A0a\u00A0party!"},
 {"Mood":"angry","Trigger":"OVER_PRODUCTION","Body":"Overproduction can lead to higher energy prices for your customers."},
 {"Mood":"angry","Trigger":"OVER_PRODUCTION","Body":"WARNING: Overproduction could cause harmful power surges!"},
 {"Mood":"angry","Trigger":"OVER_PRODUCTION","Body":"Customers are experiencing power glitches — you're overproducing! Adjust your energy sources."}
@@ -26,7 +26,7 @@
 {"Mood":"angry","Trigger":"OVER_PRODUCTION","Body":"Customers are reporting blown lightbulbs. Adjust your output!"},
 {"Mood":"angry","Trigger":"OVER_PRODUCTION","Body":"Customers are reporting blown fuses. Fix the issue!"},
 {"Mood":"angry","Trigger":"OVER_PRODUCTION","Body":"Keep an eye on your energy sources!"},
-{"Mood":"angry","Trigger":"OVER_PRODUCTION","Body":"You're overproducing! Manage your energy sources."},
+{"Mood":"angry","Trigger":"OVER_PRODUCTION","Body":"You're overproducing! Manage your energy\u00A0sources."},
 {"Mood":"angry","Trigger":"OVER_PRODUCTION","Body":"Producing too much power can cause damage tp your power system. Keep an eye on your production."},
 {"Mood":"angry","Trigger":"OVER_PRODUCTION","Body":"Producing too much power can cause damage tp your power system."},
 {"Mood":"angry","Trigger":"OVER_PRODUCTION","Body":"A customer called and reported their TV blew up — you're overproducing! Adjust your energy sources."}
@@ -34,17 +34,17 @@
 {"Mood":"angry","Trigger":"BLACKOUT_WARNING","Body":"You're underproducing! Be careful not to cause a blackout!"},
 {"Mood":"angry","Trigger":"BLACKOUT_WARNING","Body":"People are starting to lose power left and right — don't cause a blackout!"}
 ,
-{"Mood":"angry","Trigger":"BLACKOUT_WARNING","Body":"#@!?*!!! Warning: on the verge of causing a blackout!"},
+{"Mood":"angry","Trigger":"BLACKOUT_WARNING","Body":"#@!?*!!! Warning: on the verge of causing a\u00A0blackout!"},
 {"Mood":"angry","Trigger":"BLACKOUT_WARNING","Body":"You're at risk of a blackout! Bring more power online!"},
 {"Mood":"angry","Trigger":"BLACKOUT_WARNING","Body":"You're underproducing! Manage your energy sources."},
-{"Mood":"angry","Trigger":"BLACKOUT_WARNING","Body":"Customers' AC units are fizzling out — you're underproducing! Adjust your energy sources."}
+{"Mood":"angry","Trigger":"BLACKOUT_WARNING","Body":"Customers' AC units are fizzling out — you're underproducing! Adjust your energy\u00A0sources."}
 ,
-{"Mood":"angry","Trigger":"BLACKOUT_WARNING","Body":"Customers are angry! Adjust your power sources."},
-{"Mood":"angry","Trigger":"BLACKOUT_WARNING","Body":"WARNING: A blackout is imminent. Check your power sources!"},
+{"Mood":"angry","Trigger":"BLACKOUT_WARNING","Body":"Customers are angry! Adjust your power\u00A0sources."},
+{"Mood":"angry","Trigger":"BLACKOUT_WARNING","Body":"WARNING: A blackout is imminent. Check your power\u00A0sources!"},
 {"Mood":"angry","Trigger":"BLACKOUT_WARNING","Body":"Neighborhoods are reporting power outages! Check your power sources!"},
-{"Mood":"angry","Trigger":"BLACKOUT_WARNING","Body":"Your inbox is flooded with angry customer emails!"},
-{"Mood":"angry","Trigger":"BLACKOUT_WARNING","Body":"The local pharmacy's fridge is on the fritz due to power underproduction! Fix the problem!"},
-{"Mood":"angry","Trigger":"BLACKOUT_WARNING","Body":"The local butcher called—their power is out and meat is going bad! Fix your power sources!"}
+{"Mood":"angry","Trigger":"BLACKOUT_WARNING","Body":"Your inbox is flooded with angry customer\u00A0emails!"},
+{"Mood":"angry","Trigger":"BLACKOUT_WARNING","Body":"The local pharmacy's fridge is on the fritz due to power underproduction! Fix the\u00A0problem!"},
+{"Mood":"angry","Trigger":"BLACKOUT_WARNING","Body":"The local butcher called—their power is out and meat is going bad! Fix your power\u00A0sources!"}
 ,
 {"Mood":"angry","Trigger":"BLACKOUT_WARNING","Body":"Customers with electric heat sources are reporting outages! Fix the problem!"},
 {"Mood":"angry","Trigger":"BLACKOUT_WARNING","Body":"Customers are losing their internet due to power underproduction! Fix it!"},
@@ -53,7 +53,7 @@
 {"Mood":"","Trigger":"","Body":""},
 {"Mood":"","Trigger":"","Body":""},
 {"Mood":"neutral","Trigger":"FEEDBACK_DIVERSIFY_FOSSILS","Body":"You powered the city using primarily fossil fuels. How might adding renewables change your results?"},
-{"Mood":"neutral","Trigger":"FEEDBACK_DIVERSIFY_FOSSILS","Body":"You powered the city using primarily fossil fuels. Do you think diversifying your energy sources would produce a different or better outcome?"},
+{"Mood":"neutral","Trigger":"FEEDBACK_DIVERSIFY_FOSSILS","Body":"You powered the city using primarily fossil fuels. Do you think diversifying your energy sources would produce a different or better\u00A0outcome?"},
 {"Mood":"neutral","Trigger":"FEEDBACK_DIVERSIFY_RENEWABLES","Body":"You powered the city using primarily renewable energy. How might diversifying your energy sources affect your performance?"},
 {"Mood":"neutral","Trigger":"FEEDBACK_DIVERSIFY_RENEWABLES","Body":"You powered the city using primarily renewable energy. Do you think diversifying your energy sources would produce a different or better outcome?"},
 {"Mood":"angry","Trigger":"FEEDBACK_BLACKOUT","Body":"You did not provide enough power and left your customers in the dark. What could you change to succesfully power the city? Better luck next time!"},

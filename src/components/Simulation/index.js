@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import withSerialCommunication from '../../Arduino/arduino-base/ReactSerial/SerialHOC';
 import Settings from '../../data/settings';
-import DummyChartData from '../../data/dummy-chart-data';
 import ArduinoEmulator from '../ArduinoEmulator';
 import DayCycle from '../DayCycle';
 import MessageCenter from '../MessageCenter';
@@ -252,7 +251,7 @@ class Simulation extends Component {
       }
     } else if (currentView === 'score') {
       const { currentSlide } = this.state;
-      if (currentSlide >= 4) {
+      if (currentSlide >= 3) {
         this.reset();
       } else {
         this.setState({ currentSlide: currentSlide + 1 });
@@ -693,8 +692,7 @@ class Simulation extends Component {
             currentView={`${currentView}${currentSlide}`}
             feedbackMessage={finalFeedback}
             efficiencyScore={finalScore}
-            // chartData={energyData}
-            chartData={DummyChartData.SUCCESS}
+            chartData={energyData}
             customerFeedback={this.sessionData.feedback}
           />,
         }[currentView]}

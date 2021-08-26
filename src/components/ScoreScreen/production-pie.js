@@ -1,27 +1,24 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+// import { StaticImage } from 'gatsby-plugin-image';
 import { Doughnut } from 'react-chartjs-2';
 import ChartColors from '../EnergyChart/chart-colors';
 import { SumArray } from '../../utils';
 
 const ProductionPie = ({ data }) => (
-  <>
+  <div className="doughnut">
     <Doughnut
       data={ProductionPie.collatePieData(data)}
       options={ProductionPie.PieOptions}
     />
-  </>
+  </div>
 );
 
 ProductionPie.PieOptions = {
   legend: {
-    display: true,
+    display: false,
     position: 'right',
-    labels: {
-      fontSize: 28,
-      fontFamily: 'National',
-    },
   },
   elements: {
     arc: {
@@ -31,8 +28,6 @@ ProductionPie.PieOptions = {
 };
 
 ProductionPie.collatePieData = (data) => {
-  const labels = ['Coal', 'Natural gas', 'Hydro', 'Solar', 'Wind'];
-
   const {
     coal, gas, hydro, solar, wind,
   } = data;
@@ -48,7 +43,6 @@ ProductionPie.collatePieData = (data) => {
   const pieData = {
     maintainAspectRatio: false,
     responsive: false,
-    labels,
     datasets: [
       {
         data: energySums,

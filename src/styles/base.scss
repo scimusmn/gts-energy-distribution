@@ -594,11 +594,11 @@ h4 {
 }
 
 .customer-approval {
-  border: 3px solid gray;
+  border: 2px solid gray;
   border-radius: 20px;
   height: 250px;
   margin-right: 15px !important;
-  // width: 50px;
+  width: 500px !important;
 
   .feedback-icon {
     font-size: 2.5em;
@@ -610,14 +610,15 @@ h4 {
 }
 
 .how-you-did {
-  border: 3px solid gray;
+  border: 2px solid gray;
   border-radius: 20px;
   height: 250px;
   margin-left: 15px !important;
+  width: 500px !important;
 
   .feedback-icon {
     height: 140px;
-    left: 170px;
+    left: 140px;
     position: absolute;
     width: 140px;
   }
@@ -861,4 +862,45 @@ h4 {
   padding: 0 5px;
   position: relative;
   top: 5px;
+}
+
+.doughnut {
+  left: -60px;
+  position: absolute;
+  top: 90px;
+  width: 325px;
+}
+
+.prod-container {
+  border: 2px solid gray;
+  border-radius: 20px;
+  display: flex;
+  padding: 40px;
+}
+
+.hide-legend {
+  background-color: white;
+  bottom: 250px;
+  height: 100px;
+  left: 20px;
+  position: absolute;
+  width: 250px;
+  z-index: 500;
+}
+
+.icon-inner {
+  display: flex;
+  margin-left: 20px;
+
+  h3 {
+    margin-left: 20px;
+  }
+}
+
+.caret-sm-2 {
+  font-size: 60px;
+  left: 130px;
+  padding: 0 5px;
+  position: absolute;
+  top: -23px;
 }
