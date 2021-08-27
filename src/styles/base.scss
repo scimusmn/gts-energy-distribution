@@ -891,7 +891,7 @@ h4 {
   padding: 40px;
 
   .prod-label {
-    left: -150px;
+    left: -220px;
     position: relative;
     top: -20px;
   }
@@ -908,7 +908,7 @@ h4 {
   height: 100px;
   left: 20px;
   position: absolute;
-  width: 250px;
+  width: 320px;
   z-index: 500;
 
   .demand-key {
@@ -929,6 +929,12 @@ h4 {
     left: 20px;
     position: relative;
   }
+}
+
+.demand-label {
+  left: -320px;
+  position: relative;
+  top: 20px;
 }
 
 .caret-sm-2 {
@@ -952,4 +958,8 @@ h4 {
       top: 15px;
     }
   }
+}
+
+.modal-xl {
+  width: 1400px;
 }

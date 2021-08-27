@@ -8,7 +8,11 @@ import DummyChartData from '../data/dummy-chart-data';
 /* eslint-disable */
 const IndexPage = () => (
   <>
-    <Simulation />
+  <ScoreScreen
+    currentView="score3"
+    chartData={DummyChartData.SUCCESS}
+    feedbackMessage="success message here"
+  />
   </>
 );
 
