@@ -6,9 +6,9 @@ import FeedbackIcon from '../MessageCenter/feedback-icon';
 const FeedbackCounter = ({
   customerFeedback, mood,
 }) => (
-  <div>
+  <div className="feedback-counter-container">
     <FeedbackIcon mood={mood} />
-    <h2 style={{ fontSize: '30px', top: '15px', position: 'relative' }}>
+    <h2>
       x
       {' '}
       {/* Count messages matching moood triggered during simulation */}
