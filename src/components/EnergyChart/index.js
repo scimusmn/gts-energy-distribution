@@ -115,7 +115,6 @@ class EnergyChart extends Component {
       },
     };
 
-
     return (
       <div className="energy-chart">
         <Line

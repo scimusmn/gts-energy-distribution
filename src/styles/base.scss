@@ -103,6 +103,8 @@ h4 {
 .simulation {
   height: 1080px;
   width: 1920px;
+  overflow: hidden;
+  position: relative;
 }
 
 .background-city {

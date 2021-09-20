@@ -1,7 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-
 function Sky({ duration, animOffset, paused }) {
   const svgRef = useRef();
 

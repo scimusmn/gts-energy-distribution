@@ -9,6 +9,9 @@ module.exports = {
     description: 'Science Museum of Minnesota exhibit template',
     title: 'app-template',
   },
+  flags: {
+	DEV_SSR: false,
+  },
   plugins: [
     'gatsby-plugin-sharp',
     'gatsby-transformer-sharp',
@@ -40,6 +43,7 @@ module.exports = {
         background_color: '#ffffff',
         theme_color: '#000000',
         display: 'minimal-ui',
+		icon: `${__dirname}/src/images/angry.png`,
       },
     },
   ],
