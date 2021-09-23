@@ -40,7 +40,7 @@ const ScoreScreen = ({
                   </h3>
                   <div className="feedback-counter-outer">
                     <FeedbackCounter mood="angry" customerFeedback={customerFeedback} />
-                    <FeedbackCounter mood="neutral" customerFeedback={customerFeedback} />
+                    {/* <FeedbackCounter mood="neutral" customerFeedback={customerFeedback} /> */}
                     <FeedbackCounter mood="happy" customerFeedback={customerFeedback} />
                   </div>
                 </Col>
