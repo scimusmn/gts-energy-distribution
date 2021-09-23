@@ -7,7 +7,7 @@ import {
 import { StaticImage } from 'gatsby-plugin-image';
 import PropTypes from 'prop-types';
 import EnergyChart from '../EnergyChart';
-import FeedbackIcon from '../MessageCenter/feedback-icon';
+// import FeedbackIcon from '../MessageCenter/feedback-icon';
 import Settings from '../../data/settings';
 import ContinuePrompt from './continue-prompt';
 import FeedbackCounter from './feedback-counter';
@@ -16,6 +16,16 @@ import ProductionPie from './production-pie';
 const ScoreScreen = ({
   currentView, feedbackMessage, efficiencyScore, chartData, customerFeedback,
 }) => {
+  let happy = 0;
+  let angry = 0;
+  const angryMultiplier = 60;
+  const happyMultiplier = 100;
+  for (let i = 0; i < customerFeedback.length; i += 1) {
+    if (customerFeedback[i].Mood === 'angry') angry += 1;
+    if (customerFeedback[i].Mood === 'happy') happy += 1;
+  }
+  const score = Math.round(((angryMultiplier * angry) + (happyMultiplier * happy))
+  / customerFeedback.length);
   let size = 'xl';
   if (currentView === 'score3') size = 'lg';
   return (
@@ -51,7 +61,12 @@ const ScoreScreen = ({
                     <span className="caret-sm" style={ScoreScreen.failMode(feedbackMessage) ? { color: '#fc3a43' } : { color: '#fcc523' }}>&lt;&lt;</span>
                   </h3>
                   <div>
-                    <FeedbackIcon mood={customerFeedback.reduce((totals, feedback, index) => {
+                    <h2 style={{ fontWeight: 900, marginTop: '20px' }}>
+                      {score}
+                      {' '}
+                      points!
+                    </h2>
+                    {/* <FeedbackIcon mood={customerFeedback.reduce((totals, feedback, index) => {
                       totals[feedback.Mood] = (totals[feedback.Mood] || 0) + 1;
                       if (index === customerFeedback.length - 1) {
                         // Return mood label of highest count
@@ -60,7 +75,7 @@ const ScoreScreen = ({
                       }
                       return totals;
                     }, {})}
-                    />
+                    /> */}
                     <h4 style={{ display: 'none' }}>
                       {Math.ceil(efficiencyScore * 100)}
                       %
@@ -155,7 +170,7 @@ const ScoreScreen = ({
               <StaticImage src="../../images/powerplant.png" alt="" />
               <br />
               <h2>
-                Do you think you can do better?
+                Do you think you can do&nbsp;better?
               </h2>
               <br />
               <br />
