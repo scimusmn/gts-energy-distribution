@@ -26,7 +26,7 @@ const Settings = {
 
   // Production output of each
   // panel when at full capacity/power
-  MAX_OUTPUT_PER_PANEL: 50,
+  MAX_OUTPUT_PER_PANEL: 35,
 
   // Displayed max production on
   // power-meters and production chart

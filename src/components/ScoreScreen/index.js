@@ -26,6 +26,8 @@ const ScoreScreen = ({
   }
   const score = Math.round(((angryMultiplier * angry) + (happyMultiplier * happy))
   / customerFeedback.length);
+  let successMessage = 'Congratulations!';
+  if (score < 70) successMessage = 'Game over!';
   let size = 'xl';
   if (currentView === 'score3') size = 'lg';
   return (
@@ -37,7 +39,7 @@ const ScoreScreen = ({
             <div>
               {ScoreScreen.failMode(feedbackMessage)
                 ? <h1 style={{ color: '#fc3a43' }}>GAME OVER!</h1>
-                : <h1>Congratulations!</h1>}
+                : <h1>{successMessage}</h1>}
               <h2>{feedbackMessage}</h2>
               <br />
               <br />
@@ -64,7 +66,9 @@ const ScoreScreen = ({
                     <h2 style={{ fontWeight: 900, marginTop: '20px' }}>
                       {score}
                       {' '}
-                      points!
+                      /
+                      {' '}
+                      100
                     </h2>
                     {/* <FeedbackIcon mood={customerFeedback.reduce((totals, feedback, index) => {
                       totals[feedback.Mood] = (totals[feedback.Mood] || 0) + 1;
@@ -96,7 +100,7 @@ const ScoreScreen = ({
                 <div>
                   <h3 className="prod-label">
                     <span className="caret-sm-2" style={ScoreScreen.failMode(feedbackMessage) ? { color: '#fc3a43' } : { color: '#fcc523' }}>&gt;&gt;</span>
-                    Prouction Breakdown
+                    Production Breakdown
                   </h3>
                   <div className="icon-box" style={{ marginLeft: '150px' }}>
                     <div className="icon-container">
