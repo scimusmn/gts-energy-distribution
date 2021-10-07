@@ -31,17 +31,17 @@ module.exports = {
         path: `${__dirname}/src/images`,
       },
     },
-    {
-      resolve: 'gatsby-plugin-manifest',
-      options: {
-        name: 'app-default',
-        short_name: 'app',
-        start_url: '/',
-        background_color: '#ffffff',
-        theme_color: '#000000',
-        display: 'minimal-ui',
-        icon: `${__dirname}/src/images/angry.png`,
-      },
-    },
+    // {
+    //   resolve: 'gatsby-plugin-manifest',
+    //   options: {
+    //     name: 'app-default',
+    //     short_name: 'app',
+    //     start_url: '/',
+    //     background_color: '#ffffff',
+    //     theme_color: '#000000',
+    //     display: 'minimal-ui',
+    //     icon: `${__dirname}/src/images/angry.png`,
+    //   },
+    // },
   ],
 };
