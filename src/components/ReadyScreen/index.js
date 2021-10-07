@@ -46,23 +46,23 @@ const ReadyScreen = ({ currentView }) => {
               </h2>
               <div className="icon-box">
                 <div>
-                  <img src="../../static/coal-icon.png" alt="" height={75} />
+                  <img src="../../static/img/coal-icon.png" alt="" height={75} />
                   <h3>Coal</h3>
                 </div>
                 <div>
-                  <img src="../../static/gas-icon.png" alt="" height={75} />
+                  <img src="../../static/img/gas-icon.png" alt="" height={75} />
                   <h3>Natural gas</h3>
                 </div>
                 <div>
-                  <img src="../../static/hydro-icon.png" alt="" height={75} />
+                  <img src="../../static/img/hydro-icon.png" alt="" height={75} />
                   <h3>Hydroelectric</h3>
                 </div>
                 <div>
-                  <img src="../../static/solar-icon.png" alt="" height={75} />
+                  <img src="../../static/img/solar-icon.png" alt="" height={75} />
                   <h3>Solar</h3>
                 </div>
                 <div>
-                  <img src="../../static/wind-icon.png" alt="" height={75} />
+                  <img src="../../static/img/wind-icon.png" alt="" height={75} />
                   <h3>Wind</h3>
                 </div>
               </div>
@@ -86,7 +86,7 @@ const ReadyScreen = ({ currentView }) => {
             </div>),
           ready3: (
             <div>
-              <img src="../../static/intro-plug-in.png" alt="" height={500} />
+              <img src="../../static/img/intro-plug-in.png" alt="" height={500} />
               <br />
               <h2>Plug in your power lines.</h2>
               <h2 className="highlight">You can choose up to 10.</h2>
@@ -103,7 +103,7 @@ const ReadyScreen = ({ currentView }) => {
             <div>
               <br />
               <div style={{ marginLeft: '75px' }}>
-                <img src="../../static/intro-control.png" alt="" height={500} />
+                <img src="../../static/img/intro-control.png" alt="" height={500} />
               </div>
               <br />
               <h2>
