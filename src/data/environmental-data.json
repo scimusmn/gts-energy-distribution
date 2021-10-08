@@ -1,194 +1,194 @@
 [
-{"Set":"1","Day":"Sunday","Time":"12:00 AM","Temperature":"-7 F","WindSpeed":"17 mph","Condition":"Partly Cloudy","Demand":"152"},
-{"Set":"1","Day":"Sunday","Time":"1:00 AM","Temperature":"-8 F","WindSpeed":"15 mph","Condition":"Fair","Demand":"150"},
-{"Set":"1","Day":"Sunday","Time":"2:00 AM","Temperature":"-8 F","WindSpeed":"13 mph","Condition":"Fair","Demand":"143"},
-{"Set":"1","Day":"Sunday","Time":"3:00 AM","Temperature":"-9 F","WindSpeed":"12 mph","Condition":"Partly Cloudy","Demand":"138"},
-{"Set":"1","Day":"Sunday","Time":"4:00 AM","Temperature":"-9 F","WindSpeed":"7 mph","Condition":"Fair","Demand":"145"},
-{"Set":"1","Day":"Sunday","Time":"5:00 AM","Temperature":"-9 F","WindSpeed":"9 mph","Condition":"Fair","Demand":"144"},
-{"Set":"1","Day":"Sunday","Time":"6:00 AM","Temperature":"-9 F","WindSpeed":"7 mph","Condition":"Fair","Demand":"143"},
-{"Set":"1","Day":"Sunday","Time":"7:00 AM","Temperature":"-9 F","WindSpeed":"9 mph","Condition":"Fair","Demand":"151"},
-{"Set":"1","Day":"Sunday","Time":"8:00 AM","Temperature":"-9 F","WindSpeed":"6 mph","Condition":"Fair","Demand":"172"},
-{"Set":"1","Day":"Sunday","Time":"9:00 AM","Temperature":"-7 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"178"},
-{"Set":"1","Day":"Sunday","Time":"10:00 AM","Temperature":"-6 F","WindSpeed":"14 mph","Condition":"Fair","Demand":"185"},
-{"Set":"1","Day":"Sunday","Time":"11:00 AM","Temperature":"-3 F","WindSpeed":"12 mph","Condition":"Fair","Demand":"184"},
-{"Set":"1","Day":"Sunday","Time":"12:00 PM","Temperature":"0 F","WindSpeed":"6 mph","Condition":"Fair","Demand":"196"},
-{"Set":"1","Day":"Sunday","Time":"1:00 PM","Temperature":"0 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"190"},
-{"Set":"1","Day":"Sunday","Time":"2:00 PM","Temperature":"2 F","WindSpeed":"3 mph","Condition":"Fair","Demand":"187"},
-{"Set":"1","Day":"Sunday","Time":"3:00 PM","Temperature":"2 F","WindSpeed":"7 mph","Condition":"Fair","Demand":"174"},
-{"Set":"1","Day":"Sunday","Time":"4:00 PM","Temperature":"1 F","WindSpeed":"7 mph","Condition":"Fair","Demand":"175"},
-{"Set":"1","Day":"Sunday","Time":"5:00 PM","Temperature":"0 F","WindSpeed":"6 mph","Condition":"Fair","Demand":"180"},
-{"Set":"1","Day":"Sunday","Time":"6:00 PM","Temperature":"-1 F","WindSpeed":"5 mph","Condition":"Cloudy","Demand":"217"},
-{"Set":"1","Day":"Sunday","Time":"7:00 PM","Temperature":"-2 F","WindSpeed":"5 mph","Condition":"Fair","Demand":"208"},
-{"Set":"1","Day":"Sunday","Time":"8:00 PM","Temperature":"-3 F","WindSpeed":"3 mph","Condition":"Fair","Demand":"200"},
-{"Set":"1","Day":"Sunday","Time":"9:00 PM","Temperature":"-6 F","WindSpeed":"0 mph","Condition":"Partly Cloudy","Demand":"188"},
-{"Set":"1","Day":"Sunday","Time":"10:00 PM","Temperature":"-5 F","WindSpeed":"0 mph","Condition":"Partly Cloudy","Demand":"176"},
-{"Set":"1","Day":"Sunday","Time":"11:00 PM","Temperature":"-7 F","WindSpeed":"0 mph","Condition":"Fair","Demand":"155"},
-{"Set":"1","Day":"Monday","Time":"12:00 AM","Temperature":"-7 F","WindSpeed":"17 mph","Condition":"Partly Cloudy","Demand":"152"},
-{"Set":"1","Day":"Monday","Time":"1:00 AM","Temperature":"-8 F","WindSpeed":"15 mph","Condition":"Fair","Demand":"150"},
-{"Set":"1","Day":"Monday","Time":"2:00 AM","Temperature":"-8 F","WindSpeed":"13 mph","Condition":"Fair","Demand":"143"},
-{"Set":"1","Day":"Monday","Time":"3:00 AM","Temperature":"-9 F","WindSpeed":"12 mph","Condition":"Partly Cloudy","Demand":"138"},
-{"Set":"1","Day":"Monday","Time":"4:00 AM","Temperature":"-9 F","WindSpeed":"7 mph","Condition":"Fair","Demand":"145"},
-{"Set":"1","Day":"Monday","Time":"5:00 AM","Temperature":"-9 F","WindSpeed":"9 mph","Condition":"Fair","Demand":"144"},
-{"Set":"1","Day":"Monday","Time":"6:00 AM","Temperature":"-9 F","WindSpeed":"7 mph","Condition":"Fair","Demand":"143"},
-{"Set":"1","Day":"Monday","Time":"7:00 AM","Temperature":"-9 F","WindSpeed":"9 mph","Condition":"Fair","Demand":"151"},
-{"Set":"1","Day":"Monday","Time":"8:00 AM","Temperature":"-9 F","WindSpeed":"6 mph","Condition":"Fair","Demand":"172"},
-{"Set":"1","Day":"Monday","Time":"9:00 AM","Temperature":"-7 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"178"},
-{"Set":"1","Day":"Monday","Time":"10:00 AM","Temperature":"-6 F","WindSpeed":"14 mph","Condition":"Fair","Demand":"185"},
-{"Set":"1","Day":"Monday","Time":"11:00 AM","Temperature":"-3 F","WindSpeed":"12 mph","Condition":"Fair","Demand":"184"},
-{"Set":"1","Day":"Monday","Time":"12:00 PM","Temperature":"0 F","WindSpeed":"6 mph","Condition":"Fair","Demand":"196"},
-{"Set":"1","Day":"Monday","Time":"1:00 PM","Temperature":"0 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"190"},
-{"Set":"1","Day":"Monday","Time":"2:00 PM","Temperature":"2 F","WindSpeed":"3 mph","Condition":"Fair","Demand":"187"},
-{"Set":"1","Day":"Monday","Time":"3:00 PM","Temperature":"2 F","WindSpeed":"7 mph","Condition":"Fair","Demand":"174"},
-{"Set":"1","Day":"Monday","Time":"4:00 PM","Temperature":"1 F","WindSpeed":"7 mph","Condition":"Fair","Demand":"175"},
-{"Set":"1","Day":"Monday","Time":"5:00 PM","Temperature":"0 F","WindSpeed":"6 mph","Condition":"Fair","Demand":"180"},
-{"Set":"1","Day":"Monday","Time":"6:00 PM","Temperature":"-1 F","WindSpeed":"5 mph","Condition":"Cloudy","Demand":"217"},
-{"Set":"1","Day":"Monday","Time":"7:00 PM","Temperature":"-2 F","WindSpeed":"5 mph","Condition":"Fair","Demand":"208"},
-{"Set":"1","Day":"Monday","Time":"8:00 PM","Temperature":"-3 F","WindSpeed":"3 mph","Condition":"Fair","Demand":"200"},
-{"Set":"1","Day":"Monday","Time":"9:00 PM","Temperature":"-6 F","WindSpeed":"0 mph","Condition":"Partly Cloudy","Demand":"188"},
-{"Set":"1","Day":"Monday","Time":"10:00 PM","Temperature":"-5 F","WindSpeed":"0 mph","Condition":"Partly Cloudy","Demand":"176"},
-{"Set":"1","Day":"Monday","Time":"11:00 PM","Temperature":"-7 F","WindSpeed":"0 mph","Condition":"Fair","Demand":"155"},
-{"Set":"2","Day":"Sunday","Time":"12:00 AM","Temperature":"51 F","WindSpeed":"5 mph","Condition":"Fair","Demand":"135"},
-{"Set":"2","Day":"Sunday","Time":"1:00 AM","Temperature":"51 F","WindSpeed":"7 mph","Condition":"Fair","Demand":"135"},
-{"Set":"2","Day":"Sunday","Time":"2:00 AM","Temperature":"49 F","WindSpeed":"7 mph","Condition":"Fair","Demand":"125"},
-{"Set":"2","Day":"Sunday","Time":"3:00 AM","Temperature":"49 F","WindSpeed":"7 mph","Condition":"Fair","Demand":"151"},
-{"Set":"2","Day":"Sunday","Time":"4:00 AM","Temperature":"51 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"149"},
-{"Set":"2","Day":"Sunday","Time":"5:00 AM","Temperature":"51 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"163"},
-{"Set":"2","Day":"Sunday","Time":"6:00 AM","Temperature":"52 F","WindSpeed":"12 mph","Condition":"Fair","Demand":"151"},
-{"Set":"2","Day":"Sunday","Time":"7:00 AM","Temperature":"57 F","WindSpeed":"16 mph","Condition":"Fair","Demand":"169"},
-{"Set":"2","Day":"Sunday","Time":"8:00 AM","Temperature":"61 F","WindSpeed":"15 mph","Condition":"Partly Cloudy","Demand":"191"},
-{"Set":"2","Day":"Sunday","Time":"9:00 AM","Temperature":"66 F","WindSpeed":"16 mph","Condition":"Fair","Demand":"215"},
-{"Set":"2","Day":"Sunday","Time":"10:00 AM","Temperature":"69 F","WindSpeed":"22 mph","Condition":"Cloudy","Demand":"203"},
-{"Set":"2","Day":"Sunday","Time":"11:00 AM","Temperature":"72 F","WindSpeed":"23 mph","Condition":"Partly Cloudy","Demand":"173"},
-{"Set":"2","Day":"Sunday","Time":"12:00 PM","Temperature":"73 F","WindSpeed":"22 mph","Condition":"Fair","Demand":"159"},
-{"Set":"2","Day":"Sunday","Time":"1:00 PM","Temperature":"78 F","WindSpeed":"26 mph","Condition":"Fair","Demand":"151"},
-{"Set":"2","Day":"Sunday","Time":"2:00 PM","Temperature":"79 F","WindSpeed":"24 mph","Condition":"Fair","Demand":"175"},
-{"Set":"2","Day":"Sunday","Time":"3:00 PM","Temperature":"82 F","WindSpeed":"23 mph","Condition":"Fair","Demand":"163"},
-{"Set":"2","Day":"Sunday","Time":"4:00 PM","Temperature":"82 F","WindSpeed":"28 mph","Condition":"Fair","Demand":"159"},
-{"Set":"2","Day":"Sunday","Time":"5:00 PM","Temperature":"83 F","WindSpeed":"26 mph","Condition":"Fair","Demand":"129"},
-{"Set":"2","Day":"Sunday","Time":"6:00 PM","Temperature":"81 F","WindSpeed":"23 mph","Condition":"Fair","Demand":"135"},
-{"Set":"2","Day":"Sunday","Time":"7:00 PM","Temperature":"79 F","WindSpeed":"20 mph","Condition":"Fair","Demand":"147"},
-{"Set":"2","Day":"Sunday","Time":"8:00 PM","Temperature":"75 F","WindSpeed":"16 mph","Condition":"Fair","Demand":"165"},
-{"Set":"2","Day":"Sunday","Time":"9:00 PM","Temperature":"72 F","WindSpeed":"9 mph","Condition":"Fair","Demand":"119"},
-{"Set":"2","Day":"Sunday","Time":"10:00 PM","Temperature":"69 F","WindSpeed":"5 mph","Condition":"Fair","Demand":"103"},
-{"Set":"2","Day":"Sunday","Time":"11:00 PM","Temperature":"69 F","WindSpeed":"5 mph","Condition":"Mostly Cloudy","Demand":"95"},
-{"Set":"2","Day":"Monday","Time":"12:00 AM","Temperature":"51 F","WindSpeed":"5 mph","Condition":"Fair","Demand":"135"},
-{"Set":"2","Day":"Monday","Time":"1:00 AM","Temperature":"51 F","WindSpeed":"7 mph","Condition":"Fair","Demand":"135"},
-{"Set":"2","Day":"Monday","Time":"2:00 AM","Temperature":"49 F","WindSpeed":"7 mph","Condition":"Fair","Demand":"125"},
-{"Set":"2","Day":"Monday","Time":"3:00 AM","Temperature":"49 F","WindSpeed":"7 mph","Condition":"Fair","Demand":"151"},
-{"Set":"2","Day":"Monday","Time":"4:00 AM","Temperature":"51 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"149"},
-{"Set":"2","Day":"Monday","Time":"5:00 AM","Temperature":"51 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"163"},
-{"Set":"2","Day":"Monday","Time":"6:00 AM","Temperature":"52 F","WindSpeed":"12 mph","Condition":"Fair","Demand":"151"},
-{"Set":"2","Day":"Monday","Time":"7:00 AM","Temperature":"57 F","WindSpeed":"16 mph","Condition":"Fair","Demand":"169"},
-{"Set":"2","Day":"Monday","Time":"8:00 AM","Temperature":"61 F","WindSpeed":"15 mph","Condition":"Partly Cloudy","Demand":"191"},
-{"Set":"2","Day":"Monday","Time":"9:00 AM","Temperature":"66 F","WindSpeed":"16 mph","Condition":"Fair","Demand":"215"},
-{"Set":"2","Day":"Monday","Time":"10:00 AM","Temperature":"69 F","WindSpeed":"22 mph","Condition":"Cloudy","Demand":"203"},
-{"Set":"2","Day":"Monday","Time":"11:00 AM","Temperature":"72 F","WindSpeed":"23 mph","Condition":"Partly Cloudy","Demand":"173"},
-{"Set":"2","Day":"Monday","Time":"12:00 PM","Temperature":"73 F","WindSpeed":"22 mph","Condition":"Fair","Demand":"159"},
-{"Set":"2","Day":"Monday","Time":"1:00 PM","Temperature":"78 F","WindSpeed":"26 mph","Condition":"Fair","Demand":"151"},
-{"Set":"2","Day":"Monday","Time":"2:00 PM","Temperature":"79 F","WindSpeed":"24 mph","Condition":"Fair","Demand":"175"},
-{"Set":"2","Day":"Monday","Time":"3:00 PM","Temperature":"82 F","WindSpeed":"23 mph","Condition":"Fair","Demand":"163"},
-{"Set":"2","Day":"Monday","Time":"4:00 PM","Temperature":"82 F","WindSpeed":"28 mph","Condition":"Fair","Demand":"159"},
-{"Set":"2","Day":"Monday","Time":"5:00 PM","Temperature":"83 F","WindSpeed":"26 mph","Condition":"Fair","Demand":"129"},
-{"Set":"2","Day":"Monday","Time":"6:00 PM","Temperature":"81 F","WindSpeed":"23 mph","Condition":"Fair","Demand":"135"},
-{"Set":"2","Day":"Monday","Time":"7:00 PM","Temperature":"79 F","WindSpeed":"20 mph","Condition":"Fair","Demand":"147"},
-{"Set":"2","Day":"Monday","Time":"8:00 PM","Temperature":"75 F","WindSpeed":"16 mph","Condition":"Fair","Demand":"165"},
-{"Set":"2","Day":"Monday","Time":"9:00 PM","Temperature":"72 F","WindSpeed":"9 mph","Condition":"Fair","Demand":"119"},
-{"Set":"2","Day":"Monday","Time":"10:00 PM","Temperature":"69 F","WindSpeed":"5 mph","Condition":"Fair","Demand":"103"},
-{"Set":"2","Day":"Monday","Time":"11:00 PM","Temperature":"69 F","WindSpeed":"5 mph","Condition":"Mostly Cloudy","Demand":"95"},
-{"Set":"3","Day":"Wednesday","Time":"12:00 AM","Temperature":"79 F","WindSpeed":"9 mph","Condition":"Fair","Demand":"134"},
-{"Set":"3","Day":"Wednesday","Time":"1:00 AM","Temperature":"76 F","WindSpeed":"9 mph","Condition":"Fair","Demand":"127"},
-{"Set":"3","Day":"Wednesday","Time":"2:00 AM","Temperature":"74 F","WindSpeed":"8 mph","Condition":"Fair","Demand":"123"},
-{"Set":"3","Day":"Wednesday","Time":"3:00 AM","Temperature":"73 F","WindSpeed":"6 mph","Condition":"Fair","Demand":"119"},
-{"Set":"3","Day":"Wednesday","Time":"4:00 AM","Temperature":"70 F","WindSpeed":"6 mph","Condition":"Fair","Demand":"117"},
-{"Set":"3","Day":"Wednesday","Time":"5:00 AM","Temperature":"69 F","WindSpeed":"5 mph","Condition":"Fair","Demand":"118"},
-{"Set":"3","Day":"Wednesday","Time":"6:00 AM","Temperature":"67 F","WindSpeed":"0 mph","Condition":"Fair","Demand":"123"},
-{"Set":"3","Day":"Wednesday","Time":"7:00 AM","Temperature":"69 F","WindSpeed":"3 mph","Condition":"Fair","Demand":"134"},
-{"Set":"3","Day":"Wednesday","Time":"8:00 AM","Temperature":"74 F","WindSpeed":"5 mph","Condition":"Fair","Demand":"147"},
-{"Set":"3","Day":"Wednesday","Time":"9:00 AM","Temperature":"79 F","WindSpeed":"6 mph","Condition":"Fair","Demand":"164"},
-{"Set":"3","Day":"Wednesday","Time":"10:00 AM","Temperature":"85 F","WindSpeed":"3 mph","Condition":"Fair","Demand":"177"},
-{"Set":"3","Day":"Wednesday","Time":"11:00 AM","Temperature":"87 F","WindSpeed":"6 mph","Condition":"Fair","Demand":"190"},
-{"Set":"3","Day":"Wednesday","Time":"12:00 PM","Temperature":"91 F","WindSpeed":"8 mph","Condition":"Fair","Demand":"203"},
-{"Set":"3","Day":"Wednesday","Time":"1:00 PM","Temperature":"94 F","WindSpeed":"8 mph","Condition":"Fair","Demand":"213"},
-{"Set":"3","Day":"Wednesday","Time":"2:00 PM","Temperature":"98 F","WindSpeed":"9 mph","Condition":"Fair","Demand":"219"},
-{"Set":"3","Day":"Wednesday","Time":"3:00 PM","Temperature":"99 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"218"},
-{"Set":"3","Day":"Wednesday","Time":"4:00 PM","Temperature":"99 F","WindSpeed":"12 mph","Condition":"Fair","Demand":"221"},
-{"Set":"3","Day":"Wednesday","Time":"5:00 PM","Temperature":"99 F","WindSpeed":"12 mph","Condition":"Fair","Demand":"220"},
-{"Set":"3","Day":"Wednesday","Time":"6:00 PM","Temperature":"98 F","WindSpeed":"8 mph","Condition":"Fair","Demand":"216"},
-{"Set":"3","Day":"Wednesday","Time":"7:00 PM","Temperature":"97 F","WindSpeed":"12 mph","Condition":"Fair","Demand":"206"},
-{"Set":"3","Day":"Wednesday","Time":"8:00 PM","Temperature":"91 F","WindSpeed":"8 mph","Condition":"Fair","Demand":"194"},
-{"Set":"3","Day":"Wednesday","Time":"9:00 PM","Temperature":"86 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"182"},
-{"Set":"3","Day":"Wednesday","Time":"10:00 PM","Temperature":"82 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"169"},
-{"Set":"3","Day":"Wednesday","Time":"11:00 PM","Temperature":"80 F","WindSpeed":"0 mph","Condition":"Fair","Demand":"152"},
-{"Set":"3","Day":"Thursday","Time":"12:00 AM","Temperature":"79 F","WindSpeed":"9 mph","Condition":"Fair","Demand":"134"},
-{"Set":"3","Day":"Thursday","Time":"1:00 AM","Temperature":"76 F","WindSpeed":"9 mph","Condition":"Fair","Demand":"127"},
-{"Set":"3","Day":"Thursday","Time":"2:00 AM","Temperature":"74 F","WindSpeed":"8 mph","Condition":"Fair","Demand":"123"},
-{"Set":"3","Day":"Thursday","Time":"3:00 AM","Temperature":"73 F","WindSpeed":"6 mph","Condition":"Fair","Demand":"119"},
-{"Set":"3","Day":"Thursday","Time":"4:00 AM","Temperature":"70 F","WindSpeed":"6 mph","Condition":"Fair","Demand":"117"},
-{"Set":"3","Day":"Thursday","Time":"5:00 AM","Temperature":"69 F","WindSpeed":"5 mph","Condition":"Fair","Demand":"118"},
-{"Set":"3","Day":"Thursday","Time":"6:00 AM","Temperature":"67 F","WindSpeed":"0 mph","Condition":"Fair","Demand":"123"},
-{"Set":"3","Day":"Thursday","Time":"7:00 AM","Temperature":"69 F","WindSpeed":"3 mph","Condition":"Fair","Demand":"134"},
-{"Set":"3","Day":"Thursday","Time":"8:00 AM","Temperature":"74 F","WindSpeed":"5 mph","Condition":"Fair","Demand":"147"},
-{"Set":"3","Day":"Thursday","Time":"9:00 AM","Temperature":"79 F","WindSpeed":"6 mph","Condition":"Fair","Demand":"164"},
-{"Set":"3","Day":"Thursday","Time":"10:00 AM","Temperature":"85 F","WindSpeed":"3 mph","Condition":"Fair","Demand":"177"},
-{"Set":"3","Day":"Thursday","Time":"11:00 AM","Temperature":"87 F","WindSpeed":"6 mph","Condition":"Fair","Demand":"190"},
-{"Set":"3","Day":"Thursday","Time":"12:00 PM","Temperature":"91 F","WindSpeed":"8 mph","Condition":"Fair","Demand":"203"},
-{"Set":"3","Day":"Thursday","Time":"1:00 PM","Temperature":"94 F","WindSpeed":"8 mph","Condition":"Fair","Demand":"213"},
-{"Set":"3","Day":"Thursday","Time":"2:00 PM","Temperature":"98 F","WindSpeed":"9 mph","Condition":"Fair","Demand":"219"},
-{"Set":"3","Day":"Thursday","Time":"3:00 PM","Temperature":"99 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"218"},
-{"Set":"3","Day":"Thursday","Time":"4:00 PM","Temperature":"99 F","WindSpeed":"12 mph","Condition":"Fair","Demand":"221"},
-{"Set":"3","Day":"Thursday","Time":"5:00 PM","Temperature":"99 F","WindSpeed":"12 mph","Condition":"Fair","Demand":"220"},
-{"Set":"3","Day":"Thursday","Time":"6:00 PM","Temperature":"98 F","WindSpeed":"8 mph","Condition":"Fair","Demand":"216"},
-{"Set":"3","Day":"Thursday","Time":"7:00 PM","Temperature":"97 F","WindSpeed":"12 mph","Condition":"Fair","Demand":"206"},
-{"Set":"3","Day":"Thursday","Time":"8:00 PM","Temperature":"91 F","WindSpeed":"8 mph","Condition":"Fair","Demand":"194"},
-{"Set":"3","Day":"Thursday","Time":"9:00 PM","Temperature":"86 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"182"},
-{"Set":"3","Day":"Thursday","Time":"10:00 PM","Temperature":"82 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"169"},
-{"Set":"3","Day":"Thursday","Time":"11:00 PM","Temperature":"80 F","WindSpeed":"0 mph","Condition":"Fair","Demand":"152"},
-{"Set":"4","Day":"Monday","Time":"12:00:00 AM","Temperature":"21 F","WindSpeed":"10 mph","Condition":"Cloudy","Demand":"133"},
-{"Set":"4","Day":"Monday","Time":"1:00:00 AM","Temperature":"20 F","WindSpeed":"12 mph","Condition":"Cloudy","Demand":"128"},
-{"Set":"4","Day":"Monday","Time":"2:00:00 AM","Temperature":"16 F","WindSpeed":"7 mph","Condition":"Fair","Demand":"125"},
-{"Set":"4","Day":"Monday","Time":"3:00:00 AM","Temperature":"13 F","WindSpeed":"5 mph","Condition":"Fair","Demand":"125"},
-{"Set":"4","Day":"Monday","Time":"4:00:00 AM","Temperature":"12 F","WindSpeed":"3 mph","Condition":"Fair","Demand":"126"},
-{"Set":"4","Day":"Monday","Time":"5:00:00 AM","Temperature":"10 F","WindSpeed":"3 mph","Condition":"Fair","Demand":"135"},
-{"Set":"4","Day":"Monday","Time":"6:00:00 AM","Temperature":"9 F","WindSpeed":"5 mph","Condition":"Fair","Demand":"153"},
-{"Set":"4","Day":"Monday","Time":"7:00:00 AM","Temperature":"8 F","WindSpeed":"0 mph","Condition":"Fair","Demand":"179"},
-{"Set":"4","Day":"Monday","Time":"8:00:00 AM","Temperature":"11 F","WindSpeed":"6 mph","Condition":"Fair","Demand":"202"},
-{"Set":"4","Day":"Monday","Time":"9:00:00 AM","Temperature":"16 F","WindSpeed":"8 mph","Condition":"Fair","Demand":"207"},
-{"Set":"4","Day":"Monday","Time":"10:00:00 AM","Temperature":"20 F","WindSpeed":"9 mph","Condition":"Fair","Demand":"207"},
-{"Set":"4","Day":"Monday","Time":"11:00:00 AM","Temperature":"22 F","WindSpeed":"15 mph","Condition":"Fair","Demand":"203"},
-{"Set":"4","Day":"Monday","Time":"12:00:00 PM","Temperature":"24 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"201"},
-{"Set":"4","Day":"Monday","Time":"1:00:00 PM","Temperature":"24 F","WindSpeed":"14 mph","Condition":"Fair","Demand":"192"},
-{"Set":"4","Day":"Monday","Time":"2:00:00 PM","Temperature":"24 F","WindSpeed":"15 mph","Condition":"Fair","Demand":"189"},
-{"Set":"4","Day":"Monday","Time":"3:00:00 PM","Temperature":"24 F","WindSpeed":"16 mph","Condition":"Fair","Demand":"184"},
-{"Set":"4","Day":"Monday","Time":"4:00:00 PM","Temperature":"23 F","WindSpeed":"14 mph","Condition":"Fair","Demand":"175"},
-{"Set":"4","Day":"Monday","Time":"5:00:00 PM","Temperature":"21 F","WindSpeed":"14 mph","Condition":"Fair","Demand":"175"},
-{"Set":"4","Day":"Monday","Time":"6:00:00 PM","Temperature":"18 F","WindSpeed":"13 mph","Condition":"Fair","Demand":"176"},
-{"Set":"4","Day":"Monday","Time":"7:00:00 PM","Temperature":"17 F","WindSpeed":"14 mph","Condition":"Fair","Demand":"192"},
-{"Set":"4","Day":"Monday","Time":"8:00:00 PM","Temperature":"16 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"192"},
-{"Set":"4","Day":"Monday","Time":"9:00:00 PM","Temperature":"16 F","WindSpeed":"8 mph","Condition":"Fair","Demand":"181"},
-{"Set":"4","Day":"Monday","Time":"10:00:00 PM","Temperature":"15 F","WindSpeed":"0 mph","Condition":"Fair","Demand":"165"},
-{"Set":"4","Day":"Monday","Time":"11:00:00 PM","Temperature":"14 F","WindSpeed":"0 mph","Condition":"Fair","Demand":"145"},
-{"Set":"4","Day":"Tuesday","Time":"12:00:00 AM","Temperature":"21 F","WindSpeed":"10 mph","Condition":"Cloudy","Demand":"133"},
-{"Set":"4","Day":"Tuesday","Time":"1:00:00 AM","Temperature":"20 F","WindSpeed":"12 mph","Condition":"Cloudy","Demand":"128"},
-{"Set":"4","Day":"Tuesday","Time":"2:00:00 AM","Temperature":"16 F","WindSpeed":"7 mph","Condition":"Fair","Demand":"125"},
-{"Set":"4","Day":"Tuesday","Time":"3:00:00 AM","Temperature":"13 F","WindSpeed":"5 mph","Condition":"Fair","Demand":"125"},
-{"Set":"4","Day":"Tuesday","Time":"4:00:00 AM","Temperature":"12 F","WindSpeed":"3 mph","Condition":"Fair","Demand":"126"},
-{"Set":"4","Day":"Tuesday","Time":"5:00:00 AM","Temperature":"10 F","WindSpeed":"3 mph","Condition":"Fair","Demand":"135"},
-{"Set":"4","Day":"Tuesday","Time":"6:00:00 AM","Temperature":"9 F","WindSpeed":"5 mph","Condition":"Fair","Demand":"153"},
-{"Set":"4","Day":"Tuesday","Time":"7:00:00 AM","Temperature":"8 F","WindSpeed":"0 mph","Condition":"Fair","Demand":"179"},
-{"Set":"4","Day":"Tuesday","Time":"8:00:00 AM","Temperature":"11 F","WindSpeed":"6 mph","Condition":"Fair","Demand":"202"},
-{"Set":"4","Day":"Tuesday","Time":"9:00:00 AM","Temperature":"16 F","WindSpeed":"8 mph","Condition":"Fair","Demand":"207"},
-{"Set":"4","Day":"Tuesday","Time":"10:00:00 AM","Temperature":"20 F","WindSpeed":"9 mph","Condition":"Fair","Demand":"207"},
-{"Set":"4","Day":"Tuesday","Time":"11:00:00 AM","Temperature":"22 F","WindSpeed":"15 mph","Condition":"Fair","Demand":"203"},
-{"Set":"4","Day":"Tuesday","Time":"12:00:00 PM","Temperature":"24 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"201"},
-{"Set":"4","Day":"Tuesday","Time":"1:00:00 PM","Temperature":"24 F","WindSpeed":"14 mph","Condition":"Fair","Demand":"192"},
-{"Set":"4","Day":"Tuesday","Time":"2:00:00 PM","Temperature":"24 F","WindSpeed":"15 mph","Condition":"Fair","Demand":"189"},
-{"Set":"4","Day":"Tuesday","Time":"3:00:00 PM","Temperature":"24 F","WindSpeed":"16 mph","Condition":"Fair","Demand":"184"},
-{"Set":"4","Day":"Tuesday","Time":"4:00:00 PM","Temperature":"23 F","WindSpeed":"14 mph","Condition":"Fair","Demand":"175"},
-{"Set":"4","Day":"Tuesday","Time":"5:00:00 PM","Temperature":"21 F","WindSpeed":"14 mph","Condition":"Fair","Demand":"175"},
-{"Set":"4","Day":"Tuesday","Time":"6:00:00 PM","Temperature":"18 F","WindSpeed":"13 mph","Condition":"Fair","Demand":"176"},
-{"Set":"4","Day":"Tuesday","Time":"7:00:00 PM","Temperature":"17 F","WindSpeed":"14 mph","Condition":"Fair","Demand":"192"},
-{"Set":"4","Day":"Tuesday","Time":"8:00:00 PM","Temperature":"16 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"192"},
-{"Set":"4","Day":"Tuesday","Time":"9:00:00 PM","Temperature":"16 F","WindSpeed":"8 mph","Condition":"Fair","Demand":"181"},
-{"Set":"4","Day":"Tuesday","Time":"10:00:00 PM","Temperature":"15 F","WindSpeed":"0 mph","Condition":"Fair","Demand":"165"},
-{"Set":"4","Day":"Tuesday","Time":"11:00:00 PM","Temperature":"14 F","WindSpeed":"0 mph","Condition":"Fair","Demand":"145"}
+{"Set":"1","Day":"Sunday","Time":"12:00 AM","Temperature":"-7 F","WindSpeed":"17 mph","Condition":"Partly Cloudy","Demand":"152"},
+{"Set":"1","Day":"Sunday","Time":"1:00 AM","Temperature":"-8 F","WindSpeed":"15 mph","Condition":"Fair","Demand":"150"},
+{"Set":"1","Day":"Sunday","Time":"2:00 AM","Temperature":"-8 F","WindSpeed":"13 mph","Condition":"Fair","Demand":"143"},
+{"Set":"1","Day":"Sunday","Time":"3:00 AM","Temperature":"-9 F","WindSpeed":"12 mph","Condition":"Partly Cloudy","Demand":"138"},
+{"Set":"1","Day":"Sunday","Time":"4:00 AM","Temperature":"-9 F","WindSpeed":"7 mph","Condition":"Fair","Demand":"145"},
+{"Set":"1","Day":"Sunday","Time":"5:00 AM","Temperature":"-9 F","WindSpeed":"9 mph","Condition":"Fair","Demand":"144"},
+{"Set":"1","Day":"Sunday","Time":"6:00 AM","Temperature":"-9 F","WindSpeed":"7 mph","Condition":"Fair","Demand":"143"},
+{"Set":"1","Day":"Sunday","Time":"7:00 AM","Temperature":"-9 F","WindSpeed":"9 mph","Condition":"Fair","Demand":"151"},
+{"Set":"1","Day":"Sunday","Time":"8:00 AM","Temperature":"-9 F","WindSpeed":"6 mph","Condition":"Fair","Demand":"172"},
+{"Set":"1","Day":"Sunday","Time":"9:00 AM","Temperature":"-7 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"178"},
+{"Set":"1","Day":"Sunday","Time":"10:00 AM","Temperature":"-6 F","WindSpeed":"14 mph","Condition":"Fair","Demand":"185"},
+{"Set":"1","Day":"Sunday","Time":"11:00 AM","Temperature":"-3 F","WindSpeed":"12 mph","Condition":"Fair","Demand":"184"},
+{"Set":"1","Day":"Sunday","Time":"12:00 PM","Temperature":"0 F","WindSpeed":"6 mph","Condition":"Fair","Demand":"196"},
+{"Set":"1","Day":"Sunday","Time":"1:00 PM","Temperature":"0 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"190"},
+{"Set":"1","Day":"Sunday","Time":"2:00 PM","Temperature":"2 F","WindSpeed":"3 mph","Condition":"Fair","Demand":"187"},
+{"Set":"1","Day":"Sunday","Time":"3:00 PM","Temperature":"2 F","WindSpeed":"7 mph","Condition":"Fair","Demand":"174"},
+{"Set":"1","Day":"Sunday","Time":"4:00 PM","Temperature":"1 F","WindSpeed":"7 mph","Condition":"Fair","Demand":"175"},
+{"Set":"1","Day":"Sunday","Time":"5:00 PM","Temperature":"0 F","WindSpeed":"6 mph","Condition":"Fair","Demand":"180"},
+{"Set":"1","Day":"Sunday","Time":"6:00 PM","Temperature":"-1 F","WindSpeed":"5 mph","Condition":"Cloudy","Demand":"217"},
+{"Set":"1","Day":"Sunday","Time":"7:00 PM","Temperature":"-2 F","WindSpeed":"5 mph","Condition":"Fair","Demand":"208"},
+{"Set":"1","Day":"Sunday","Time":"8:00 PM","Temperature":"-3 F","WindSpeed":"3 mph","Condition":"Fair","Demand":"200"},
+{"Set":"1","Day":"Sunday","Time":"9:00 PM","Temperature":"-6 F","WindSpeed":"0 mph","Condition":"Partly Cloudy","Demand":"188"},
+{"Set":"1","Day":"Sunday","Time":"10:00 PM","Temperature":"-5 F","WindSpeed":"0 mph","Condition":"Partly Cloudy","Demand":"176"},
+{"Set":"1","Day":"Sunday","Time":"11:00 PM","Temperature":"-7 F","WindSpeed":"0 mph","Condition":"Fair","Demand":"155"},
+{"Set":"1","Day":"Monday","Time":"12:00 AM","Temperature":"-7 F","WindSpeed":"17 mph","Condition":"Partly Cloudy","Demand":"152"},
+{"Set":"1","Day":"Monday","Time":"1:00 AM","Temperature":"-8 F","WindSpeed":"15 mph","Condition":"Fair","Demand":"150"},
+{"Set":"1","Day":"Monday","Time":"2:00 AM","Temperature":"-8 F","WindSpeed":"13 mph","Condition":"Fair","Demand":"143"},
+{"Set":"1","Day":"Monday","Time":"3:00 AM","Temperature":"-9 F","WindSpeed":"12 mph","Condition":"Partly Cloudy","Demand":"138"},
+{"Set":"1","Day":"Monday","Time":"4:00 AM","Temperature":"-9 F","WindSpeed":"7 mph","Condition":"Fair","Demand":"145"},
+{"Set":"1","Day":"Monday","Time":"5:00 AM","Temperature":"-9 F","WindSpeed":"9 mph","Condition":"Fair","Demand":"144"},
+{"Set":"1","Day":"Monday","Time":"6:00 AM","Temperature":"-9 F","WindSpeed":"7 mph","Condition":"Fair","Demand":"143"},
+{"Set":"1","Day":"Monday","Time":"7:00 AM","Temperature":"-9 F","WindSpeed":"9 mph","Condition":"Fair","Demand":"151"},
+{"Set":"1","Day":"Monday","Time":"8:00 AM","Temperature":"-9 F","WindSpeed":"6 mph","Condition":"Fair","Demand":"172"},
+{"Set":"1","Day":"Monday","Time":"9:00 AM","Temperature":"-7 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"178"},
+{"Set":"1","Day":"Monday","Time":"10:00 AM","Temperature":"-6 F","WindSpeed":"14 mph","Condition":"Fair","Demand":"185"},
+{"Set":"1","Day":"Monday","Time":"11:00 AM","Temperature":"-3 F","WindSpeed":"12 mph","Condition":"Fair","Demand":"184"},
+{"Set":"1","Day":"Monday","Time":"12:00 PM","Temperature":"0 F","WindSpeed":"6 mph","Condition":"Fair","Demand":"196"},
+{"Set":"1","Day":"Monday","Time":"1:00 PM","Temperature":"0 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"190"},
+{"Set":"1","Day":"Monday","Time":"2:00 PM","Temperature":"2 F","WindSpeed":"3 mph","Condition":"Fair","Demand":"187"},
+{"Set":"1","Day":"Monday","Time":"3:00 PM","Temperature":"2 F","WindSpeed":"7 mph","Condition":"Fair","Demand":"174"},
+{"Set":"1","Day":"Monday","Time":"4:00 PM","Temperature":"1 F","WindSpeed":"7 mph","Condition":"Fair","Demand":"175"},
+{"Set":"1","Day":"Monday","Time":"5:00 PM","Temperature":"0 F","WindSpeed":"6 mph","Condition":"Fair","Demand":"180"},
+{"Set":"1","Day":"Monday","Time":"6:00 PM","Temperature":"-1 F","WindSpeed":"5 mph","Condition":"Cloudy","Demand":"217"},
+{"Set":"1","Day":"Monday","Time":"7:00 PM","Temperature":"-2 F","WindSpeed":"5 mph","Condition":"Fair","Demand":"208"},
+{"Set":"1","Day":"Monday","Time":"8:00 PM","Temperature":"-3 F","WindSpeed":"3 mph","Condition":"Fair","Demand":"200"},
+{"Set":"1","Day":"Monday","Time":"9:00 PM","Temperature":"-6 F","WindSpeed":"0 mph","Condition":"Partly Cloudy","Demand":"188"},
+{"Set":"1","Day":"Monday","Time":"10:00 PM","Temperature":"-5 F","WindSpeed":"0 mph","Condition":"Partly Cloudy","Demand":"176"},
+{"Set":"1","Day":"Monday","Time":"11:00 PM","Temperature":"-7 F","WindSpeed":"0 mph","Condition":"Fair","Demand":"155"},
+{"Set":"2","Day":"Sunday","Time":"12:00 AM","Temperature":"51 F","WindSpeed":"5 mph","Condition":"Fair","Demand":"135"},
+{"Set":"2","Day":"Sunday","Time":"1:00 AM","Temperature":"51 F","WindSpeed":"7 mph","Condition":"Fair","Demand":"135"},
+{"Set":"2","Day":"Sunday","Time":"2:00 AM","Temperature":"49 F","WindSpeed":"7 mph","Condition":"Fair","Demand":"125"},
+{"Set":"2","Day":"Sunday","Time":"3:00 AM","Temperature":"49 F","WindSpeed":"7 mph","Condition":"Fair","Demand":"151"},
+{"Set":"2","Day":"Sunday","Time":"4:00 AM","Temperature":"51 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"149"},
+{"Set":"2","Day":"Sunday","Time":"5:00 AM","Temperature":"51 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"163"},
+{"Set":"2","Day":"Sunday","Time":"6:00 AM","Temperature":"52 F","WindSpeed":"12 mph","Condition":"Fair","Demand":"151"},
+{"Set":"2","Day":"Sunday","Time":"7:00 AM","Temperature":"57 F","WindSpeed":"16 mph","Condition":"Fair","Demand":"169"},
+{"Set":"2","Day":"Sunday","Time":"8:00 AM","Temperature":"61 F","WindSpeed":"15 mph","Condition":"Partly Cloudy","Demand":"191"},
+{"Set":"2","Day":"Sunday","Time":"9:00 AM","Temperature":"66 F","WindSpeed":"16 mph","Condition":"Fair","Demand":"215"},
+{"Set":"2","Day":"Sunday","Time":"10:00 AM","Temperature":"69 F","WindSpeed":"22 mph","Condition":"Cloudy","Demand":"203"},
+{"Set":"2","Day":"Sunday","Time":"11:00 AM","Temperature":"72 F","WindSpeed":"23 mph","Condition":"Partly Cloudy","Demand":"173"},
+{"Set":"2","Day":"Sunday","Time":"12:00 PM","Temperature":"73 F","WindSpeed":"22 mph","Condition":"Fair","Demand":"159"},
+{"Set":"2","Day":"Sunday","Time":"1:00 PM","Temperature":"78 F","WindSpeed":"26 mph","Condition":"Fair","Demand":"151"},
+{"Set":"2","Day":"Sunday","Time":"2:00 PM","Temperature":"79 F","WindSpeed":"24 mph","Condition":"Fair","Demand":"175"},
+{"Set":"2","Day":"Sunday","Time":"3:00 PM","Temperature":"82 F","WindSpeed":"23 mph","Condition":"Fair","Demand":"163"},
+{"Set":"2","Day":"Sunday","Time":"4:00 PM","Temperature":"82 F","WindSpeed":"28 mph","Condition":"Fair","Demand":"159"},
+{"Set":"2","Day":"Sunday","Time":"5:00 PM","Temperature":"83 F","WindSpeed":"26 mph","Condition":"Fair","Demand":"129"},
+{"Set":"2","Day":"Sunday","Time":"6:00 PM","Temperature":"81 F","WindSpeed":"23 mph","Condition":"Fair","Demand":"135"},
+{"Set":"2","Day":"Sunday","Time":"7:00 PM","Temperature":"79 F","WindSpeed":"20 mph","Condition":"Fair","Demand":"147"},
+{"Set":"2","Day":"Sunday","Time":"8:00 PM","Temperature":"75 F","WindSpeed":"16 mph","Condition":"Fair","Demand":"165"},
+{"Set":"2","Day":"Sunday","Time":"9:00 PM","Temperature":"72 F","WindSpeed":"9 mph","Condition":"Fair","Demand":"119"},
+{"Set":"2","Day":"Sunday","Time":"10:00 PM","Temperature":"69 F","WindSpeed":"5 mph","Condition":"Fair","Demand":"103"},
+{"Set":"2","Day":"Sunday","Time":"11:00 PM","Temperature":"69 F","WindSpeed":"5 mph","Condition":"Mostly Cloudy","Demand":"95"},
+{"Set":"2","Day":"Monday","Time":"12:00 AM","Temperature":"51 F","WindSpeed":"5 mph","Condition":"Fair","Demand":"135"},
+{"Set":"2","Day":"Monday","Time":"1:00 AM","Temperature":"51 F","WindSpeed":"7 mph","Condition":"Fair","Demand":"135"},
+{"Set":"2","Day":"Monday","Time":"2:00 AM","Temperature":"49 F","WindSpeed":"7 mph","Condition":"Fair","Demand":"125"},
+{"Set":"2","Day":"Monday","Time":"3:00 AM","Temperature":"49 F","WindSpeed":"7 mph","Condition":"Fair","Demand":"151"},
+{"Set":"2","Day":"Monday","Time":"4:00 AM","Temperature":"51 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"149"},
+{"Set":"2","Day":"Monday","Time":"5:00 AM","Temperature":"51 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"163"},
+{"Set":"2","Day":"Monday","Time":"6:00 AM","Temperature":"52 F","WindSpeed":"12 mph","Condition":"Fair","Demand":"151"},
+{"Set":"2","Day":"Monday","Time":"7:00 AM","Temperature":"57 F","WindSpeed":"16 mph","Condition":"Fair","Demand":"169"},
+{"Set":"2","Day":"Monday","Time":"8:00 AM","Temperature":"61 F","WindSpeed":"15 mph","Condition":"Partly Cloudy","Demand":"191"},
+{"Set":"2","Day":"Monday","Time":"9:00 AM","Temperature":"66 F","WindSpeed":"16 mph","Condition":"Fair","Demand":"215"},
+{"Set":"2","Day":"Monday","Time":"10:00 AM","Temperature":"69 F","WindSpeed":"22 mph","Condition":"Cloudy","Demand":"203"},
+{"Set":"2","Day":"Monday","Time":"11:00 AM","Temperature":"72 F","WindSpeed":"23 mph","Condition":"Partly Cloudy","Demand":"173"},
+{"Set":"2","Day":"Monday","Time":"12:00 PM","Temperature":"73 F","WindSpeed":"22 mph","Condition":"Fair","Demand":"159"},
+{"Set":"2","Day":"Monday","Time":"1:00 PM","Temperature":"78 F","WindSpeed":"26 mph","Condition":"Fair","Demand":"151"},
+{"Set":"2","Day":"Monday","Time":"2:00 PM","Temperature":"79 F","WindSpeed":"24 mph","Condition":"Fair","Demand":"175"},
+{"Set":"2","Day":"Monday","Time":"3:00 PM","Temperature":"82 F","WindSpeed":"23 mph","Condition":"Fair","Demand":"163"},
+{"Set":"2","Day":"Monday","Time":"4:00 PM","Temperature":"82 F","WindSpeed":"28 mph","Condition":"Fair","Demand":"159"},
+{"Set":"2","Day":"Monday","Time":"5:00 PM","Temperature":"83 F","WindSpeed":"26 mph","Condition":"Fair","Demand":"129"},
+{"Set":"2","Day":"Monday","Time":"6:00 PM","Temperature":"81 F","WindSpeed":"23 mph","Condition":"Fair","Demand":"135"},
+{"Set":"2","Day":"Monday","Time":"7:00 PM","Temperature":"79 F","WindSpeed":"20 mph","Condition":"Fair","Demand":"147"},
+{"Set":"2","Day":"Monday","Time":"8:00 PM","Temperature":"75 F","WindSpeed":"16 mph","Condition":"Fair","Demand":"165"},
+{"Set":"2","Day":"Monday","Time":"9:00 PM","Temperature":"72 F","WindSpeed":"9 mph","Condition":"Fair","Demand":"119"},
+{"Set":"2","Day":"Monday","Time":"10:00 PM","Temperature":"69 F","WindSpeed":"5 mph","Condition":"Fair","Demand":"103"},
+{"Set":"2","Day":"Monday","Time":"11:00 PM","Temperature":"69 F","WindSpeed":"5 mph","Condition":"Mostly Cloudy","Demand":"95"},
+{"Set":"3","Day":"Wednesday","Time":"12:00 AM","Temperature":"79 F","WindSpeed":"9 mph","Condition":"Fair","Demand":"134"},
+{"Set":"3","Day":"Wednesday","Time":"1:00 AM","Temperature":"76 F","WindSpeed":"9 mph","Condition":"Fair","Demand":"127"},
+{"Set":"3","Day":"Wednesday","Time":"2:00 AM","Temperature":"74 F","WindSpeed":"8 mph","Condition":"Fair","Demand":"123"},
+{"Set":"3","Day":"Wednesday","Time":"3:00 AM","Temperature":"73 F","WindSpeed":"6 mph","Condition":"Fair","Demand":"119"},
+{"Set":"3","Day":"Wednesday","Time":"4:00 AM","Temperature":"70 F","WindSpeed":"6 mph","Condition":"Fair","Demand":"117"},
+{"Set":"3","Day":"Wednesday","Time":"5:00 AM","Temperature":"69 F","WindSpeed":"5 mph","Condition":"Fair","Demand":"118"},
+{"Set":"3","Day":"Wednesday","Time":"6:00 AM","Temperature":"67 F","WindSpeed":"0 mph","Condition":"Fair","Demand":"123"},
+{"Set":"3","Day":"Wednesday","Time":"7:00 AM","Temperature":"69 F","WindSpeed":"3 mph","Condition":"Fair","Demand":"134"},
+{"Set":"3","Day":"Wednesday","Time":"8:00 AM","Temperature":"74 F","WindSpeed":"5 mph","Condition":"Fair","Demand":"147"},
+{"Set":"3","Day":"Wednesday","Time":"9:00 AM","Temperature":"79 F","WindSpeed":"6 mph","Condition":"Fair","Demand":"164"},
+{"Set":"3","Day":"Wednesday","Time":"10:00 AM","Temperature":"85 F","WindSpeed":"3 mph","Condition":"Fair","Demand":"177"},
+{"Set":"3","Day":"Wednesday","Time":"11:00 AM","Temperature":"87 F","WindSpeed":"6 mph","Condition":"Fair","Demand":"190"},
+{"Set":"3","Day":"Wednesday","Time":"12:00 PM","Temperature":"91 F","WindSpeed":"8 mph","Condition":"Fair","Demand":"203"},
+{"Set":"3","Day":"Wednesday","Time":"1:00 PM","Temperature":"94 F","WindSpeed":"8 mph","Condition":"Fair","Demand":"213"},
+{"Set":"3","Day":"Wednesday","Time":"2:00 PM","Temperature":"98 F","WindSpeed":"9 mph","Condition":"Fair","Demand":"219"},
+{"Set":"3","Day":"Wednesday","Time":"3:00 PM","Temperature":"99 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"218"},
+{"Set":"3","Day":"Wednesday","Time":"4:00 PM","Temperature":"99 F","WindSpeed":"12 mph","Condition":"Fair","Demand":"221"},
+{"Set":"3","Day":"Wednesday","Time":"5:00 PM","Temperature":"99 F","WindSpeed":"12 mph","Condition":"Fair","Demand":"220"},
+{"Set":"3","Day":"Wednesday","Time":"6:00 PM","Temperature":"98 F","WindSpeed":"8 mph","Condition":"Fair","Demand":"216"},
+{"Set":"3","Day":"Wednesday","Time":"7:00 PM","Temperature":"97 F","WindSpeed":"12 mph","Condition":"Fair","Demand":"206"},
+{"Set":"3","Day":"Wednesday","Time":"8:00 PM","Temperature":"91 F","WindSpeed":"8 mph","Condition":"Fair","Demand":"194"},
+{"Set":"3","Day":"Wednesday","Time":"9:00 PM","Temperature":"86 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"182"},
+{"Set":"3","Day":"Wednesday","Time":"10:00 PM","Temperature":"82 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"169"},
+{"Set":"3","Day":"Wednesday","Time":"11:00 PM","Temperature":"80 F","WindSpeed":"0 mph","Condition":"Fair","Demand":"152"},
+{"Set":"3","Day":"Thursday","Time":"12:00 AM","Temperature":"79 F","WindSpeed":"9 mph","Condition":"Fair","Demand":"134"},
+{"Set":"3","Day":"Thursday","Time":"1:00 AM","Temperature":"76 F","WindSpeed":"9 mph","Condition":"Fair","Demand":"127"},
+{"Set":"3","Day":"Thursday","Time":"2:00 AM","Temperature":"74 F","WindSpeed":"8 mph","Condition":"Fair","Demand":"123"},
+{"Set":"3","Day":"Thursday","Time":"3:00 AM","Temperature":"73 F","WindSpeed":"6 mph","Condition":"Fair","Demand":"119"},
+{"Set":"3","Day":"Thursday","Time":"4:00 AM","Temperature":"70 F","WindSpeed":"6 mph","Condition":"Fair","Demand":"117"},
+{"Set":"3","Day":"Thursday","Time":"5:00 AM","Temperature":"69 F","WindSpeed":"5 mph","Condition":"Fair","Demand":"118"},
+{"Set":"3","Day":"Thursday","Time":"6:00 AM","Temperature":"67 F","WindSpeed":"0 mph","Condition":"Fair","Demand":"123"},
+{"Set":"3","Day":"Thursday","Time":"7:00 AM","Temperature":"69 F","WindSpeed":"3 mph","Condition":"Fair","Demand":"134"},
+{"Set":"3","Day":"Thursday","Time":"8:00 AM","Temperature":"74 F","WindSpeed":"5 mph","Condition":"Fair","Demand":"147"},
+{"Set":"3","Day":"Thursday","Time":"9:00 AM","Temperature":"79 F","WindSpeed":"6 mph","Condition":"Fair","Demand":"164"},
+{"Set":"3","Day":"Thursday","Time":"10:00 AM","Temperature":"85 F","WindSpeed":"3 mph","Condition":"Fair","Demand":"177"},
+{"Set":"3","Day":"Thursday","Time":"11:00 AM","Temperature":"87 F","WindSpeed":"6 mph","Condition":"Fair","Demand":"190"},
+{"Set":"3","Day":"Thursday","Time":"12:00 PM","Temperature":"91 F","WindSpeed":"8 mph","Condition":"Fair","Demand":"203"},
+{"Set":"3","Day":"Thursday","Time":"1:00 PM","Temperature":"94 F","WindSpeed":"8 mph","Condition":"Fair","Demand":"213"},
+{"Set":"3","Day":"Thursday","Time":"2:00 PM","Temperature":"98 F","WindSpeed":"9 mph","Condition":"Fair","Demand":"219"},
+{"Set":"3","Day":"Thursday","Time":"3:00 PM","Temperature":"99 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"218"},
+{"Set":"3","Day":"Thursday","Time":"4:00 PM","Temperature":"99 F","WindSpeed":"12 mph","Condition":"Fair","Demand":"221"},
+{"Set":"3","Day":"Thursday","Time":"5:00 PM","Temperature":"99 F","WindSpeed":"12 mph","Condition":"Fair","Demand":"220"},
+{"Set":"3","Day":"Thursday","Time":"6:00 PM","Temperature":"98 F","WindSpeed":"8 mph","Condition":"Fair","Demand":"216"},
+{"Set":"3","Day":"Thursday","Time":"7:00 PM","Temperature":"97 F","WindSpeed":"12 mph","Condition":"Fair","Demand":"206"},
+{"Set":"3","Day":"Thursday","Time":"8:00 PM","Temperature":"91 F","WindSpeed":"8 mph","Condition":"Fair","Demand":"194"},
+{"Set":"3","Day":"Thursday","Time":"9:00 PM","Temperature":"86 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"182"},
+{"Set":"3","Day":"Thursday","Time":"10:00 PM","Temperature":"82 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"169"},
+{"Set":"3","Day":"Thursday","Time":"11:00 PM","Temperature":"80 F","WindSpeed":"0 mph","Condition":"Fair","Demand":"152"},
+{"Set":"4","Day":"Monday","Time":"12:00 AM","Temperature":"21 F","WindSpeed":"10 mph","Condition":"Cloudy","Demand":"133"},
+{"Set":"4","Day":"Monday","Time":"1:00 AM","Temperature":"20 F","WindSpeed":"12 mph","Condition":"Cloudy","Demand":"128"},
+{"Set":"4","Day":"Monday","Time":"2:00 AM","Temperature":"16 F","WindSpeed":"7 mph","Condition":"Fair","Demand":"125"},
+{"Set":"4","Day":"Monday","Time":"3:00 AM","Temperature":"13 F","WindSpeed":"5 mph","Condition":"Fair","Demand":"125"},
+{"Set":"4","Day":"Monday","Time":"4:00 AM","Temperature":"12 F","WindSpeed":"3 mph","Condition":"Fair","Demand":"126"},
+{"Set":"4","Day":"Monday","Time":"5:00 AM","Temperature":"10 F","WindSpeed":"3 mph","Condition":"Fair","Demand":"135"},
+{"Set":"4","Day":"Monday","Time":"6:00 AM","Temperature":"9 F","WindSpeed":"5 mph","Condition":"Fair","Demand":"153"},
+{"Set":"4","Day":"Monday","Time":"7:00 AM","Temperature":"8 F","WindSpeed":"0 mph","Condition":"Fair","Demand":"179"},
+{"Set":"4","Day":"Monday","Time":"8:00 AM","Temperature":"11 F","WindSpeed":"6 mph","Condition":"Fair","Demand":"202"},
+{"Set":"4","Day":"Monday","Time":"9:00 AM","Temperature":"16 F","WindSpeed":"8 mph","Condition":"Fair","Demand":"207"},
+{"Set":"4","Day":"Monday","Time":"10:00 AM","Temperature":"20 F","WindSpeed":"9 mph","Condition":"Fair","Demand":"207"},
+{"Set":"4","Day":"Monday","Time":"11:00 AM","Temperature":"22 F","WindSpeed":"15 mph","Condition":"Fair","Demand":"203"},
+{"Set":"4","Day":"Monday","Time":"12:00 PM","Temperature":"24 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"201"},
+{"Set":"4","Day":"Monday","Time":"1:00 PM","Temperature":"24 F","WindSpeed":"14 mph","Condition":"Fair","Demand":"192"},
+{"Set":"4","Day":"Monday","Time":"2:00 PM","Temperature":"24 F","WindSpeed":"15 mph","Condition":"Fair","Demand":"189"},
+{"Set":"4","Day":"Monday","Time":"3:00 PM","Temperature":"24 F","WindSpeed":"16 mph","Condition":"Fair","Demand":"184"},
+{"Set":"4","Day":"Monday","Time":"4:00 PM","Temperature":"23 F","WindSpeed":"14 mph","Condition":"Fair","Demand":"175"},
+{"Set":"4","Day":"Monday","Time":"5:00 PM","Temperature":"21 F","WindSpeed":"14 mph","Condition":"Fair","Demand":"175"},
+{"Set":"4","Day":"Monday","Time":"6:00 PM","Temperature":"18 F","WindSpeed":"13 mph","Condition":"Fair","Demand":"176"},
+{"Set":"4","Day":"Monday","Time":"7:00 PM","Temperature":"17 F","WindSpeed":"14 mph","Condition":"Fair","Demand":"192"},
+{"Set":"4","Day":"Monday","Time":"8:00 PM","Temperature":"16 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"192"},
+{"Set":"4","Day":"Monday","Time":"9:00 PM","Temperature":"16 F","WindSpeed":"8 mph","Condition":"Fair","Demand":"181"},
+{"Set":"4","Day":"Monday","Time":"10:00 PM","Temperature":"15 F","WindSpeed":"0 mph","Condition":"Fair","Demand":"165"},
+{"Set":"4","Day":"Monday","Time":"11:00 PM","Temperature":"14 F","WindSpeed":"0 mph","Condition":"Fair","Demand":"145"},
+{"Set":"4","Day":"Tuesday","Time":"12:00 AM","Temperature":"21 F","WindSpeed":"10 mph","Condition":"Cloudy","Demand":"133"},
+{"Set":"4","Day":"Tuesday","Time":"1:00 AM","Temperature":"20 F","WindSpeed":"12 mph","Condition":"Cloudy","Demand":"128"},
+{"Set":"4","Day":"Tuesday","Time":"2:00 AM","Temperature":"16 F","WindSpeed":"7 mph","Condition":"Fair","Demand":"125"},
+{"Set":"4","Day":"Tuesday","Time":"3:00 AM","Temperature":"13 F","WindSpeed":"5 mph","Condition":"Fair","Demand":"125"},
+{"Set":"4","Day":"Tuesday","Time":"4:00 AM","Temperature":"12 F","WindSpeed":"3 mph","Condition":"Fair","Demand":"126"},
+{"Set":"4","Day":"Tuesday","Time":"5:00 AM","Temperature":"10 F","WindSpeed":"3 mph","Condition":"Fair","Demand":"135"},
+{"Set":"4","Day":"Tuesday","Time":"6:00 AM","Temperature":"9 F","WindSpeed":"5 mph","Condition":"Fair","Demand":"153"},
+{"Set":"4","Day":"Tuesday","Time":"7:00 AM","Temperature":"8 F","WindSpeed":"0 mph","Condition":"Fair","Demand":"179"},
+{"Set":"4","Day":"Tuesday","Time":"8:00 AM","Temperature":"11 F","WindSpeed":"6 mph","Condition":"Fair","Demand":"202"},
+{"Set":"4","Day":"Tuesday","Time":"9:00 AM","Temperature":"16 F","WindSpeed":"8 mph","Condition":"Fair","Demand":"207"},
+{"Set":"4","Day":"Tuesday","Time":"10:00 AM","Temperature":"20 F","WindSpeed":"9 mph","Condition":"Fair","Demand":"207"},
+{"Set":"4","Day":"Tuesday","Time":"11:00 AM","Temperature":"22 F","WindSpeed":"15 mph","Condition":"Fair","Demand":"203"},
+{"Set":"4","Day":"Tuesday","Time":"12:00 PM","Temperature":"24 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"201"},
+{"Set":"4","Day":"Tuesday","Time":"1:00 PM","Temperature":"24 F","WindSpeed":"14 mph","Condition":"Fair","Demand":"192"},
+{"Set":"4","Day":"Tuesday","Time":"2:00 PM","Temperature":"24 F","WindSpeed":"15 mph","Condition":"Fair","Demand":"189"},
+{"Set":"4","Day":"Tuesday","Time":"3:00 PM","Temperature":"24 F","WindSpeed":"16 mph","Condition":"Fair","Demand":"184"},
+{"Set":"4","Day":"Tuesday","Time":"4:00 PM","Temperature":"23 F","WindSpeed":"14 mph","Condition":"Fair","Demand":"175"},
+{"Set":"4","Day":"Tuesday","Time":"5:00 PM","Temperature":"21 F","WindSpeed":"14 mph","Condition":"Fair","Demand":"175"},
+{"Set":"4","Day":"Tuesday","Time":"6:00 PM","Temperature":"18 F","WindSpeed":"13 mph","Condition":"Fair","Demand":"176"},
+{"Set":"4","Day":"Tuesday","Time":"7:00 PM","Temperature":"17 F","WindSpeed":"14 mph","Condition":"Fair","Demand":"192"},
+{"Set":"4","Day":"Tuesday","Time":"8:00 PM","Temperature":"16 F","WindSpeed":"10 mph","Condition":"Fair","Demand":"192"},
+{"Set":"4","Day":"Tuesday","Time":"9:00 PM","Temperature":"16 F","WindSpeed":"8 mph","Condition":"Fair","Demand":"181"},
+{"Set":"4","Day":"Tuesday","Time":"10:00 PM","Temperature":"15 F","WindSpeed":"0 mph","Condition":"Fair","Demand":"165"},
+{"Set":"4","Day":"Tuesday","Time":"11:00 PM","Temperature":"14 F","WindSpeed":"0 mph","Condition":"Fair","Demand":"145"}
 ]
