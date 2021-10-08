@@ -404,7 +404,7 @@ class Simulation extends Component {
   }
 
   maximizeWarmingTicks() {
-    for (let j = 0; j < 5; j += 1) {
+    for (let j = 0; j < 6; j += 1) {
       const panelId = `coal-${j + 1}`;
       const isPluggedIn = (this.liveData[`${panelId}-jack`] === '0');
       const isSwitchedOn = (this.liveData[`${panelId}-switch`] === '1');
