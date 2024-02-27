@@ -863,6 +863,23 @@ h4 {
   }
 }
 
+.icon-box2 {
+  h3 {
+    color: black;
+    margin: 25px 0;
+  }
+
+  display: flex;
+  justify-content: space-between;
+
+  .icon-container2 {
+
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+  }
+}
+
 .caret {
   color: $pane-gold;
   font-size: 80px;
